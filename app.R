@@ -24,16 +24,14 @@ ui <- fluidPage(
           }
         });
         window.vueApp = app.mount('#vue-app');
+        if (window.Shiny && window.Shiny.addCustomMessageHandler) {
+          window.Shiny.addCustomMessageHandler('backendMessage', function(message) {
+            if (window.vueApp) {
+              window.vueApp.backendMessage = message;
+            }
+          });
+        }
       });
-    ")),
-    tags$script(HTML("
-      if (window.Shiny && window.Shiny.addCustomMessageHandler) {
-        window.Shiny.addCustomMessageHandler('backendMessage', function(message) {
-          if (window.vueApp) {
-            window.vueApp.backendMessage = message;
-          }
-        });
-      }
     "))
   ),
   tags$div(
@@ -51,7 +49,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   observe({
     session$sendCustomMessage("backendMessage", "Shiny backend connected")
-  })
+  }, once = TRUE)
 
   output$backend_clicks <- renderText({
     clicks <- if (is.null(input$vue_clicks)) 0 else input$vue_clicks
