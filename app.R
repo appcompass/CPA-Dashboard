@@ -2,7 +2,7 @@ library(shiny)
 
 ui <- fluidPage(
   tags$head(
-    tags$script(src = "https://unpkg.com/vue@3/dist/vue.global.prod.js"),
+    tags$script(src = "https://cdn.jsdelivr.net/npm/vue@3.4.38/dist/vue.global.prod.js"),
     tags$script(HTML("
       document.addEventListener('DOMContentLoaded', function () {
         const { createApp } = Vue;
@@ -23,11 +23,11 @@ ui <- fluidPage(
             }
           }
         });
-        window.vueApp = app.mount('#vue-app');
+        const appInstance = app.mount('#vue-app');
         if (window.Shiny && window.Shiny.addCustomMessageHandler) {
           window.Shiny.addCustomMessageHandler('backendMessage', function(message) {
-            if (window.vueApp) {
-              window.vueApp.backendMessage = message;
+            if (appInstance) {
+              appInstance.backendMessage = message;
             }
           });
         }
