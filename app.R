@@ -47,7 +47,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  observe({
+  session$onFlushed(function() {
     session$sendCustomMessage("backendMessage", "Shiny backend connected")
   }, once = TRUE)
 
