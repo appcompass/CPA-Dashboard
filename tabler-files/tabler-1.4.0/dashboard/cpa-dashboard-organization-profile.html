@@ -38,32 +38,38 @@
       @import url('https://rsms.me/inter/inter.css');
     </style>
     <style>
+      .ww-wrap {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        padding: 1rem 0;
+        min-height: 380px;
+      }
+      .ww-wheel-instance {
+        margin-bottom: 2rem;
+        border-bottom: 0.5px solid var(--color-border-tertiary);
+        padding-bottom: 2rem;
+      }
+      .ww-wheel-instance:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
       .panel {
         display: none;
-        animation: fadein 0.3s ease;
       }
       .panel.visible {
         display: block;
       }
-      @keyframes fadein {
-        from {
-          opacity: 0;
-          transform: translateX(8px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
       .panel-title {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 500;
         margin: 0 0 8px;
       }
       .panel-desc {
-        font-size: 13.5px;
+        font-size: 13px;
         color: var(--color-text-secondary);
-        margin: 0 0 16px;
+        margin: 0 0 14px;
         line-height: 1.7;
       }
       .subcats {
@@ -72,18 +78,18 @@
         margin: 0;
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 7px;
       }
       .subcats li {
         display: flex;
         align-items: flex-start;
-        gap: 10px;
-        font-size: 13.5px;
+        gap: 9px;
+        font-size: 13px;
         line-height: 1.5;
       }
       .subcats li .dot {
-        width: 8px;
-        height: 8px;
+        width: 7px;
+        height: 7px;
         border-radius: 50%;
         flex-shrink: 0;
         margin-top: 5px;
@@ -94,6 +100,11 @@
       .other {
         color: var(--color-text-secondary);
         font-style: italic;
+      }
+      .default-msg {
+        color: var(--color-text-secondary);
+        font-size: 13.5px;
+        padding-top: 2rem;
       }
     </style>
 
@@ -419,214 +430,9 @@
                     <h3 class="card-title">Established Areas of Wellness</h3>
                   </div>
                   <div class="card-body">
-                    <div style="display: flex; align-items: center; gap: 2rem">
-                      <div style="flex-shrink: 0">
-                        <svg
-                          id="donut"
-                          viewBox="0 0 500 500"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="380"
-                          height="380"
-                          style="overflow: visible; display: block"
-                        >
-                          <title>Wellness Wheel</title>
-                          <g id="wheel" style="transform-origin: 250px 250px">
-                            <g id="s0" style="cursor: pointer">
-                              <path
-                                d="M 250,30 A 220,220 0 0,1 405.56,94.44 L 324.25,175.75 A 105,105 0 0,0 250,145 Z"
-                                fill="#066fd1"
-                                stroke="white"
-                                stroke-width="2"
-                              />
-                              <text
-                                id="l0"
-                                x="312"
-                                y="105"
-                                text-anchor="middle"
-                                dominant-baseline="middle"
-                                font-size="12.5"
-                                font-family="sans-serif"
-                                font-weight="600"
-                                fill="white"
-                                style="transform-origin: 312px 105px"
-                              >
-                                Physical
-                              </text>
-                            </g>
-                            <g id="s1" style="cursor: pointer">
-                              <path
-                                d="M 405.56,94.44 A 220,220 0 0,1 470,250 L 355,250 A 105,105 0 0,0 324.25,175.75 Z"
-                                fill="#4299e1"
-                                stroke="white"
-                                stroke-width="2"
-                              />
-                              <text
-                                id="l1"
-                                x="400"
-                                y="188"
-                                text-anchor="middle"
-                                dominant-baseline="middle"
-                                font-size="12.5"
-                                font-family="sans-serif"
-                                font-weight="600"
-                                fill="white"
-                                style="transform-origin: 400px 188px"
-                              >
-                                Emotional
-                              </text>
-                            </g>
-                            <g id="s2" style="cursor: pointer">
-                              <path
-                                d="M 470,250 A 220,220 0 0,1 405.56,405.56 L 324.25,324.25 A 105,105 0 0,0 355,250 Z"
-                                fill="#ae3ec9"
-                                stroke="white"
-                                stroke-width="2"
-                              />
-                              <text
-                                id="l2"
-                                x="400"
-                                y="312"
-                                text-anchor="middle"
-                                dominant-baseline="middle"
-                                font-size="12.5"
-                                font-family="sans-serif"
-                                font-weight="600"
-                                fill="white"
-                                style="transform-origin: 400px 312px"
-                              >
-                                Intellectual
-                              </text>
-                            </g>
-                            <g id="s3" style="cursor: pointer">
-                              <path
-                                d="M 405.56,405.56 A 220,220 0 0,1 250,470 L 250,355 A 105,105 0 0,0 324.25,324.25 Z"
-                                fill="#d63939"
-                                stroke="white"
-                                stroke-width="2"
-                              />
-                              <text
-                                id="l3"
-                                x="312"
-                                y="400"
-                                text-anchor="middle"
-                                dominant-baseline="middle"
-                                font-size="12.5"
-                                font-family="sans-serif"
-                                font-weight="600"
-                                fill="white"
-                                style="transform-origin: 312px 400px"
-                              >
-                                Occupational
-                              </text>
-                            </g>
-                            <g id="s4" style="cursor: pointer">
-                              <path
-                                d="M 250,470 A 220,220 0 0,1 94.44,405.56 L 175.75,324.25 A 105,105 0 0,0 250,355 Z"
-                                fill="#f59f00"
-                                stroke="white"
-                                stroke-width="2"
-                              />
-                              <text
-                                id="l4"
-                                x="188"
-                                y="400"
-                                text-anchor="middle"
-                                dominant-baseline="middle"
-                                font-size="12.5"
-                                font-family="sans-serif"
-                                font-weight="600"
-                                fill="white"
-                                style="transform-origin: 188px 400px"
-                              >
-                                Financial
-                              </text>
-                            </g>
-                            <g id="s5" style="cursor: pointer">
-                              <path
-                                d="M 94.44,405.56 A 220,220 0 0,1 30,250 L 145,250 A 105,105 0 0,0 175.75,324.25 Z"
-                                fill="#2fb344"
-                                stroke="white"
-                                stroke-width="2"
-                              />
-                              <text
-                                id="l5"
-                                x="100"
-                                y="312"
-                                text-anchor="middle"
-                                dominant-baseline="middle"
-                                font-size="12.5"
-                                font-family="sans-serif"
-                                font-weight="600"
-                                fill="white"
-                                style="transform-origin: 100px 312px"
-                              >
-                                Social
-                              </text>
-                            </g>
-                            <g id="s6" style="cursor: pointer">
-                              <path
-                                d="M 30,250 A 220,220 0 0,1 94.44,94.44 L 175.75,175.75 A 105,105 0 0,0 145,250 Z"
-                                fill="#0ca678"
-                                stroke="white"
-                                stroke-width="2"
-                              />
-                              <text
-                                id="l6"
-                                x="100"
-                                y="188"
-                                text-anchor="middle"
-                                dominant-baseline="middle"
-                                font-size="11"
-                                font-family="sans-serif"
-                                font-weight="600"
-                                fill="white"
-                                style="transform-origin: 100px 188px"
-                              >
-                                Environmental
-                              </text>
-                            </g>
-                            <g id="s7" style="cursor: pointer">
-                              <path
-                                d="M 94.44,94.44 A 220,220 0 0,1 250,30 L 250,145 A 105,105 0 0,0 175.75,175.75 Z"
-                                fill="#17a2b8"
-                                stroke="white"
-                                stroke-width="2"
-                              />
-                              <text
-                                id="l7"
-                                x="188"
-                                y="100"
-                                text-anchor="middle"
-                                dominant-baseline="middle"
-                                font-size="12.5"
-                                font-family="sans-serif"
-                                font-weight="600"
-                                fill="white"
-                                style="transform-origin: 188px 100px"
-                              >
-                                Spiritual
-                              </text>
-                            </g>
-                          </g>
-                        </svg>
-                      </div>
-
-                      <div
-                        id="panels"
-                        style="flex: 1; min-width: 0; position: relative"
-                      >
-                        <div
-                          id="default-msg"
-                          style="
-                            color: var(--color-text-secondary);
-                            font-size: 14px;
-                            padding-top: 2rem;
-                          "
-                        >
-                          Select a segment to learn more.
-                        </div>
-                      </div>
-                    </div>
+                    <div
+                      data-active-categories="Physical, Intellectual, Occupational, Financial, Social"
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -637,377 +443,10 @@
                       Emerging Areas of Wellness (Private)
                     </h3>
                   </div>
-                  <div class="card-header">
-                    <ul
-                      class="nav nav-tabs card-header-tabs nav-fill"
-                      data-bs-toggle="tabs"
-                      role="tablist"
-                    >
-                      <li class="nav-item" role="presentation">
-                        <a
-                          href="#tabs-physical-wellness"
-                          class="nav-link active"
-                          data-bs-toggle="tab"
-                          aria-selected="true"
-                          role="tab"
-                          ><!-- Download SVG icon from http://tabler.io/icons/icon/user -->
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="icon me-2 icon-2"
-                          >
-                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
-                            <path
-                              d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
-                            ></path></svg
-                          >Physical</a
-                        >
-                      </li>
-                      <li class="nav-item" role="presentation">
-                        <a
-                          href="#tabs-spiritual-wellness"
-                          class="nav-link"
-                          data-bs-toggle="tab"
-                          aria-selected="false"
-                          role="tab"
-                          ><!-- Download SVG icon from http://tabler.io/icons/icon/user -->
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="icon me-2 icon-2"
-                          >
-                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
-                            <path
-                              d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
-                            ></path></svg
-                          >Spiritual</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
                   <div class="card-body">
-                    <div class="tab-content">
-                      <div
-                        class="tab-pane active show"
-                        id="tabs-physical-wellness"
-                        role="tabpanel"
-                      >
-                        <h3 class="card-title">Physical wellness</h3>
-                        <p>
-                          Physical wellness is the ability to recognize the need
-                          for physical activity, healthy diet, sleep and
-                          nutrition. Examples include after-school sport clubs,
-                          summer exercise camps, community garden, cooking
-                          classes, and information about well-being.
-                        </p>
-                        Services provide:
-                        <ul>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Fitness programs</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Nutritional education</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Health screenings</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Other</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                      <div
-                        class="tab-pane"
-                        id="tabs-emotional-wellness"
-                        role="tabpanel"
-                      >
-                        <h3 class="card-title">Emotional wellness</h3>
-                        <p>
-                          Emotional wellness is the ability to cope effectively
-                          with life and create satisfying relationships,
-                          including obtaining high-quality mental health
-                          treatment and support as needed. Examples include
-                          trauma-informed programming, therapy services,
-                          mentoring programs aimed at supporting socioemotional
-                          learning.
-                        </p>
-                        Services provide:
-                        <ul>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Mental health support groups</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Crisis intervention</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Counseling services</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Other</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                      <div
-                        class="tab-pane"
-                        id="tabs-intellectual-wellness"
-                        role="tabpanel"
-                      >
-                        <h3 class="card-title">Intellectual wellness</h3>
-                        <p>
-                          Intellectual wellness is the ability to recognize
-                          creative abilities and find ways to expand knowledge
-                          and skills. Examples include art classes, tutoring,
-                          creative writing, SAT prep, coding workshops.
-                        </p>
-                        Services provide:
-                        <ul>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Educational workshops</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >College readiness programs</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Tutoring</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Other</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                      <div
-                        class="tab-pane"
-                        id="tabs-occupational-wellness"
-                        role="tabpanel"
-                      >
-                        <h3 class="card-title">Occupational wellness</h3>
-                        <p>
-                          Occupational wellness is defined as having personal
-                          satisfaction and enrichment from one’s work. Examples
-                          include resources for resume development, job fairs,
-                          and career counseling.
-                        </p>
-                        Services provide:
-                        <ul>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Internships/Co-ops</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Career counseling</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Resume support</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Job training</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Other</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                      <div
-                        class="tab-pane"
-                        id="tabs-financial-wellness"
-                        role="tabpanel"
-                      >
-                        <h3 class="card-title">Financial wellness</h3>
-                        <p>
-                          Financial wellness is one’s satisfaction with current
-                          and future financial situations. Examples include
-                          initiatives centered on managing finances, financial
-                          aid, and increasing financial literacy.
-                        </p>
-                        Services provide:
-                        <ul>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Budgeting</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Assistance with financial aid</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Financial literacy workshops</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Other</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                      <div
-                        class="tab-pane"
-                        id="tabs-social-wellness"
-                        role="tabpanel"
-                      >
-                        <h3 class="card-title">Social wellness</h3>
-                        <p>
-                          Social wellness is the ability to develop a sense of
-                          connection, belonging and a well-developed support
-                          system. Examples include hosting social events, camps
-                          or opportunities to engage with sports teams between
-                          community peers, and support groups of same age peers.
-                        </p>
-                        Services provide:
-                        <ul>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Mentoring</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Family engagement activities</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Community events</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Other</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                      <div
-                        class="tab-pane"
-                        id="tabs-environmental-wellness"
-                        role="tabpanel"
-                      >
-                        <h3 class="card-title">Environmental wellness</h3>
-                        <p>
-                          Environmental wellness is having good health by
-                          occupying pleasant stimulating environments that
-                          support wellbeing. Examples include access to parks
-                          and safe walking space, living in a neighborhood where
-                          youth feel safe, and engaging in climate change
-                          initiatives.
-                        </p>
-                        Services provide:
-                        <ul>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Environmental education</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Neighborhood clean-ups</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Community gardening</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Other</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                      <div
-                        class="tab-pane"
-                        id="tabs-spiritual-wellness"
-                        role="tabpanel"
-                      >
-                        <h3 class="card-title">Spiritual wellness</h3>
-                        <p>
-                          Spiritual wellness is expanding our sense of purpose
-                          and meaning in life. Examples include meditation,
-                          attending religious events, and providing designated
-                          areas of spiritual practice.
-                        </p>
-                        Services provide:
-                        <ul>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Mindfulness or meditation workshops</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Religious support groups/counseling</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Physical space to engage in religious
-                              practices/reflection</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Religious or spiritual themed events</a
-                            >
-                          </li>
-                          <li>
-                            <a href="./cpa-dashboard-organization-list.html"
-                              >Other</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
+                    <div
+                      data-active-categories="Emotional, Spiritual, Environmental"
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -1624,30 +1063,13 @@
         checkItems();
       });
     </script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.2.4/svg.min.js"></script>
     <script>
-      const PULL = 28;
-      const EASING = '0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-      const wheel = document.getElementById('wheel');
-      const labels = Array.from({ length: 8 }, (_, i) =>
-        document.getElementById('l' + i),
-      );
-      const segs = Array.from({ length: 8 }, (_, i) =>
-        document.getElementById('s' + i),
-      );
-      const midAngles = Array.from(
-        { length: 8 },
-        (_, i) => -90 + (i + 0.5) * 45,
-      );
-      let currentRotation = 0,
-        active = -1;
-
-      const data = [
+      const ALL = [
         {
-          id: 0,
           color: '#066fd1',
           title: 'Physical',
-          desc: 'Physical wellness is the ability to recognize the need for physical activity, healthy diet, sleep and nutrition. Examples include after-school sport clubs, summer exercise camps, community garden, cooking classes, and information about well-being.',
+          desc: 'Physical wellness is the ability to recognize the need for physical activity, healthy diet, sleep and nutrition. Examples include after-school sport clubs, summer exercise camps, community gardens, cooking classes, and information about well-being.',
           subs: [
             'Fitness programs',
             'Nutritional education',
@@ -1656,10 +1078,9 @@
           ],
         },
         {
-          id: 1,
           color: '#4299e1',
           title: 'Emotional',
-          desc: 'Emotional wellness is the ability to cope effectively with life and create satisfying relationships, including obtaining high-quality mental health treatment and support as needed. Examples include trauma-informed programming, therapy services, mentoring programs aimed at supporting socioemotional learning.',
+          desc: 'Emotional wellness is the ability to cope effectively with life and create satisfying relationships, including obtaining high-quality mental health treatment and support as needed. Examples include trauma-informed programming, therapy services, and mentoring programs aimed at supporting socioemotional learning.',
           subs: [
             'Mental health support groups',
             'Crisis intervention',
@@ -1668,10 +1089,9 @@
           ],
         },
         {
-          id: 2,
           color: '#ae3ec9',
           title: 'Intellectual',
-          desc: 'Intellectual wellness is the ability to recognize creative abilities and find ways to expand knowledge and skills. Examples include art classes, tutoring, creative writing, SAT prep, coding workshops.',
+          desc: 'Intellectual wellness is the ability to recognize creative abilities and find ways to expand knowledge and skills. Examples include art classes, tutoring, creative writing, SAT prep, and coding workshops.',
           subs: [
             'Educational workshops',
             'College readiness programs',
@@ -1680,12 +1100,11 @@
           ],
         },
         {
-          id: 3,
           color: '#d63939',
           title: 'Occupational',
           desc: "Occupational wellness is defined as having personal satisfaction and enrichment from one's work. Examples include resources for resume development, job fairs, and career counseling.",
           subs: [
-            'Internships / Co-ops',
+            'Internships / co-ops',
             'Career counseling',
             'Resume support',
             'Job training',
@@ -1693,7 +1112,6 @@
           ],
         },
         {
-          id: 4,
           color: '#f59f00',
           title: 'Financial',
           desc: "Financial wellness is one's satisfaction with current and future financial situations. Examples include initiatives centered on managing finances, financial aid, and increasing financial literacy.",
@@ -1705,10 +1123,9 @@
           ],
         },
         {
-          id: 5,
           color: '#2fb344',
           title: 'Social',
-          desc: 'Social wellness is the ability to develop a sense of connection, belonging and a well-developed support system. Examples include hosting social events, camps or opportunities to engage with sports teams between community peers, and support groups of same age peers.',
+          desc: 'Social wellness is the ability to develop a sense of connection, belonging and a well-developed support system. Examples include hosting social events, camps or opportunities to engage with sports teams between community peers, and support groups of same-age peers.',
           subs: [
             'Mentoring',
             'Family engagement activities',
@@ -1717,10 +1134,9 @@
           ],
         },
         {
-          id: 6,
           color: '#0ca678',
           title: 'Environmental',
-          desc: 'Environmental wellness is having good health by occupying pleasant stimulating environments that support wellbeing. Examples include access to parks and safe walking space, living in a neighborhood where youth feel safe, and engaging in climate change initiatives.',
+          desc: 'Environmental wellness is having good health by occupying pleasant, stimulating environments that support wellbeing. Examples include access to parks and safe walking space, living in a neighborhood where youth feel safe, and engaging in climate change initiatives.',
           subs: [
             'Environmental education',
             'Neighborhood clean-ups',
@@ -1729,88 +1145,243 @@
           ],
         },
         {
-          id: 7,
           color: '#17a2b8',
           title: 'Spiritual',
           desc: 'Spiritual wellness is expanding our sense of purpose and meaning in life. Examples include meditation, attending religious events, and providing designated areas of spiritual practice.',
           subs: [
             'Mindfulness or meditation workshops',
             'Religious support groups / counseling',
-            'Physical space for religious practices / reflection',
+            'Physical space for religious practices',
             'Religious or spiritual themed events',
             'Other',
           ],
         },
       ];
 
-      const panelsEl = document.getElementById('panels');
-      const defaultMsg = document.getElementById('default-msg');
+      const PULL = 26,
+        DUR = 600;
+      const R_OUT = 220,
+        R_IN = 105,
+        CX = 250,
+        CY = 250;
 
-      data.forEach((d) => {
-        const div = document.createElement('div');
-        div.className = 'panel';
-        div.id = 'panel-' + d.id;
-        div.innerHTML = `
+      function createWheel(container) {
+        const attrValue = container.dataset.activeCategories || '';
+        const allowedTitles = attrValue
+          .split(',')
+          .map((s) => s.trim().toLowerCase())
+          .filter(Boolean);
+        const ENABLED = ALL.filter((d) =>
+          allowedTitles.includes(d.title.toLowerCase()),
+        );
+        if (!ENABLED.length) return;
+
+        // unique id prefix per instance
+        const uid = 'ww-' + Math.random().toString(36).slice(2, 7);
+
+        container.classList.add('ww-wheel-instance');
+
+        const wrap = document.createElement('div');
+        wrap.className = 'ww-wrap';
+
+        const svgWrap = document.createElement('div');
+        svgWrap.style.cssText =
+          'flex-shrink:0;width:340px;height:340px;overflow:visible';
+
+        const panelsEl = document.createElement('div');
+        panelsEl.style.cssText = 'flex:1;min-width:0;position:relative';
+
+        const defaultMsg = document.createElement('div');
+        defaultMsg.className = 'default-msg';
+        defaultMsg.textContent = 'Select a segment to learn more.';
+        panelsEl.appendChild(defaultMsg);
+
+        wrap.appendChild(svgWrap);
+        wrap.appendChild(panelsEl);
+        container.appendChild(wrap);
+
+        // build panels
+        ENABLED.forEach((d, i) => {
+          const div = document.createElement('div');
+          div.className = 'panel';
+          div.id = uid + '-panel-' + i;
+          div.innerHTML = `
       <p class="panel-title" style="color:${d.color}">${d.title}</p>
       <p class="panel-desc">${d.desc}</p>
-      <ul class="subcats">
-        ${d.subs
-          .map(
-            (s) => `
-          <li>
-            <span class="dot" style="background:${s === 'Other' ? 'var(--color-border-secondary)' : d.color}"></span>
-            <span class="${s === 'Other' ? 'other' : 'subcat-name'}">${s}</span>
-          </li>`,
-          )
-          .join('')}
-      </ul>`;
-        panelsEl.appendChild(div);
-      });
-
-      function applyState(rotation, activeIdx) {
-        wheel.style.transition = `transform ${EASING}`;
-        wheel.style.transform = `rotate(${rotation}deg)`;
-        for (let i = 0; i < 8; i++) {
-          labels[i].style.transition = `transform ${EASING}`;
-          labels[i].style.transform = `rotate(${-rotation}deg)`;
-          segs[i].style.transition = `transform ${EASING}`;
-          if (i === activeIdx) {
-            const rad = (midAngles[i] * Math.PI) / 180;
-            segs[i].style.transform =
-              `translate(${Math.cos(rad) * PULL}px,${Math.sin(rad) * PULL}px)`;
-          } else {
-            segs[i].style.transform = '';
-          }
-        }
-        document
-          .querySelectorAll('.panel')
-          .forEach((p) => p.classList.remove('visible'));
-        if (activeIdx >= 0) {
-          defaultMsg.style.display = 'none';
-          document
-            .getElementById('panel-' + activeIdx)
-            .classList.add('visible');
-        } else {
-          defaultMsg.style.display = 'block';
-        }
-      }
-
-      for (let i = 0; i < 8; i++) {
-        segs[i].addEventListener('click', function () {
-          if (active === i) {
-            active = -1;
-            currentRotation = 0;
-          } else {
-            const target = 0 - midAngles[i];
-            let delta =
-              ((((target - currentRotation) % 360) + 540) % 360) - 180;
-            currentRotation += delta;
-            active = i;
-          }
-          applyState(currentRotation, active);
+      <ul class="subcats">${d.subs
+        .map(
+          (s) => `<li>
+        <span class="dot" style="background:${s === 'Other' ? 'var(--color-border-secondary)' : d.color}"></span>
+        <span class="${s === 'Other' ? 'other' : 'subcat-name'}">${s}</span>
+      </li>`,
+        )
+        .join('')}</ul>`;
+          panelsEl.appendChild(div);
         });
+
+        // SVG.js instance
+        const draw = SVG()
+          .addTo(svgWrap)
+          .viewbox(0, 0, 500, 500)
+          .size(340, 340)
+          .attr('overflow', 'visible');
+        const wheelGroup = draw.group();
+
+        let activeSegIdx = -1;
+        let currentRotation = 0;
+        let segMap = {};
+
+        function toRad(deg) {
+          return (deg * Math.PI) / 180;
+        }
+        function polarPt(r, deg) {
+          return {
+            x: CX + r * Math.cos(toRad(deg)),
+            y: CY + r * Math.sin(toRad(deg)),
+          };
+        }
+        function arcPath(startDeg, endDeg) {
+          const o1 = polarPt(R_OUT, startDeg),
+            o2 = polarPt(R_OUT, endDeg);
+          const i2 = polarPt(R_IN, endDeg),
+            i1 = polarPt(R_IN, startDeg);
+          const lg = endDeg - startDeg > 180 ? 1 : 0;
+          const f = (n) => +n.toFixed(4);
+          return `M ${f(o1.x)},${f(o1.y)} A ${R_OUT},${R_OUT} 0 ${lg},1 ${f(o2.x)},${f(o2.y)} L ${f(i2.x)},${f(i2.y)} A ${R_IN},${R_IN} 0 ${lg},0 ${f(i1.x)},${f(i1.y)} Z`;
+        }
+        function fullRingPath() {
+          return arcPath(-90, 269.999);
+        }
+
+        function showPanel(idx) {
+          panelsEl
+            .querySelectorAll('.panel')
+            .forEach((p) => p.classList.remove('visible'));
+          if (idx >= 0) {
+            defaultMsg.style.display = 'none';
+            const p = document.getElementById(uid + '-panel-' + idx);
+            if (p) p.classList.add('visible');
+          } else {
+            defaultMsg.style.display = 'block';
+          }
+        }
+
+        function applyState() {
+          wheelGroup
+            .animate(DUR, '<>')
+            .transform({ rotate: currentRotation, ox: CX, oy: CY });
+          Object.entries(segMap).forEach(([i, s]) => {
+            const idx = parseInt(i);
+            s.label
+              .animate(DUR, '<>')
+              .transform({ rotate: -currentRotation, ox: s.lp.x, oy: s.lp.y });
+            if (idx === activeSegIdx) {
+              const rad = toRad(s.midDeg);
+              s.tx = Math.cos(rad) * PULL;
+              s.ty = Math.sin(rad) * PULL;
+            } else {
+              s.tx = 0;
+              s.ty = 0;
+            }
+            s.group.animate(DUR, '<>').transform({ translate: [s.tx, s.ty] });
+          });
+          showPanel(activeSegIdx);
+        }
+
+        function render() {
+          Object.values(segMap).forEach((s) => s.group.remove());
+          segMap = {};
+          activeSegIdx = -1;
+          currentRotation = 0;
+          wheelGroup.transform({ rotate: 0, ox: CX, oy: CY });
+
+          const n = ENABLED.length;
+          if (!n) {
+            showPanel(-1);
+            return;
+          }
+
+          if (n === 1) {
+            const d = ENABLED[0];
+            activeSegIdx = 0;
+            const g = wheelGroup.group();
+            g.path(fullRingPath())
+              .fill(d.color)
+              .stroke({ color: 'white', width: 2 });
+            g.text(d.title)
+              .font({
+                family: 'sans-serif',
+                size: 16,
+                weight: '600',
+                anchor: 'middle',
+              })
+              .fill('white')
+              .center(CX, CY);
+            segMap[0] = {
+              group: g,
+              label: g.last(),
+              midDeg: 0,
+              lp: { x: CX, y: CY },
+              tx: 0,
+              ty: 0,
+            };
+            showPanel(0);
+            return;
+          }
+
+          const sweep = 360 / n;
+          ENABLED.forEach((d, i) => {
+            const startDeg = -90 + i * sweep;
+            const endDeg = startDeg + sweep;
+            const midDeg = startDeg + sweep / 2;
+            const lp = polarPt((R_OUT + R_IN) / 2 + 4, midDeg);
+
+            const g = wheelGroup.group().attr('cursor', 'pointer');
+            g.path(arcPath(startDeg, endDeg))
+              .fill(d.color)
+              .stroke({ color: 'white', width: 2 });
+
+            const label = g
+              .text(d.title)
+              .font({
+                family: 'sans-serif',
+                size: sweep < 50 ? 10.5 : 12,
+                weight: '600',
+                anchor: 'middle',
+              })
+              .fill('white')
+              .center(lp.x, lp.y);
+
+            segMap[i] = { group: g, label, midDeg, lp, tx: 0, ty: 0 };
+
+            g.click(() => {
+              const wasActive = activeSegIdx === i;
+              activeSegIdx = wasActive ? -1 : i;
+              if (wasActive) {
+                let delta = ((((0 - currentRotation) % 360) + 540) % 360) - 180;
+                currentRotation += delta;
+              } else {
+                const target = -midDeg;
+                let delta =
+                  ((((target - currentRotation) % 360) + 540) % 360) - 180;
+                currentRotation += delta;
+              }
+              applyState();
+            });
+          });
+
+          applyState();
+        }
+
+        render();
       }
+
+      // initialise every [data-active-categories] container on the page
+      document
+        .querySelectorAll('[data-active-categories]')
+        .forEach(createWheel);
     </script>
+
     <!-- END PAGE SCRIPTS -->
   </body>
 </html>
