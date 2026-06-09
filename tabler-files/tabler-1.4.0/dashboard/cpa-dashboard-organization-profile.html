@@ -1165,7 +1165,7 @@
         CX = 250,
         CY = 250;
 
-      function createWheel(container) {
+      function createWheel(container, size = 340) {
         const attrValue = container.dataset.activeCategories || '';
         const allowedTitles = attrValue
           .split(',')
@@ -1185,8 +1185,7 @@
         wrap.className = 'ww-wrap';
 
         const svgWrap = document.createElement('div');
-        svgWrap.style.cssText =
-          'flex-shrink:0;width:340px;height:340px;overflow:visible';
+        svgWrap.style.cssText = `flex-shrink:0;width:${size}px;height:${size}px;overflow:visible`;
 
         const panelsEl = document.createElement('div');
         panelsEl.style.cssText = 'flex:1;min-width:0;position:relative';
@@ -1223,7 +1222,7 @@
         const draw = SVG()
           .addTo(svgWrap)
           .viewbox(0, 0, 500, 500)
-          .size(340, 340)
+          .size(size, size)
           .attr('overflow', 'visible');
         const wheelGroup = draw.group();
 
@@ -1379,7 +1378,7 @@
       // initialise every [data-active-categories] container on the page
       document
         .querySelectorAll('[data-active-categories]')
-        .forEach(createWheel);
+        .forEach((container) => createWheel(container, 340));
     </script>
 
     <!-- END PAGE SCRIPTS -->
