@@ -1,0 +1,145 @@
+
+<div style="display:flex;align-items:center;gap:2rem;padding:1rem 0;min-height:520px">
+  <div style="flex-shrink:0">
+    <svg id="donut" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" width="380" height="380" style="overflow:visible;display:block">
+      <title>Wellness Wheel</title>
+      <g id="wheel" style="transform-origin:250px 250px">
+        <g id="s0" style="cursor:pointer"><path d="M 250,30 A 220,220 0 0,1 405.56,94.44 L 324.25,175.75 A 105,105 0 0,0 250,145 Z" fill="#066fd1" stroke="white" stroke-width="2"/><text id="l0" x="312" y="105" text-anchor="middle" dominant-baseline="middle" font-size="12.5" font-family="sans-serif" font-weight="600" fill="white" style="transform-origin:312px 105px">Physical</text></g>
+        <g id="s1" style="cursor:pointer"><path d="M 405.56,94.44 A 220,220 0 0,1 470,250 L 355,250 A 105,105 0 0,0 324.25,175.75 Z" fill="#4299e1" stroke="white" stroke-width="2"/><text id="l1" x="400" y="188" text-anchor="middle" dominant-baseline="middle" font-size="12.5" font-family="sans-serif" font-weight="600" fill="white" style="transform-origin:400px 188px">Emotional</text></g>
+        <g id="s2" style="cursor:pointer"><path d="M 470,250 A 220,220 0 0,1 405.56,405.56 L 324.25,324.25 A 105,105 0 0,0 355,250 Z" fill="#ae3ec9" stroke="white" stroke-width="2"/><text id="l2" x="400" y="312" text-anchor="middle" dominant-baseline="middle" font-size="12.5" font-family="sans-serif" font-weight="600" fill="white" style="transform-origin:400px 312px">Intellectual</text></g>
+        <g id="s3" style="cursor:pointer"><path d="M 405.56,405.56 A 220,220 0 0,1 250,470 L 250,355 A 105,105 0 0,0 324.25,324.25 Z" fill="#d63939" stroke="white" stroke-width="2"/><text id="l3" x="312" y="400" text-anchor="middle" dominant-baseline="middle" font-size="12.5" font-family="sans-serif" font-weight="600" fill="white" style="transform-origin:312px 400px">Occupational</text></g>
+        <g id="s4" style="cursor:pointer"><path d="M 250,470 A 220,220 0 0,1 94.44,405.56 L 175.75,324.25 A 105,105 0 0,0 250,355 Z" fill="#f59f00" stroke="white" stroke-width="2"/><text id="l4" x="188" y="400" text-anchor="middle" dominant-baseline="middle" font-size="12.5" font-family="sans-serif" font-weight="600" fill="white" style="transform-origin:188px 400px">Financial</text></g>
+        <g id="s5" style="cursor:pointer"><path d="M 94.44,405.56 A 220,220 0 0,1 30,250 L 145,250 A 105,105 0 0,0 175.75,324.25 Z" fill="#2fb344" stroke="white" stroke-width="2"/><text id="l5" x="100" y="312" text-anchor="middle" dominant-baseline="middle" font-size="12.5" font-family="sans-serif" font-weight="600" fill="white" style="transform-origin:100px 312px">Social</text></g>
+        <g id="s6" style="cursor:pointer"><path d="M 30,250 A 220,220 0 0,1 94.44,94.44 L 175.75,175.75 A 105,105 0 0,0 145,250 Z" fill="#0ca678" stroke="white" stroke-width="2"/><text id="l6" x="100" y="188" text-anchor="middle" dominant-baseline="middle" font-size="11" font-family="sans-serif" font-weight="600" fill="white" style="transform-origin:100px 188px">Environmental</text></g>
+        <g id="s7" style="cursor:pointer"><path d="M 94.44,94.44 A 220,220 0 0,1 250,30 L 250,145 A 105,105 0 0,0 175.75,175.75 Z" fill="#17a2b8" stroke="white" stroke-width="2"/><text id="l7" x="188" y="100" text-anchor="middle" dominant-baseline="middle" font-size="12.5" font-family="sans-serif" font-weight="600" fill="white" style="transform-origin:188px 100px">Spiritual</text></g>
+      </g>
+    </svg>
+  </div>
+
+  <div id="panels" style="flex:1;min-width:0;position:relative">
+    <div id="default-msg" style="color:var(--color-text-secondary);font-size:14px;padding-top:2rem">Select a segment to learn more.</div>
+  </div>
+</div>
+
+<style>
+  .panel { display:none; animation:fadein 0.3s ease; }
+  .panel.visible { display:block; }
+  @keyframes fadein { from { opacity:0; transform:translateX(8px); } to { opacity:1; transform:translateX(0); } }
+  .panel-title { font-size:20px; font-weight:500; margin:0 0 8px; }
+  .panel-desc { font-size:13.5px; color:var(--color-text-secondary); margin:0 0 16px; line-height:1.7; }
+  .subcats { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+  .subcats li { display:flex; align-items:flex-start; gap:10px; font-size:13.5px; line-height:1.5; }
+  .subcats li .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+  .subcat-name { font-weight:500; }
+  .other { color:var(--color-text-secondary); font-style:italic; }
+</style>
+
+<script>
+  const PULL = 28;
+  const EASING = '0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+  const wheel = document.getElementById('wheel');
+  const labels = Array.from({length:8}, (_,i) => document.getElementById('l'+i));
+  const segs   = Array.from({length:8}, (_,i) => document.getElementById('s'+i));
+  const midAngles = Array.from({length:8}, (_,i) => -90 + (i+0.5)*45);
+  let currentRotation = 0, active = -1;
+
+  const data = [
+    {
+      id:0, color:'#066fd1', title:'Physical',
+      desc:'Physical wellness is the ability to recognize the need for physical activity, healthy diet, sleep and nutrition. Examples include after-school sport clubs, summer exercise camps, community garden, cooking classes, and information about well-being.',
+      subs:['Fitness programs','Nutritional education','Health screenings','Other']
+    },
+    {
+      id:1, color:'#4299e1', title:'Emotional',
+      desc:'Emotional wellness is the ability to cope effectively with life and create satisfying relationships, including obtaining high-quality mental health treatment and support as needed. Examples include trauma-informed programming, therapy services, mentoring programs aimed at supporting socioemotional learning.',
+      subs:['Mental health support groups','Crisis intervention','Counseling services','Other']
+    },
+    {
+      id:2, color:'#ae3ec9', title:'Intellectual',
+      desc:'Intellectual wellness is the ability to recognize creative abilities and find ways to expand knowledge and skills. Examples include art classes, tutoring, creative writing, SAT prep, coding workshops.',
+      subs:['Educational workshops','College readiness programs','Tutoring','Other']
+    },
+    {
+      id:3, color:'#d63939', title:'Occupational',
+      desc:'Occupational wellness is defined as having personal satisfaction and enrichment from one\'s work. Examples include resources for resume development, job fairs, and career counseling.',
+      subs:['Internships / Co-ops','Career counseling','Resume support','Job training','Other']
+    },
+    {
+      id:4, color:'#f59f00', title:'Financial',
+      desc:'Financial wellness is one\'s satisfaction with current and future financial situations. Examples include initiatives centered on managing finances, financial aid, and increasing financial literacy.',
+      subs:['Budgeting','Assistance with financial aid','Financial literacy workshops','Other']
+    },
+    {
+      id:5, color:'#2fb344', title:'Social',
+      desc:'Social wellness is the ability to develop a sense of connection, belonging and a well-developed support system. Examples include hosting social events, camps or opportunities to engage with sports teams between community peers, and support groups of same age peers.',
+      subs:['Mentoring','Family engagement activities','Community events','Other']
+    },
+    {
+      id:6, color:'#0ca678', title:'Environmental',
+      desc:'Environmental wellness is having good health by occupying pleasant stimulating environments that support wellbeing. Examples include access to parks and safe walking space, living in a neighborhood where youth feel safe, and engaging in climate change initiatives.',
+      subs:['Environmental education','Neighborhood clean-ups','Community gardening','Other']
+    },
+    {
+      id:7, color:'#17a2b8', title:'Spiritual',
+      desc:'Spiritual wellness is expanding our sense of purpose and meaning in life. Examples include meditation, attending religious events, and providing designated areas of spiritual practice.',
+      subs:['Mindfulness or meditation workshops','Religious support groups / counseling','Physical space for religious practices / reflection','Religious or spiritual themed events','Other']
+    },
+  ];
+
+  const panelsEl = document.getElementById('panels');
+  const defaultMsg = document.getElementById('default-msg');
+
+  data.forEach(d => {
+    const div = document.createElement('div');
+    div.className = 'panel';
+    div.id = 'panel-' + d.id;
+    div.innerHTML = `
+      <p class="panel-title" style="color:${d.color}">${d.title}</p>
+      <p class="panel-desc">${d.desc}</p>
+      <ul class="subcats">
+        ${d.subs.map(s => `
+          <li>
+            <span class="dot" style="background:${s === 'Other' ? 'var(--color-border-secondary)' : d.color}"></span>
+            <span class="${s === 'Other' ? 'other' : 'subcat-name'}">${s}</span>
+          </li>`).join('')}
+      </ul>`;
+    panelsEl.appendChild(div);
+  });
+
+  function applyState(rotation, activeIdx) {
+    wheel.style.transition = `transform ${EASING}`;
+    wheel.style.transform = `rotate(${rotation}deg)`;
+    for (let i = 0; i < 8; i++) {
+      labels[i].style.transition = `transform ${EASING}`;
+      labels[i].style.transform = `rotate(${-rotation}deg)`;
+      segs[i].style.transition = `transform ${EASING}`;
+      if (i === activeIdx) {
+        const rad = midAngles[i] * Math.PI / 180;
+        segs[i].style.transform = `translate(${Math.cos(rad)*PULL}px,${Math.sin(rad)*PULL}px)`;
+      } else {
+        segs[i].style.transform = '';
+      }
+    }
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('visible'));
+    if (activeIdx >= 0) {
+      defaultMsg.style.display = 'none';
+      document.getElementById('panel-' + activeIdx).classList.add('visible');
+    } else {
+      defaultMsg.style.display = 'block';
+    }
+  }
+
+  for (let i = 0; i < 8; i++) {
+    segs[i].addEventListener('click', function() {
+      if (active === i) {
+        active = -1; currentRotation = 0;
+      } else {
+        const target = 0 - midAngles[i];
+        let delta = ((target - currentRotation) % 360 + 540) % 360 - 180;
+        currentRotation += delta;
+        active = i;
+      }
+      applyState(currentRotation, active);
+    });
+  }
+</script>
