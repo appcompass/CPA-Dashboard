@@ -1,0 +1,77 @@
+@import "/css/tabler/tabler.css";
+@import "/css/tabler/tabler-flags.css";
+@import "/css/tabler/tabler-socials.css";
+@import "/css/tabler/tabler-payments.css";
+@import "/css/tabler/tabler-vendors.css";
+@import "/css/tabler/tabler-marketing.css";
+@import "/css/tabler/tabler-themes.css";
+@import url("https://rsms.me/inter/inter.css");
+
+.ww-wrap {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 0;
+  min-height: 380px;
+}
+.ww-wheel-instance {
+  margin-bottom: 2rem;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  padding-bottom: 2rem;
+}
+.ww-wheel-instance:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.panel {
+  display: none;
+}
+.panel.visible {
+  display: block;
+}
+.panel-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 8px;
+}
+.panel-desc {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin: 0 0 14px;
+  line-height: 1.7;
+}
+.subcats {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.subcats li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.subcats li .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.subcat-name {
+  font-weight: 500;
+}
+.other {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+.default-msg {
+  color: var(--color-text-secondary);
+  font-size: 13.5px;
+  padding-top: 2rem;
+}
