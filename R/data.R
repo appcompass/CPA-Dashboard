@@ -35,6 +35,10 @@ encrypt_data_file <- function(
     stop("Package 'openssl' is required. Run make install.", call. = FALSE)
   }
 
+  if (missing(passphrase)) {
+    passphrase <- Sys.getenv(key_env_var)
+  }
+
   if (!file.exists(input_path)) {
     stop(sprintf("Expected data file at '%s'.", input_path), call. = FALSE)
   }
@@ -59,6 +63,10 @@ decrypt_data_file <- function(
     key_env_var = "CPA_DATA_KEY") {
   if (!requireNamespace("openssl", quietly = TRUE)) {
     stop("Package 'openssl' is required. Run make install.", call. = FALSE)
+  }
+
+  if (missing(passphrase)) {
+    passphrase <- Sys.getenv(key_env_var)
   }
 
   if (!file.exists(encrypted_path)) {
@@ -127,6 +135,11 @@ load_survey_data <- function(
   if (!requireNamespace("openssl", quietly = TRUE)) {
     stop("Package 'openssl' is required. Run make install.", call. = FALSE)
   }
+
+  if (missing(passphrase)) {
+    passphrase <- Sys.getenv(key_env_var)
+  }
+
   if (!nzchar(passphrase)) {
     stop(
       sprintf(

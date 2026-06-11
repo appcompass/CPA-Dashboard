@@ -121,7 +121,7 @@ test_that("encrypt_data_file fails clearly when key is missing", {
   )
 })
 
-test_that("assert_survey_data_startup_ready succeeds with plaintext file", {
+test_that("assert_survey_data_startup_ready succeeds with encrypted file", {
   withr::local_dir(project_root)
 
   plain <- tempfile(fileext = ".csv")
