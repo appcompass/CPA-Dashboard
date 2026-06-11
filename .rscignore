@@ -1,0 +1,10 @@
+.git/
+.github/
+.vscode/
+.ansible/
+.env
+.env.*
+tabler-files/
+vue-project/
+www/libs/
+tests/
