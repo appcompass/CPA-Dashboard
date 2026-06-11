@@ -50,6 +50,24 @@ make manifest
 
 If you see `Unable to locate manifest.json`, regenerate it and republish.
 
+### GitHub Actions auto-deploy
+
+This repository includes a workflow that deploys automatically on merge to `main`:
+
+- [deploy workflow](.github/workflows/deploy-connect-cloud.yml)
+
+Configure these GitHub repository secrets before enabling auto-deploy:
+
+- `POSIT_CONNECT_ACCOUNT` - your Connect Cloud account name
+- `RSCLOUD_CLIENT_ID` - your Connect Cloud client ID
+- `RSCLOUD_CLIENT_SECRET` - your Connect Cloud client secret
+- `CPA_DATA_KEY` - app runtime decryption key for encrypted survey data
+
+Optional GitHub repository variables:
+
+- `POSIT_CONNECT_APP_NAME` (default `cpa-dashboard`)
+- `POSIT_CONNECT_APP_TITLE` (default `CPA Dashboard`)
+
 ## Routing
 
 The app currently defines these routes:
