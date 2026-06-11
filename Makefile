@@ -15,4 +15,4 @@ test: ## Run testthat tests from tests/testthat
 	@$(RSCRIPT) -e "library(testthat); test_dir('tests/testthat', reporter = 'progress')"
 
 run: ## Run the Shiny app on host 0.0.0.0 and port 3838
-	@$(RSCRIPT) -e "shiny::runApp('.', host = '0.0.0.0', port = 3838)"
+	@$(RSCRIPT) -e "options(shiny.autoreload = TRUE); shiny::runApp('.', host = '0.0.0.0', port = 3838)"
