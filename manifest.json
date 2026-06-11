@@ -984,19 +984,19 @@
   },
   "files": {
     "app.R": {
-      "checksum": "47e5a6bb9f938711ccbdd1ccead85617"
+      "checksum": "b9ce3500d57f9b19996714c73fad78e9"
     },
     "data/sample_data.csv": {
       "checksum": "234f28dc220236b7d2606acad2edb5c3"
     },
     "data/survey_data.csv.enc": {
-      "checksum": "1d5685cda67752accdd699ad3a73f459"
+      "checksum": "4f98ed77c00b5f2c5d45a2b4fbc2ecc6"
     },
     "Makefile": {
-      "checksum": "0bd57f3a520fe8fca15c8311908b97f1"
+      "checksum": "c30bcd3944bbae1a0ccab817518af8c3"
     },
     "R/data.R": {
-      "checksum": "8ec287a4de2fbd73cd37f343850b9d6d"
+      "checksum": "009f7bc084a8c35c8d767fe7dc15aec7"
     },
     "R/helpers.R": {
       "checksum": "3c5c6df2e6564f2870a4ca80b4ed5a0b"

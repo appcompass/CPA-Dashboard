@@ -26,3 +26,6 @@ decrypt-data: ## Decrypt data/survey_data.csv.enc -> data/survey_data.csv (requi
 
 manifest: ## Generate manifest.json for Posit Connect/Connect Cloud
 	@$(RSCRIPT) R/scripts/write_manifest.R
+
+deploy: ## Deploy app to Posit Connect Cloud (requires manifest.json and rsconnect configured)
+	@$(RSCRIPT) R/scripts/deploy_connect_cloud.R
