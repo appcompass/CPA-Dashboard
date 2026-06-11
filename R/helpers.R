@@ -1,4 +1,4 @@
-app_title <- "CHANGE Lab Shiny App"
+app_title <- "CHANGE Lab CPA Dashboard"
 
 plot_palette <- c("#0F62FE", "#4589FF", "#78A9FF", "#A6C8FF")
 

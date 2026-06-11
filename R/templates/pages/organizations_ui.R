@@ -101,7 +101,7 @@ organizations_ui <- function() {
                   class = "col-md",
                   h3(
                     class = "mb-0",
-                    a(href = route_link("organizations/1"), "Organization Name")
+                    a(href = route_link("organizations/details?id=1"), "Organization Name")
                   )
                 ),
                 div(class = "col-md-auto", h5("Established Areas of Wellness"))
