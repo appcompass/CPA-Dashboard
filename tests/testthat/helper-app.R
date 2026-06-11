@@ -10,6 +10,18 @@ project_root <- normalizePath(
 old_wd <- setwd(project_root)
 on.exit(setwd(old_wd), add = TRUE)
 
+dotenv_path <- file.path(project_root, ".env")
+if (!nzchar(Sys.getenv("CPA_DATA_KEY")) && file.exists(dotenv_path)) {
+  env_lines <- readLines(dotenv_path, warn = FALSE)
+  key_line <- grep("^CPA_DATA_KEY=", env_lines, value = TRUE)
+  if (length(key_line) > 0) {
+    key_value <- sub("^CPA_DATA_KEY=", "", key_line[[1]])
+    if (nzchar(key_value)) {
+      Sys.setenv(CPA_DATA_KEY = key_value)
+    }
+  }
+}
+
 source(file.path(project_root, "R", "helpers.R"), local = FALSE)
 source(file.path(project_root, "R", "data.R"), local = FALSE)
 source(file.path(project_root, "R", "ui.R"), local = FALSE)

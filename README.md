@@ -1,11 +1,11 @@
 # CPA-Dashboard
 
-CPA-Dashboard is a Shiny application built with `shiny.router` and Tabler UI templates. The app currently focuses on browsing organizations, viewing an organization's profile, and selecting an organization from data loaded from `data/survey_data.csv`.
+CPA-Dashboard is a Shiny application built with `shiny.router` and Tabler UI templates. The app currently focuses on browsing organizations, viewing an organization's profile, and selecting an organization from survey data.
 
 ## What’s included
 
 - A routed Shiny app with a shared layout and page templates.
-- A login page whose organization picker is populated from `data/survey_data.csv`.
+- A login page whose organization picker is populated from survey data loaded at runtime.
 - An organizations list page and an organization details page.
 - A small test suite that checks app startup, template rendering, and data helpers.
 
@@ -20,7 +20,7 @@ CPA-Dashboard is a Shiny application built with `shiny.router` and Tabler UI tem
   - `layout/` for shared layout components like the header
   - `pages/` for full page templates
   - `components/` for smaller UI fragments used by pages
-- `data/survey_data.csv` is the source for the organization select list.
+- `data/survey_data.csv.enc` is the source for the organization select list.
 
 ## Setup
 
@@ -49,11 +49,49 @@ The app currently defines these routes:
 
 ## Data flow
 
-The organization selector on the login page is generated from `data/survey_data.csv`.
+The organization selector on the login page is generated from survey data.
 
-- `load_survey_data()` reads the file and skips the extra header rows.
+- `load_survey_data()` reads and decrypts `data/survey_data.csv.enc`.
+- For encrypted files, decryption uses the `CPA_DATA_KEY` environment variable at runtime.
 - `get_org_names()` extracts, trims, deduplicates, and sorts the organization names.
 - `organizations_list_ui()` renders those names into the `<select>` control.
+
+## Encrypted data workflow
+
+You can keep survey data encrypted in a public repository and decrypt it only at app runtime.
+
+1. Set an encryption key in your shell:
+
+```bash
+export CPA_DATA_KEY="your-strong-secret"
+```
+
+2. Encrypt the plaintext survey file:
+
+```bash
+make encrypt-data
+```
+
+This creates `data/survey_data.csv.enc`.
+
+3. Remove plaintext before pushing publicly:
+
+```bash
+rm -f data/survey_data.csv
+```
+
+4. Run the app with `CPA_DATA_KEY` set so it can decrypt at runtime.
+
+Optional: decrypt locally for inspection/debugging:
+
+```bash
+make decrypt-data
+```
+
+Notes:
+
+- Never commit `CPA_DATA_KEY` to git.
+- Store `CPA_DATA_KEY` in deployment secrets (for example Posit Connect, Docker/Kubernetes secrets, or a cloud secret manager).
 
 ## Tests
 
@@ -69,6 +107,7 @@ The tests cover:
 - page and component templates
 - router-driven server behavior
 - survey data loading and organization name extraction
+- encrypted data helper and runtime decryption behavior
 
 ## Development notes
 
