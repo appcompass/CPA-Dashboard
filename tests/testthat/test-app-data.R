@@ -100,6 +100,39 @@ test_that("encrypt_data_raw and decrypt_data_raw are inverse operations", {
   expect_equal(rawToChar(decrypted), "hello encrypted world")
 })
 
+test_that("decrypt_data_raw fails for tampered authenticated payload", {
+  withr::local_dir(project_root)
+
+  passphrase <- "unit-test-passphrase"
+  encrypted <- encrypt_data_raw(charToRaw("hello encrypted world"), passphrase)
+
+  encrypted[[length(encrypted)]] <- as.raw(
+    bitwXor(as.integer(encrypted[[length(encrypted)]]), 1L)
+  )
+
+  expect_error(
+    decrypt_data_raw(encrypted, passphrase),
+    "authentication failed"
+  )
+})
+
+test_that("decrypt_data_raw supports legacy unauthenticated payload format", {
+  withr::local_dir(project_root)
+
+  passphrase <- "legacy-passphrase"
+  key <- derive_data_key(passphrase)
+  iv <- openssl::rand_bytes(16)
+  plain <- charToRaw("legacy ciphertext")
+  ciphertext <- openssl::aes_cbc_encrypt(plain, key = key, iv = iv)
+  legacy_payload <- c(iv, ciphertext)
+
+  expect_warning(
+    out <- decrypt_data_raw(legacy_payload, passphrase),
+    "legacy unauthenticated payload"
+  )
+  expect_equal(rawToChar(out), "legacy ciphertext")
+})
+
 test_that("decrypt_data_raw fails for too-short payload", {
   withr::local_dir(project_root)
 
