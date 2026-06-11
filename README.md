@@ -50,24 +50,6 @@ make manifest
 
 If you see `Unable to locate manifest.json`, regenerate it and republish.
 
-### GitHub Actions auto-deploy
-
-This repository includes a workflow that deploys automatically on merge to `main`:
-
-- [deploy workflow](.github/workflows/deploy-connect-cloud.yml)
-
-Configure these GitHub repository secrets before enabling auto-deploy:
-
-- `POSIT_CONNECT_ACCOUNT` - your Connect Cloud account name
-- `RSCLOUD_CLIENT_ID` - your Connect Cloud client ID
-- `RSCLOUD_CLIENT_SECRET` - your Connect Cloud client secret
-- `CPA_DATA_KEY` - app runtime decryption key for encrypted survey data
-
-Optional GitHub repository variables:
-
-- `POSIT_CONNECT_APP_NAME` (default `cpa-dashboard`)
-- `POSIT_CONNECT_APP_TITLE` (default `CPA Dashboard`)
-
 ## Routing
 
 The app currently defines these routes:
@@ -96,7 +78,7 @@ You can keep survey data encrypted in a public repository and decrypt it only at
 export CPA_DATA_KEY="your-strong-secret"
 ```
 
-2. Encrypt the plaintext survey file:
+1. Encrypt the plaintext survey file:
 
 ```bash
 make encrypt-data
@@ -104,13 +86,13 @@ make encrypt-data
 
 This creates `data/survey_data.csv.enc`.
 
-3. Remove plaintext before pushing publicly:
+1. Remove plaintext before pushing publicly:
 
 ```bash
 rm -f data/survey_data.csv
 ```
 
-4. Run the app with `CPA_DATA_KEY` set so it can decrypt at runtime.
+1. Run the app with `CPA_DATA_KEY` set so it can decrypt at runtime.
 
 Optional: decrypt locally for inspection/debugging:
 
