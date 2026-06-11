@@ -38,6 +38,18 @@ make run
 
 This starts the app on `http://0.0.0.0:3838`.
 
+## Deploy to Posit Connect Cloud
+
+Connect Cloud expects a `manifest.json` file in the project root.
+
+Generate/update it before publishing:
+
+```bash
+make manifest
+```
+
+If you see `Unable to locate manifest.json`, regenerate it and republish.
+
 ## Routing
 
 The app currently defines these routes:
