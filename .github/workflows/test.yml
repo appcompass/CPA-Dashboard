@@ -10,6 +10,8 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      CPA_DATA_KEY: ${{ secrets.CPA_DATA_KEY }}
 
     steps:
       - uses: actions/checkout@v4
