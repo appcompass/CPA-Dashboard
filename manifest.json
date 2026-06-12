@@ -984,7 +984,7 @@
   },
   "files": {
     "app.R": {
-      "checksum": "b9ce3500d57f9b19996714c73fad78e9"
+      "checksum": "a9ba54a437b8823dcd6246de22679ef3"
     },
     "data/sample_data.csv": {
       "checksum": "234f28dc220236b7d2606acad2edb5c3"
@@ -996,46 +996,52 @@
       "checksum": "c30bcd3944bbae1a0ccab817518af8c3"
     },
     "R/data.R": {
-      "checksum": "009f7bc084a8c35c8d767fe7dc15aec7"
+      "checksum": "0d01393a9bf00208b0a9356c1c904a2f"
     },
     "R/helpers.R": {
       "checksum": "3c5c6df2e6564f2870a4ca80b4ed5a0b"
     },
     "R/server.R": {
-      "checksum": "5923cf6bdb4c851f0a444e899ec418b1"
+      "checksum": "decd196477fe617d6c1f3e4a0fdda26b"
+    },
+    "R/templates/components/lang_change_nav_link_ui.R": {
+      "checksum": "5d1e7a117a2018db21e417e993c8af09"
     },
     "R/templates/components/login_nav_link_ui.R": {
-      "checksum": "b09870aee9b37a392eb06d6505d1b26e"
+      "checksum": "e735e3a5d6b047b1e44275d5fe2164d1"
     },
     "R/templates/components/organizations_list_ui.R": {
       "checksum": "bf675dd7e2ea38272ddaa8041a8b99bc"
     },
+    "R/templates/components/theme_toggle_nav_link_ui.R": {
+      "checksum": "a5c0115eb6e0eebfcd1e35c82e776f60"
+    },
     "R/templates/layout/header_ui.R": {
-      "checksum": "2de16824fdc00668f9738479ebdfb3a9"
+      "checksum": "5393b3b946fd118882caf29231beeb41"
     },
     "R/templates/pages/home_ui.R": {
-      "checksum": "c21fecf9197526cb1c9a99dbcbd36cd2"
+      "checksum": "a68d4c02a7d57afc97e61d9ba74f2fae"
     },
     "R/templates/pages/login_ui.R": {
-      "checksum": "4ad32760f0d5debfca44ccd46b6a5487"
+      "checksum": "424dfcb903c624e6e0b68a73bd2b1352"
     },
     "R/templates/pages/organization_details_ui.R": {
-      "checksum": "11429b8287d9f1f64a290d41bf0f719b"
+      "checksum": "9a86b4a5983377a2dc4fbb81f9c022dd"
     },
     "R/templates/pages/organizations_ui.R": {
-      "checksum": "1db52c85131056384cf9bbc175915b3b"
+      "checksum": "35a67c54c672ce4d565d9e7290912b48"
     },
     "R/ui.R": {
-      "checksum": "5740f1f82542265a7d7f6c958a3eda52"
+      "checksum": "87629f00affdcfc0d5bfc493965c6169"
     },
     "README.md": {
-      "checksum": "bb7455716512a0c6529cb1344228a24d"
+      "checksum": "2c9d2bc45e6a1e05383943e0545df2ad"
     },
     "www/css/styles.css": {
-      "checksum": "95e7a3182f728a45f5111c1fbb2f4e73"
+      "checksum": "a804bcffdf49add24d3e84662bbe8931"
     },
     "www/css/tabler/tabler-flags.css": {
-      "checksum": "1cbd251105a8dd0407d8ed56d1fa3941"
+      "checksum": "1b5a60be0b295cc17ec9943d1a62c5de"
     },
     "www/css/tabler/tabler-flags.css.map": {
       "checksum": "dafce8fad3ff45f1558120c443c398d3"
@@ -1230,13 +1236,13 @@
       "checksum": "1c8da7e1bf81afb3ea8dc2e55752d75e"
     },
     "www/html/index.html": {
-      "checksum": "97d85d9526d9713c837349e8834668be"
+      "checksum": "4026de2d8aab5a4c3512ac73eb589f25"
     },
     "www/html/intro.html": {
       "checksum": "94b78598b02d7d1d1f6bb51e6722dfd1"
     },
     "www/js/app.js": {
-      "checksum": "cbfe96582e5345cb6a35b11b34de6c45"
+      "checksum": "c26369dee14129137a921f0da7926f82"
     },
     "www/js/tabler/tabler-theme.esm.js": {
       "checksum": "56cebccda6acf7f706d2cce32d2cd016"
