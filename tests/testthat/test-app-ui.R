@@ -2,19 +2,29 @@ render_html <- function(ui) {
   as.character(htmltools::renderTags(ui)$html)
 }
 
+SURVEY_DATA_CSV_PATH <- file.path(project_root, "data", "survey_data.csv")
+SURVEY_DATA_ENCRYPTED_PATH <- paste0(SURVEY_DATA_CSV_PATH, ".enc")
+
 ensure_survey_data_csv <- function() {
-  survey_csv <- file.path(project_root, "data", "survey_data.csv")
-  if (file.exists(survey_csv)) {
-    return(survey_csv)
+  if (file.exists(SURVEY_DATA_CSV_PATH)) {
+    return(SURVEY_DATA_CSV_PATH)
   }
 
-  decrypt_data_file(
-    encrypted_path = file.path(project_root, "data", "survey_data.csv.enc"),
-    output_path = survey_csv
+  tryCatch(
+    decrypt_data_file(
+      encrypted_path = SURVEY_DATA_ENCRYPTED_PATH,
+      output_path = SURVEY_DATA_CSV_PATH
+    ),
+    error = function(e) {
+      stop(
+        "Could not prepare survey details data for UI tests. Ensure CPA_DATA_KEY is set and data/survey_data.csv.enc is readable.",
+        call. = FALSE
+      )
+    }
   )
-  withr::defer(unlink(survey_csv), envir = testthat::teardown_env())
+  withr::defer(unlink(SURVEY_DATA_CSV_PATH), envir = testthat::teardown_env())
 
-  survey_csv
+  SURVEY_DATA_CSV_PATH
 }
 
 # ---- app bootstrap ----
