@@ -138,6 +138,19 @@ function parseCurrentLangCode() {
   return params.lang || 'en';
 }
 
+function getNestedValue(obj, path) {
+  if (!obj || !path) {
+    return undefined;
+  }
+
+  return path.split('.').reduce(function (acc, key) {
+    if (acc && Object.prototype.hasOwnProperty.call(acc, key)) {
+      return acc[key];
+    }
+    return undefined;
+  }, obj);
+}
+
 function getTranslationScope() {
   const allTranslations = window.APP_TRANSLATIONS || {};
   const langCode = parseCurrentLangCode();
@@ -152,7 +165,51 @@ function getTranslationScope() {
       activeScope.organizations || {},
     ),
     wheel: Object.assign({}, enScope.wheel || {}, activeScope.wheel || {}),
+    theme_settings: Object.assign(
+      {},
+      enScope.theme_settings || {},
+      activeScope.theme_settings || {},
+      {
+        options: Object.assign(
+          {},
+          (enScope.theme_settings && enScope.theme_settings.options) || {},
+          (activeScope.theme_settings && activeScope.theme_settings.options) ||
+            {},
+        ),
+      },
+    ),
   };
+}
+
+function applyThemeSettingsTranslations() {
+  const panel = document.getElementById('offcanvasSettings');
+  if (!panel) {
+    return;
+  }
+
+  const scope = getTranslationScope();
+  const fallbackScope = (window.APP_TRANSLATIONS || {}).en || {};
+
+  panel.querySelectorAll('[data-i18n]').forEach(function (node) {
+    const key = node.getAttribute('data-i18n');
+    if (!key) {
+      return;
+    }
+
+    const translated =
+      getNestedValue(scope, key) || getNestedValue(fallbackScope, key);
+    if (!translated) {
+      return;
+    }
+
+    const attrName = node.getAttribute('data-i18n-attr');
+    if (attrName) {
+      node.setAttribute(attrName, translated);
+      return;
+    }
+
+    node.textContent = translated;
+  });
 }
 
 function buildWheelItems() {
@@ -416,6 +473,8 @@ window.createWheel = createWheel;
 
 document.addEventListener('DOMContentLoaded', function () {
   document.body.classList.add('app-ready');
+  applyThemeSettingsTranslations();
+
   var themeConfig = {
     theme: 'light',
     'theme-base': 'gray',
@@ -577,6 +636,7 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   var initWheelsNowAndNextTick = function () {
+    applyThemeSettingsTranslations();
     initWheels();
     window.setTimeout(initWheels, 0);
   };

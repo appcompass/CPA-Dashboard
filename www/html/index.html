@@ -47,19 +47,29 @@
         id="offcanvasSettings"
       >
         <div class="offcanvas-header">
-          <h2 class="offcanvas-title">Theme Settings</h2>
+          <h2 class="offcanvas-title" data-i18n="theme_settings.title">
+            Theme Settings
+          </h2>
           <button
             type="button"
             class="btn-close"
             data-bs-dismiss="offcanvas"
+            data-i18n="theme_settings.close_aria"
+            data-i18n-attr="aria-label"
             aria-label="Close"
           ></button>
         </div>
         <div class="offcanvas-body d-flex flex-column">
           <div>
             <div class="mb-4">
-              <label class="form-label">Color mode</label>
-              <p class="form-hint">Choose the color mode for your app.</p>
+              <label
+                class="form-label"
+                data-i18n="theme_settings.color_mode_label"
+                >Color mode</label
+              >
+              <p class="form-hint" data-i18n="theme_settings.color_mode_hint">
+                Choose the color mode for your app.
+              </p>
               <label class="form-check">
                 <div class="form-selectgroup-item">
                   <input
@@ -69,7 +79,12 @@
                     class="form-check-input"
                     checked
                   />
-                  <div class="form-check-label">Light</div>
+                  <div
+                    class="form-check-label"
+                    data-i18n="theme_settings.options.light"
+                  >
+                    Light
+                  </div>
                 </div>
               </label>
               <label class="form-check">
@@ -80,13 +95,24 @@
                     value="dark"
                     class="form-check-input"
                   />
-                  <div class="form-check-label">Dark</div>
+                  <div
+                    class="form-check-label"
+                    data-i18n="theme_settings.options.dark"
+                  >
+                    Dark
+                  </div>
                 </div>
               </label>
             </div>
             <div class="mb-4">
-              <label class="form-label">Color scheme</label>
-              <p class="form-hint">The perfect color mode for your app.</p>
+              <label
+                class="form-label"
+                data-i18n="theme_settings.color_scheme_label"
+                >Color scheme</label
+              >
+              <p class="form-hint" data-i18n="theme_settings.color_scheme_hint">
+                The perfect color mode for your app.
+              </p>
               <div class="row g-2">
                 <div class="col-auto">
                   <label class="form-colorinput">
@@ -223,8 +249,12 @@
               </div>
             </div>
             <div class="mb-4">
-              <label class="form-label">Font family</label>
-              <p class="form-hint">
+              <label
+                class="form-label"
+                data-i18n="theme_settings.font_family_label"
+                >Font family</label
+              >
+              <p class="form-hint" data-i18n="theme_settings.font_family_hint">
                 Choose the font family that fits your app.
               </p>
               <div>
@@ -237,7 +267,12 @@
                       class="form-check-input"
                       checked
                     />
-                    <div class="form-check-label">Sans-serif</div>
+                    <div
+                      class="form-check-label"
+                      data-i18n="theme_settings.options.sans_serif"
+                    >
+                      Sans-serif
+                    </div>
                   </div>
                 </label>
                 <label class="form-check">
@@ -248,7 +283,12 @@
                       value="serif"
                       class="form-check-input"
                     />
-                    <div class="form-check-label">Serif</div>
+                    <div
+                      class="form-check-label"
+                      data-i18n="theme_settings.options.serif"
+                    >
+                      Serif
+                    </div>
                   </div>
                 </label>
                 <label class="form-check">
@@ -259,7 +299,12 @@
                       value="monospace"
                       class="form-check-input"
                     />
-                    <div class="form-check-label">Monospace</div>
+                    <div
+                      class="form-check-label"
+                      data-i18n="theme_settings.options.monospace"
+                    >
+                      Monospace
+                    </div>
                   </div>
                 </label>
                 <label class="form-check">
@@ -270,14 +315,25 @@
                       value="comic"
                       class="form-check-input"
                     />
-                    <div class="form-check-label">Comic</div>
+                    <div
+                      class="form-check-label"
+                      data-i18n="theme_settings.options.comic"
+                    >
+                      Comic
+                    </div>
                   </div>
                 </label>
               </div>
             </div>
             <div class="mb-4">
-              <label class="form-label">Theme base</label>
-              <p class="form-hint">Choose the gray shade for your app.</p>
+              <label
+                class="form-label"
+                data-i18n="theme_settings.theme_base_label"
+                >Theme base</label
+              >
+              <p class="form-hint" data-i18n="theme_settings.theme_base_hint">
+                Choose the gray shade for your app.
+              </p>
               <div>
                 <label class="form-check">
                   <div class="form-selectgroup-item">
@@ -287,7 +343,12 @@
                       value="slate"
                       class="form-check-input"
                     />
-                    <div class="form-check-label">Slate</div>
+                    <div
+                      class="form-check-label"
+                      data-i18n="theme_settings.options.slate"
+                    >
+                      Slate
+                    </div>
                   </div>
                 </label>
                 <label class="form-check">
@@ -299,7 +360,12 @@
                       class="form-check-input"
                       checked
                     />
-                    <div class="form-check-label">Gray</div>
+                    <div
+                      class="form-check-label"
+                      data-i18n="theme_settings.options.gray"
+                    >
+                      Gray
+                    </div>
                   </div>
                 </label>
                 <label class="form-check">
@@ -310,7 +376,12 @@
                       value="zinc"
                       class="form-check-input"
                     />
-                    <div class="form-check-label">Zinc</div>
+                    <div
+                      class="form-check-label"
+                      data-i18n="theme_settings.options.zinc"
+                    >
+                      Zinc
+                    </div>
                   </div>
                 </label>
                 <label class="form-check">
@@ -321,7 +392,12 @@
                       value="neutral"
                       class="form-check-input"
                     />
-                    <div class="form-check-label">Neutral</div>
+                    <div
+                      class="form-check-label"
+                      data-i18n="theme_settings.options.neutral"
+                    >
+                      Neutral
+                    </div>
                   </div>
                 </label>
                 <label class="form-check">
@@ -332,14 +408,26 @@
                       value="stone"
                       class="form-check-input"
                     />
-                    <div class="form-check-label">Stone</div>
+                    <div
+                      class="form-check-label"
+                      data-i18n="theme_settings.options.stone"
+                    >
+                      Stone
+                    </div>
                   </div>
                 </label>
               </div>
             </div>
             <div class="mb-4">
-              <label class="form-label">Corner Radius</label>
-              <p class="form-hint">
+              <label
+                class="form-label"
+                data-i18n="theme_settings.corner_radius_label"
+                >Corner Radius</label
+              >
+              <p
+                class="form-hint"
+                data-i18n="theme_settings.corner_radius_hint"
+              >
                 Choose the border radius factor for your app.
               </p>
               <div>
@@ -419,12 +507,15 @@
               >
                 <path d="M19.95 11a8 8 0 1 0 -.5 4m.5 5v-5h-5" />
               </svg>
-              Reset changes
+              <span data-i18n="theme_settings.reset_changes"
+                >Reset changes</span
+              >
             </button>
             <a
               href="#"
               class="btn btn-primary w-100"
               data-bs-dismiss="offcanvas"
+              data-i18n="theme_settings.save"
             >
               Save
             </a>

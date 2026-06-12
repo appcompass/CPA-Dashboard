@@ -1,6 +1,6 @@
-lang_change_nav_link_ui <- function(active_code = Sys.getenv("APP_LANG", "en")) {
+lang_change_nav_link_ui <- function(active_code = Sys.getenv("APP_LANG", DEFAULT_LANG_CODE)) {
   if (!active_code %in% rownames(SUPPORTED_LANGUAGES)) {
-    active_code <- "en"
+    active_code <- DEFAULT_LANG_CODE
   }
 
   active_flag <- SUPPORTED_LANGUAGES[active_code, "flag_icon"]
