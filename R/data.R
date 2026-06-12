@@ -254,6 +254,138 @@ get_org_names <- function(survey_data = load_survey_data()) {
   names[nzchar(names)]
 }
 
+load_organization_details_data <- function(path = file.path("data", "survey_data.csv")) {
+  if (!file.exists(path)) {
+    stop(sprintf("Expected data file at '%s'.", path), call. = FALSE)
+  }
+
+  read.csv(path, skip = 1, stringsAsFactors = FALSE)
+}
+
+get_organization_details_value <- function(row, index, fallback = "N/A") {
+  if (is.null(row) || !nrow(row) || index > ncol(row)) {
+    return(fallback)
+  }
+
+  value <- trimws(as.character(row[[index]][[1]]))
+  if (!nzchar(value) || identical(value, "NA")) {
+    fallback
+  } else {
+    value
+  }
+}
+
+get_organization_details_row <- function(
+  org_name = NULL,
+  survey_data = load_organization_details_data()
+) {
+  org_names <- trimws(as.character(survey_data[[1]]))
+
+  selected_org <- NULL
+  if (!is.null(org_name) && length(org_name)) {
+    selected_org <- trimws(as.character(org_name[[1]]))
+    if (!nzchar(selected_org)) {
+      selected_org <- NULL
+    }
+  }
+
+  selected_row_index <- if (!is.null(selected_org) && selected_org %in% org_names) {
+    match(selected_org, org_names)
+  } else {
+    non_empty_rows <- which(nzchar(org_names))
+    if (!length(non_empty_rows)) {
+      NA_integer_
+    } else {
+      non_empty_rows[[1]]
+    }
+  }
+
+  if (is.na(selected_row_index)) {
+    return(survey_data[0, , drop = FALSE])
+  }
+
+  survey_data[selected_row_index, , drop = FALSE]
+}
+
+get_organization_details_wheel_categories <- function(row, lang, status_value) {
+  if (is.null(row) || !nrow(row)) {
+    return(character(0))
+  }
+
+  organizations <- lang$organizations
+
+  category_specs <- list(
+    list(label = organizations$wellness_emotional, status = get_organization_details_value(row, 30), choice = get_organization_details_value(row, 31)),
+    list(label = organizations$wellness_physical, status = get_organization_details_value(row, 35), choice = get_organization_details_value(row, 33)),
+    list(label = organizations$wellness_social, status = get_organization_details_value(row, 40), choice = get_organization_details_value(row, 38)),
+    list(label = organizations$wellness_intellectual, status = get_organization_details_value(row, 45), choice = get_organization_details_value(row, 43)),
+    list(label = organizations$wellness_environmental, status = get_organization_details_value(row, 50), choice = get_organization_details_value(row, 48)),
+    list(label = organizations$wellness_occupational, status = get_organization_details_value(row, 55), choice = get_organization_details_value(row, 53)),
+    list(label = organizations$wellness_financial, status = get_organization_details_value(row, 60), choice = get_organization_details_value(row, 58)),
+    list(label = organizations$wellness_spiritual, status = get_organization_details_value(row, 65), choice = get_organization_details_value(row, 63))
+  )
+
+  categories <- vapply(
+    category_specs,
+    function(spec) {
+      if (identical(spec$status, status_value)) {
+        spec$label
+      } else {
+        NA_character_
+      }
+    },
+    character(1)
+  )
+
+  categories[!is.na(categories) & nzchar(categories)]
+}
+
+get_organization_details_context <- function(
+  lang = get_lang(),
+  org_name = NULL,
+  survey_data = load_organization_details_data()
+) {
+  details <- lang$organization_details
+  if (is.null(org_name)) {
+    org_name <- tryCatch(get_query_param("id"), error = function(e) NULL)
+  }
+
+  row <- get_organization_details_row(org_name = org_name, survey_data = survey_data)
+
+  fallback_org_name <- if (!is.null(org_name) && length(org_name) && nzchar(trimws(as.character(org_name[[1]])))) {
+    trimws(as.character(org_name[[1]]))
+  } else {
+    "Organization Name"
+  }
+
+  org_name_value <- get_organization_details_value(row, 1, fallback = fallback_org_name)
+  years_served <- get_organization_details_value(row, 2)
+  role_length <- get_organization_details_value(row, 3)
+
+  established_categories <- get_organization_details_wheel_categories(row, lang, "Established")
+  emerging_categories <- get_organization_details_wheel_categories(row, lang, "Emerging")
+
+  list(
+    details = details,
+    org_name = org_name_value,
+    years_served = years_served,
+    role_length = role_length,
+    age_youth = list(
+      age_12_17 = get_organization_details_value(row, 4),
+      age_18_25 = get_organization_details_value(row, 5),
+      age_26_plus = get_organization_details_value(row, 6)
+    ),
+    age_employees = list(
+      age_12_17 = get_organization_details_value(row, 7),
+      age_18_25 = get_organization_details_value(row, 8),
+      age_26_plus = get_organization_details_value(row, 9)
+    ),
+    established_categories = established_categories,
+    emerging_categories = emerging_categories,
+    has_data = nrow(row) > 0
+  )
+}
+
 TRANSLATIONS_JSON_PATH <- file.path("data", "translations.json")
 
 load_app_translations <- local({
