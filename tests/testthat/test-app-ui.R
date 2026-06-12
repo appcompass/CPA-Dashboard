@@ -12,7 +12,7 @@ ensure_survey_data_csv <- function() {
     encrypted_path = file.path(project_root, "data", "survey_data.csv.enc"),
     output_path = survey_csv
   )
-  withr::defer(unlink(survey_csv), envir = parent.frame())
+  withr::defer(unlink(survey_csv), envir = testthat::teardown_env())
 
   survey_csv
 }
