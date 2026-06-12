@@ -2,18 +2,22 @@ render_html <- function(ui) {
   as.character(htmltools::renderTags(ui)$html)
 }
 
-SURVEY_DATA_CSV_PATH <- file.path(project_root, "data", "survey_data.csv")
-SURVEY_DATA_ENCRYPTED_PATH <- paste0(SURVEY_DATA_CSV_PATH, ".enc")
-
 ensure_survey_data_csv <- function() {
-  if (file.exists(SURVEY_DATA_CSV_PATH)) {
-    return(SURVEY_DATA_CSV_PATH)
+  survey_data_csv_path <- file.path(project_root, "data", "survey_data.csv")
+  survey_data_encrypted_path <- paste0(survey_data_csv_path, ".enc")
+
+  if (file.exists(survey_data_csv_path)) {
+    return(survey_data_csv_path)
+  }
+
+  if (!file.exists(survey_data_encrypted_path)) {
+    stop("Could not prepare survey details data for UI tests because data/survey_data.csv.enc is missing.", call. = FALSE)
   }
 
   tryCatch(
     decrypt_data_file(
-      encrypted_path = SURVEY_DATA_ENCRYPTED_PATH,
-      output_path = SURVEY_DATA_CSV_PATH
+      encrypted_path = survey_data_encrypted_path,
+      output_path = survey_data_csv_path
     ),
     error = function(e) {
       stop(
@@ -22,9 +26,9 @@ ensure_survey_data_csv <- function() {
       )
     }
   )
-  withr::defer(unlink(SURVEY_DATA_CSV_PATH), envir = testthat::teardown_env())
+  withr::defer(unlink(survey_data_csv_path), envir = testthat::teardown_env())
 
-  SURVEY_DATA_CSV_PATH
+  survey_data_csv_path
 }
 
 # ---- app bootstrap ----
