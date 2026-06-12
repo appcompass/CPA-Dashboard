@@ -1,5 +1,8 @@
 organization_details_ui <- function(lang = get_lang()) {
-  details <- lang$organization_details
+  organizations <- lang$organizations
+  details_context <- get_organization_details_context(lang = lang)
+
+  details <- details_context$details
 
   tagList(
     div(
@@ -10,8 +13,15 @@ organization_details_ui <- function(lang = get_lang()) {
           class = "row g-2 align-items-center",
           div(
             class = "col",
-            h2(class = "page-title", details$org_name_placeholder),
-            div(class = "page-pretitle", details$org_subtitle)
+            h2(class = "page-title", details_context$org_name),
+            div(
+              class = "page-pretitle",
+              if (!details_context$has_data || identical(details_context$years_served, "N/A")) {
+                "Organization details"
+              } else {
+                sprintf("%s years serving youth in Greater Boston", details_context$years_served)
+              }
+            )
           )
         )
       )
@@ -46,7 +56,7 @@ organization_details_ui <- function(lang = get_lang()) {
                         div(class = "subheader", details$age_12_17),
                         div(
                           class = "d-flex align-items-baseline",
-                          div(class = "h3 me-2", "26%-60%")
+                          div(class = "h3 me-2", details_context$age_youth$age_12_17)
                         )
                       ),
                       div(
@@ -54,7 +64,7 @@ organization_details_ui <- function(lang = get_lang()) {
                         div(class = "subheader", details$age_18_25),
                         div(
                           class = "d-flex align-items-baseline",
-                          div(class = "h3 me-2", "1%-5%")
+                          div(class = "h3 me-2", details_context$age_youth$age_18_25)
                         )
                       ),
                       div(
@@ -62,7 +72,7 @@ organization_details_ui <- function(lang = get_lang()) {
                         div(class = "subheader", details$age_26_plus),
                         div(
                           class = "d-flex align-items-baseline",
-                          div(class = "h3 me-2", "1%-5%")
+                          div(class = "h3 me-2", details_context$age_youth$age_26_plus)
                         )
                       )
                     )
@@ -80,7 +90,7 @@ organization_details_ui <- function(lang = get_lang()) {
                         div(class = "subheader", details$age_12_17),
                         div(
                           class = "d-flex align-items-baseline",
-                          div(class = "h3 me-2", "1%-5%")
+                          div(class = "h3 me-2", details_context$age_employees$age_12_17)
                         )
                       ),
                       div(
@@ -88,7 +98,7 @@ organization_details_ui <- function(lang = get_lang()) {
                         div(class = "subheader", details$age_18_25),
                         div(
                           class = "d-flex align-items-baseline",
-                          div(class = "h3 me-2", "26%-60%")
+                          div(class = "h3 me-2", details_context$age_employees$age_18_25)
                         )
                       ),
                       div(
@@ -96,7 +106,7 @@ organization_details_ui <- function(lang = get_lang()) {
                         div(class = "subheader", details$age_26_plus),
                         div(
                           class = "d-flex align-items-baseline",
-                          div(class = "h3 me-2", "1%-5%")
+                          div(class = "h3 me-2", details_context$age_employees$age_26_plus)
                         )
                       )
                     )
@@ -117,7 +127,11 @@ organization_details_ui <- function(lang = get_lang()) {
               ),
               div(
                 class = "card-body",
-                div(`data-active-categories` = "Physical, Intellectual, Occupational, Financial, Social")
+                if (length(details_context$established_categories)) {
+                  div(`data-active-categories` = paste(details_context$established_categories, collapse = ", "))
+                } else {
+                  div(class = "text-secondary", "No established wellness areas were reported.")
+                }
               )
             )
           ),
@@ -133,7 +147,11 @@ organization_details_ui <- function(lang = get_lang()) {
               ),
               div(
                 class = "card-body",
-                div(`data-active-categories` = "Emotional, Spiritual, Environmental")
+                if (length(details_context$emerging_categories)) {
+                  div(`data-active-categories` = paste(details_context$emerging_categories, collapse = ", "))
+                } else {
+                  div(class = "text-secondary", "No emerging wellness areas were reported.")
+                }
               )
             )
           )

@@ -62,12 +62,28 @@ test_that("organizations_ui renders search page and filter panel", {
 test_that("organization_details_ui renders detail cards", {
   withr::local_dir(project_root)
 
+  detail_data <- read.csv(file.path(project_root, "data", "survey_data.csv"), skip = 1, stringsAsFactors = FALSE)
+  first_org_name <- trimws(detail_data[[1]][1])
+  first_org_years <- trimws(detail_data[[2]][1])
+
   html <- render_html(organization_details_ui())
 
-  expect_match(html, "Organization Name", fixed = TRUE)
+  expect_match(html, first_org_name, fixed = TRUE)
+  expect_match(html, first_org_years, fixed = TRUE)
   expect_match(html, "Age Breakdown", fixed = TRUE)
   expect_match(html, "Established Areas of Wellness", fixed = TRUE)
   expect_match(html, "Emerging Areas of Wellness", fixed = TRUE)
+})
+
+test_that("organization_details_ui renders the first org when no id is supplied", {
+  withr::local_dir(project_root)
+
+  detail_data <- read.csv(file.path(project_root, "data", "survey_data.csv"), skip = 1, stringsAsFactors = FALSE)
+  first_org_name <- trimws(detail_data[[1]][1])
+
+  html <- render_html(organization_details_ui())
+
+  expect_match(html, first_org_name, fixed = TRUE)
 })
 
 # ---- components ----
