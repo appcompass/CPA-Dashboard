@@ -1,4 +1,6 @@
-organizations_ui <- function() {
+organizations_ui <- function(lang = get_lang()) {
+  organizations <- lang$organizations
+
   serving_icon <- tags$svg(
     xmlns = "http://www.w3.org/2000/svg",
     width = "24",
@@ -32,12 +34,12 @@ organizations_ui <- function() {
 
     children <- if (!include_children) {
       NULL
-    } else if (identical(title, "Physical wellness")) {
+    } else if (identical(title, organizations$wellness_physical)) {
       tagList(
-        checkbox("Fitness programs"),
-        checkbox("Nutritional education"),
-        checkbox("Health screenings"),
-        checkbox("Other")
+        checkbox(organizations$wellness_physical_fitness),
+        checkbox(organizations$wellness_physical_nutrition),
+        checkbox(organizations$wellness_physical_screenings),
+        checkbox(organizations$wellness_physical_other)
       )
     } else {
       checkbox("...")
@@ -56,22 +58,52 @@ organizations_ui <- function() {
     )
   }
 
+  wellness_items <- list(
+    list(title = organizations$wellness_physical, value = "1"),
+    list(title = organizations$wellness_emotional, value = "2"),
+    list(title = organizations$wellness_intellectual, value = "3"),
+    list(title = organizations$wellness_occupational, value = "4"),
+    list(title = organizations$wellness_financial, value = "5"),
+    list(title = organizations$wellness_social, value = "6"),
+    list(title = organizations$wellness_environmental, value = "7", include_children = FALSE),
+    list(title = organizations$wellness_spiritual, value = "8")
+  )
+
+  render_wellness_groups <- function(check_physical = FALSE) {
+    tagList(lapply(wellness_items, function(item) {
+      include_children <- if (is.null(item$include_children)) TRUE else item$include_children
+      is_checked <- check_physical && identical(item$value, "1")
+      wellness_group(item$title, item$value, checked = is_checked, include_children = include_children)
+    }))
+  }
+
   organization_card <- function(badges) {
     badge_class_map <- c(
-      Physical = "text-blue",
-      Emotional = "text-azure",
-      Intellectual = "text-purple",
-      Occupational = "text-red",
-      Financial = "text-yellow",
-      Social = "text-green",
-      Environmental = "text-teal",
-      Spiritual = "text-cyan"
+      physical = "text-blue",
+      emotional = "text-azure",
+      intellectual = "text-purple",
+      occupational = "text-red",
+      financial = "text-yellow",
+      social = "text-green",
+      environmental = "text-teal",
+      spiritual = "text-cyan"
+    )
+
+    badge_label_map <- c(
+      physical = organizations$wellness_physical,
+      emotional = organizations$wellness_emotional,
+      intellectual = organizations$wellness_intellectual,
+      occupational = organizations$wellness_occupational,
+      financial = organizations$wellness_financial,
+      social = organizations$wellness_social,
+      environmental = organizations$wellness_environmental,
+      spiritual = organizations$wellness_spiritual
     )
 
     badge_tags <- tagList(lapply(badges, function(badge) {
       tags$span(
         class = paste("badge badge-outline", badge_class_map[[badge]], "badge-sm"),
-        badge
+        badge_label_map[[badge]]
       )
     }))
 
@@ -101,10 +133,10 @@ organizations_ui <- function() {
                   class = "col-md",
                   h3(
                     class = "mb-0",
-                    a(href = route_link("organizations/details?id=1"), "Organization Name")
+                    a(href = route_link("organizations/details?id=1"), lang$organization_details$org_name_placeholder)
                   )
                 ),
-                div(class = "col-md-auto", h5("Established Areas of Wellness"))
+                div(class = "col-md-auto", h5(organizations$card_established_areas_label))
               ),
               div(
                 class = "row",
@@ -112,11 +144,11 @@ organizations_ui <- function() {
                   class = "col-md",
                   div(
                     class = "mt-3 list-inline list-inline-dots mb-0 text-secondary d-sm-block d-none",
-                    div(class = "list-inline-item", serving_icon, "Serving youth in Greater Boston since 1998")
+                    div(class = "list-inline-item", serving_icon, organizations$card_serving_text)
                   ),
                   div(
                     class = "mt-3 list mb-0 text-secondary d-block d-sm-none",
-                    div(class = "list-item", serving_icon, "Serving youth in Greater Boston since 1998")
+                    div(class = "list-item", serving_icon, organizations$card_serving_text)
                   )
                 ),
                 div(class = "col-md-auto", div(class = "mt-3 badges-list", badge_tags))
@@ -136,7 +168,7 @@ organizations_ui <- function() {
         class = "container-xl",
         div(
           class = "row g-2 align-items-center",
-          div(class = "col", h2(class = "page-title", "Search Organizations")),
+          div(class = "col", h2(class = "page-title", organizations$page_title)),
           div(
             class = "col-auto ms-auto d-print-none",
             div(
@@ -148,7 +180,7 @@ organizations_ui <- function() {
                   tags$input(
                     type = "text",
                     class = "form-control",
-                    placeholder = "Search by name..."
+                    placeholder = organizations$search_placeholder
                   )
                 ),
                 div(
@@ -193,34 +225,20 @@ organizations_ui <- function() {
               autocomplete = "off",
               novalidate = NA,
               class = "sticky-top",
-              div(class = "form-label", "Established Areas"),
+              div(class = "form-label", organizations$filter_established_label),
               div(
                 class = "mb-4",
-                wellness_group("Physical wellness", "1", checked = TRUE),
-                wellness_group("Emotional wellness", "2"),
-                wellness_group("Intellectual wellness", "3"),
-                wellness_group("Occupational wellness", "4"),
-                wellness_group("Financial wellness", "5"),
-                wellness_group("Social wellness", "6"),
-                wellness_group("Environmental wellness", "7", include_children = FALSE),
-                wellness_group("Spiritual wellness", "8")
+                render_wellness_groups(check_physical = TRUE)
               ),
-              div(class = "form-label", "Emerging Areas (private?)"),
+              div(class = "form-label", organizations$filter_emerging_label),
               div(
                 class = "mb-4",
-                wellness_group("Physical wellness", "1"),
-                wellness_group("Emotional wellness", "2"),
-                wellness_group("Intellectual wellness", "3"),
-                wellness_group("Occupational wellness", "4"),
-                wellness_group("Financial wellness", "5"),
-                wellness_group("Social wellness", "6"),
-                wellness_group("Environmental wellness", "7", include_children = FALSE),
-                wellness_group("Spiritual wellness", "8")
+                render_wellness_groups(check_physical = FALSE)
               ),
               div(
                 class = "mt-5",
-                tags$button(class = "btn btn-primary w-100", "Confirm Filter"),
-                a(href = "#", class = "btn btn-link w-100", "Reset to defaults")
+                tags$button(class = "btn btn-primary w-100", organizations$btn_confirm_filter),
+                a(href = "#", class = "btn btn-link w-100", organizations$btn_reset_filter)
               )
             )
           ),
@@ -229,13 +247,13 @@ organizations_ui <- function() {
             div(
               class = "row row-cards",
               organization_card(c(
-                "Physical", "Emotional", "Intellectual", "Occupational",
-                "Financial", "Social", "Environmental", "Spiritual"
+                "physical", "emotional", "intellectual", "occupational",
+                "financial", "social", "environmental", "spiritual"
               )),
-              organization_card(c("Emotional", "Intellectual", "Social")),
-              organization_card(c("Occupational", "Financial", "Social", "Environmental", "Spiritual")),
-              organization_card(c("Physical", "Emotional", "Intellectual", "Environmental", "Spiritual")),
-              organization_card(c("Physical", "Emotional", "Intellectual", "Occupational"))
+              organization_card(c("emotional", "intellectual", "social")),
+              organization_card(c("occupational", "financial", "social", "environmental", "spiritual")),
+              organization_card(c("physical", "emotional", "intellectual", "environmental", "spiritual")),
+              organization_card(c("physical", "emotional", "intellectual", "occupational"))
             )
           )
         )

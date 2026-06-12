@@ -1,6 +1,8 @@
-home_ui <- function() {
+home_ui <- function(lang = get_lang()) {
+  home <- lang$home
+
   tagList(
-    h1("Welcome to the CPA Dashboard!"),
-    p("This is the home page.")
+    h1(home$heading),
+    p(home$subtext)
   )
 }

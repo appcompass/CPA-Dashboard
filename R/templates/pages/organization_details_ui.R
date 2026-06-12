@@ -1,4 +1,6 @@
-organization_details_ui <- function() {
+organization_details_ui <- function(lang = get_lang()) {
+  details <- lang$organization_details
+
   tagList(
     div(
       class = "page-header d-print-none", `aria-label` = "Page header",
@@ -8,8 +10,8 @@ organization_details_ui <- function() {
           class = "row g-2 align-items-center",
           div(
             class = "col",
-            h2(class = "page-title", "Organization Name"),
-            div(class = "page-pretitle", "Serving youth in Greater Boston since 1998")
+            h2(class = "page-title", details$org_name_placeholder),
+            div(class = "page-pretitle", details$org_subtitle)
           )
         )
       )
@@ -28,11 +30,11 @@ organization_details_ui <- function() {
               class = "card",
               div(
                 class = "card-header",
-                h3(class = "card-title", "Age Breakdown")
+                h3(class = "card-title", details$card_age_title)
               ),
               div(
                 class = "card-body",
-                h3(class = "card-title", "Youth served by your organization"),
+                h3(class = "card-title", details$card_age_youth_title),
                 div(
                   class = "row",
                   div(
@@ -41,7 +43,7 @@ organization_details_ui <- function() {
                       class = "row",
                       div(
                         class = "col-4",
-                        div(class = "subheader", "12-17 yrs old"),
+                        div(class = "subheader", details$age_12_17),
                         div(
                           class = "d-flex align-items-baseline",
                           div(class = "h3 me-2", "26%-60%")
@@ -49,7 +51,7 @@ organization_details_ui <- function() {
                       ),
                       div(
                         class = "col-4",
-                        div(class = "subheader", "18-25 yrs old"),
+                        div(class = "subheader", details$age_18_25),
                         div(
                           class = "d-flex align-items-baseline",
                           div(class = "h3 me-2", "1%-5%")
@@ -57,7 +59,7 @@ organization_details_ui <- function() {
                       ),
                       div(
                         class = "col-4",
-                        div(class = "subheader", "26+ yrs old"),
+                        div(class = "subheader", details$age_26_plus),
                         div(
                           class = "d-flex align-items-baseline",
                           div(class = "h3 me-2", "1%-5%")
@@ -66,7 +68,7 @@ organization_details_ui <- function() {
                     )
                   )
                 ),
-                h3(class = "card-title mt-5", "Employees of your organization"),
+                h3(class = "card-title mt-5", details$card_age_employee_title),
                 div(
                   class = "row",
                   div(
@@ -75,7 +77,7 @@ organization_details_ui <- function() {
                       class = "row",
                       div(
                         class = "col-4",
-                        div(class = "subheader", "12-17 yrs old"),
+                        div(class = "subheader", details$age_12_17),
                         div(
                           class = "d-flex align-items-baseline",
                           div(class = "h3 me-2", "1%-5%")
@@ -83,7 +85,7 @@ organization_details_ui <- function() {
                       ),
                       div(
                         class = "col-4",
-                        div(class = "subheader", "18-25 yrs old"),
+                        div(class = "subheader", details$age_18_25),
                         div(
                           class = "d-flex align-items-baseline",
                           div(class = "h3 me-2", "26%-60%")
@@ -91,7 +93,7 @@ organization_details_ui <- function() {
                       ),
                       div(
                         class = "col-4",
-                        div(class = "subheader", "26+ yrs old"),
+                        div(class = "subheader", details$age_26_plus),
                         div(
                           class = "d-flex align-items-baseline",
                           div(class = "h3 me-2", "1%-5%")
@@ -111,7 +113,7 @@ organization_details_ui <- function() {
               class = "card",
               div(
                 class = "card-header",
-                h3(class = "card-title", "Established Areas of Wellness")
+                h3(class = "card-title", details$card_established_title)
               ),
               div(
                 class = "card-body",
@@ -127,7 +129,7 @@ organization_details_ui <- function() {
               class = "card",
               div(
                 class = "card-header",
-                h3(class = "card-title", "Emerging Areas of Wellness (Private)")
+                h3(class = "card-title", details$card_emerging_title)
               ),
               div(
                 class = "card-body",

@@ -96,10 +96,11 @@ encrypt_data_raw <- function(plain_raw, passphrase) {
 }
 
 encrypt_data_file <- function(
-    input_path = file.path("data", "survey_data.csv"),
-    output_path = paste0(input_path, ".enc"),
-    passphrase = Sys.getenv("CPA_DATA_KEY"),
-    key_env_var = "CPA_DATA_KEY") {
+  input_path = file.path("data", "survey_data.csv"),
+  output_path = paste0(input_path, ".enc"),
+  passphrase = Sys.getenv("CPA_DATA_KEY"),
+  key_env_var = "CPA_DATA_KEY"
+) {
   if (!requireNamespace("openssl", quietly = TRUE)) {
     stop("Package 'openssl' is required. Run make install.", call. = FALSE)
   }
@@ -129,10 +130,11 @@ encrypt_data_file <- function(
 }
 
 decrypt_data_file <- function(
-    encrypted_path = file.path("data", "survey_data.csv.enc"),
-    output_path = file.path("data", "survey_data.csv"),
-    passphrase = Sys.getenv("CPA_DATA_KEY"),
-    key_env_var = "CPA_DATA_KEY") {
+  encrypted_path = file.path("data", "survey_data.csv.enc"),
+  output_path = file.path("data", "survey_data.csv"),
+  passphrase = Sys.getenv("CPA_DATA_KEY"),
+  key_env_var = "CPA_DATA_KEY"
+) {
   if (!requireNamespace("openssl", quietly = TRUE)) {
     stop("Package 'openssl' is required. Run make install.", call. = FALSE)
   }
@@ -162,9 +164,10 @@ decrypt_data_file <- function(
 }
 
 assert_survey_data_startup_ready <- function(
-    encrypted_path = file.path("data", "survey_data.csv.enc"),
-    key_env_var = "CPA_DATA_KEY",
-    passphrase = Sys.getenv(key_env_var)) {
+  encrypted_path = file.path("data", "survey_data.csv.enc"),
+  key_env_var = "CPA_DATA_KEY",
+  passphrase = Sys.getenv(key_env_var)
+) {
   if (!file.exists(encrypted_path)) {
     stop(
       sprintf(
@@ -203,9 +206,10 @@ assert_survey_data_startup_ready <- function(
 }
 
 load_survey_data <- function(
-    encrypted_path = file.path("data", "survey_data.csv.enc"),
-    passphrase = Sys.getenv("CPA_DATA_KEY"),
-    key_env_var = "CPA_DATA_KEY") {
+  encrypted_path = file.path("data", "survey_data.csv.enc"),
+  passphrase = Sys.getenv("CPA_DATA_KEY"),
+  key_env_var = "CPA_DATA_KEY"
+) {
   if (!file.exists(encrypted_path)) {
     stop(
       sprintf("Expected encrypted survey data file at '%s'.", encrypted_path),
@@ -248,4 +252,45 @@ load_survey_data <- function(
 get_org_names <- function(survey_data = load_survey_data()) {
   names <- sort(unique(trimws(survey_data[[1]])))
   names[nzchar(names)]
+}
+
+TRANSLATIONS_JSON_PATH <- file.path("data", "translations.json")
+
+load_app_translations <- local({
+  cached <- NULL
+
+  function(path = TRANSLATIONS_JSON_PATH) {
+    if (!is.null(cached)) {
+      return(cached)
+    }
+
+    if (!file.exists(path)) {
+      stop(sprintf("Expected translations file at '%s'.", path), call. = FALSE)
+    }
+
+    if (!requireNamespace("jsonlite", quietly = TRUE)) {
+      stop("Package 'jsonlite' is required. Run make install.", call. = FALSE)
+    }
+
+    loaded <- jsonlite::fromJSON(path, simplifyVector = FALSE)
+    if (!is.list(loaded) || !length(loaded)) {
+      stop("Translations JSON is empty or invalid.", call. = FALSE)
+    }
+
+    cached <<- loaded
+    cached
+  }
+})
+
+get_frontend_translations_json <- function() {
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("Package 'jsonlite' is required. Run make install.", call. = FALSE)
+  }
+
+  jsonlite::toJSON(
+    load_app_translations(),
+    auto_unbox = TRUE,
+    pretty = FALSE,
+    null = "null"
+  )
 }
