@@ -5,7 +5,7 @@ app_server <- function(input, output, session) {
 
   normalize_lang_code <- function(code) {
     if (is.null(code) || !length(code)) {
-      return("en")
+      return(DEFAULT_LANG_CODE)
     }
 
     code <- as.character(code[[1]])
@@ -13,13 +13,13 @@ app_server <- function(input, output, session) {
     code <- trimws(code)
 
     if (!nzchar(code) || !code %in% rownames(SUPPORTED_LANGUAGES)) {
-      return("en")
+      return(DEFAULT_LANG_CODE)
     }
 
     code
   }
 
-  lang_code <- reactiveVal("en")
+  lang_code <- reactiveVal(DEFAULT_LANG_CODE)
 
   observeEvent(session$clientData$url_search,
     {
