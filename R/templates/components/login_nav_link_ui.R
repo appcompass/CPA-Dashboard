@@ -1,4 +1,6 @@
-login_nav_link_ui <- function() {
+login_nav_link_ui <- function(lang = get_lang()) {
+  login_nav <- lang$login_nav_link
+
   tags$li(
     class = "nav-item",
     a(
@@ -21,7 +23,7 @@ login_nav_link_ui <- function() {
           tags$path(d = "M15 9h.01")
         )
       ),
-      tags$span(class = "nav-link-title", " Login ")
+      tags$span(class = "nav-link-title", paste0(" ", login_nav$label, " "))
     )
   )
 }

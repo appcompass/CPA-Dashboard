@@ -27,5 +27,6 @@ if (!nzchar(Sys.getenv("CPA_DATA_KEY")) && file.exists(dotenv_path)) {
 
 source(file.path(project_root, "R", "helpers.R"), local = FALSE)
 source(file.path(project_root, "R", "data.R"), local = FALSE)
+source(file.path(project_root, "R", "lang.R"), local = FALSE)
 source(file.path(project_root, "R", "ui.R"), local = FALSE)
 source(file.path(project_root, "R", "server.R"), local = FALSE)

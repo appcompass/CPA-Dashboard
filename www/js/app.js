@@ -1,95 +1,184 @@
-const ALL = [
+const WHEEL_DEFAULT_MESSAGE = 'Select a segment to learn more.';
+
+const WHEEL_META = [
   {
+    key: 'physical',
+    canonicalTitle: 'Physical',
     color: '#066fd1',
-    title: 'Physical',
-    desc: 'Physical wellness is the ability to recognize the need for physical activity, healthy diet, sleep and nutrition. Examples include after-school sport clubs, summer exercise camps, community gardens, cooking classes, and information about well-being.',
-    subs: [
-      'Fitness programs',
-      'Nutritional education',
-      'Health screenings',
-      'Other',
+    titleKey: 'wellness_physical',
+    descriptionKey: 'desc_physical',
+    subKeys: [
+      'wellness_physical_fitness',
+      'wellness_physical_nutrition',
+      'wellness_physical_screenings',
+      'wellness_physical_other',
     ],
   },
   {
+    key: 'emotional',
+    canonicalTitle: 'Emotional',
     color: '#4299e1',
-    title: 'Emotional',
-    desc: 'Emotional wellness is the ability to cope effectively with life and create satisfying relationships, including obtaining high-quality mental health treatment and support as needed. Examples include trauma-informed programming, therapy services, and mentoring programs aimed at supporting socioemotional learning.',
-    subs: [
-      'Mental health support groups',
-      'Crisis intervention',
-      'Counseling services',
-      'Other',
+    titleKey: 'wellness_emotional',
+    descriptionKey: 'desc_emotional',
+    subKeys: [
+      'sub_emotional_1',
+      'sub_emotional_2',
+      'sub_emotional_3',
+      'wellness_physical_other',
     ],
   },
   {
+    key: 'intellectual',
+    canonicalTitle: 'Intellectual',
     color: '#ae3ec9',
-    title: 'Intellectual',
-    desc: 'Intellectual wellness is the ability to recognize creative abilities and find ways to expand knowledge and skills. Examples include art classes, tutoring, creative writing, SAT prep, and coding workshops.',
-    subs: [
-      'Educational workshops',
-      'College readiness programs',
-      'Tutoring',
-      'Other',
+    titleKey: 'wellness_intellectual',
+    descriptionKey: 'desc_intellectual',
+    subKeys: [
+      'sub_intellectual_1',
+      'sub_intellectual_2',
+      'sub_intellectual_3',
+      'wellness_physical_other',
     ],
   },
   {
+    key: 'occupational',
+    canonicalTitle: 'Occupational',
     color: '#d63939',
-    title: 'Occupational',
-    desc: "Occupational wellness is defined as having personal satisfaction and enrichment from one's work. Examples include resources for resume development, job fairs, and career counseling.",
-    subs: [
-      'Internships / co-ops',
-      'Career counseling',
-      'Resume support',
-      'Job training',
-      'Other',
+    titleKey: 'wellness_occupational',
+    descriptionKey: 'desc_occupational',
+    subKeys: [
+      'sub_occupational_1',
+      'sub_occupational_2',
+      'sub_occupational_3',
+      'sub_occupational_4',
+      'wellness_physical_other',
     ],
   },
   {
+    key: 'financial',
+    canonicalTitle: 'Financial',
     color: '#f59f00',
-    title: 'Financial',
-    desc: "Financial wellness is one's satisfaction with current and future financial situations. Examples include initiatives centered on managing finances, financial aid, and increasing financial literacy.",
-    subs: [
-      'Budgeting',
-      'Assistance with financial aid',
-      'Financial literacy workshops',
-      'Other',
+    titleKey: 'wellness_financial',
+    descriptionKey: 'desc_financial',
+    subKeys: [
+      'sub_financial_1',
+      'sub_financial_2',
+      'sub_financial_3',
+      'wellness_physical_other',
     ],
   },
   {
+    key: 'social',
+    canonicalTitle: 'Social',
     color: '#2fb344',
-    title: 'Social',
-    desc: 'Social wellness is the ability to develop a sense of connection, belonging and a well-developed support system. Examples include hosting social events, camps or opportunities to engage with sports teams between community peers, and support groups of same-age peers.',
-    subs: [
-      'Mentoring',
-      'Family engagement activities',
-      'Community events',
-      'Other',
+    titleKey: 'wellness_social',
+    descriptionKey: 'desc_social',
+    subKeys: [
+      'sub_social_1',
+      'sub_social_2',
+      'sub_social_3',
+      'wellness_physical_other',
     ],
   },
   {
+    key: 'environmental',
+    canonicalTitle: 'Environmental',
     color: '#0ca678',
-    title: 'Environmental',
-    desc: 'Environmental wellness is having good health by occupying pleasant, stimulating environments that support wellbeing. Examples include access to parks and safe walking space, living in a neighborhood where youth feel safe, and engaging in climate change initiatives.',
-    subs: [
-      'Environmental education',
-      'Neighborhood clean-ups',
-      'Community gardening',
-      'Other',
+    titleKey: 'wellness_environmental',
+    descriptionKey: 'desc_environmental',
+    subKeys: [
+      'sub_environmental_1',
+      'sub_environmental_2',
+      'sub_environmental_3',
+      'wellness_physical_other',
     ],
   },
   {
+    key: 'spiritual',
+    canonicalTitle: 'Spiritual',
     color: '#17a2b8',
-    title: 'Spiritual',
-    desc: 'Spiritual wellness is expanding our sense of purpose and meaning in life. Examples include meditation, attending religious events, and providing designated areas of spiritual practice.',
-    subs: [
-      'Mindfulness or meditation workshops',
-      'Religious support groups / counseling',
-      'Physical space for religious practices',
-      'Religious or spiritual themed events',
-      'Other',
+    titleKey: 'wellness_spiritual',
+    descriptionKey: 'desc_spiritual',
+    subKeys: [
+      'sub_spiritual_1',
+      'sub_spiritual_2',
+      'sub_spiritual_3',
+      'sub_spiritual_4',
+      'wellness_physical_other',
     ],
   },
 ];
+
+function parseSearchParams(search) {
+  const out = {};
+  const raw = (search || '').replace(/^\?/, '');
+  if (!raw) {
+    return out;
+  }
+
+  raw.split('&').forEach(function (part) {
+    if (!part) {
+      return;
+    }
+    const bits = part.split('=');
+    const key = decodeURIComponent((bits[0] || '').replace(/\+/g, ' '));
+    const value = decodeURIComponent(
+      (bits.slice(1).join('=') || '').replace(/\+/g, ' '),
+    );
+    if (key) {
+      out[key] = value;
+    }
+  });
+
+  return out;
+}
+
+function parseCurrentLangCode() {
+  const params = parseSearchParams(window.location.search || '');
+  return params.lang || 'en';
+}
+
+function getTranslationScope() {
+  const allTranslations = window.APP_TRANSLATIONS || {};
+  const langCode = parseCurrentLangCode();
+
+  const enScope = allTranslations.en || {};
+  const activeScope = allTranslations[langCode] || {};
+
+  return {
+    organizations: Object.assign(
+      {},
+      enScope.organizations || {},
+      activeScope.organizations || {},
+    ),
+    wheel: Object.assign({}, enScope.wheel || {}, activeScope.wheel || {}),
+  };
+}
+
+function buildWheelItems() {
+  const scope = getTranslationScope();
+  const organizations = scope.organizations;
+  const wheel = scope.wheel;
+
+  return WHEEL_META.map(function (meta) {
+    const title = organizations[meta.titleKey] || meta.canonicalTitle;
+    const subs = meta.subKeys.map(function (key) {
+      return organizations[key] || wheel[key] || key;
+    });
+
+    return {
+      color: meta.color,
+      title: title,
+      desc: wheel[meta.descriptionKey] || '',
+      subs: subs,
+      matchTokens: [
+        meta.key.toLowerCase(),
+        meta.canonicalTitle.toLowerCase(),
+        String(title).toLowerCase(),
+      ],
+    };
+  });
+}
 
 const PULL = 26,
   DUR = 600;
@@ -99,13 +188,20 @@ const R_OUT = 220,
   CY = 250;
 
 function createWheel(container, size = 340) {
+  if (!container || container.classList.contains('ww-wheel-instance')) {
+    return;
+  }
+
+  const scope = getTranslationScope();
+  const ALL = buildWheelItems();
+
   const attrValue = container.dataset.activeCategories || '';
   const allowedTitles = attrValue
     .split(',')
     .map((s) => s.trim().toLowerCase())
     .filter(Boolean);
   const ENABLED = ALL.filter((d) =>
-    allowedTitles.includes(d.title.toLowerCase()),
+    d.matchTokens.some((token) => allowedTitles.includes(token)),
   );
   if (!ENABLED.length) return;
 
@@ -125,7 +221,7 @@ function createWheel(container, size = 340) {
 
   const defaultMsg = document.createElement('div');
   defaultMsg.className = 'default-msg';
-  defaultMsg.textContent = 'Select a segment to learn more.';
+  defaultMsg.textContent = scope.wheel.default_message || WHEEL_DEFAULT_MESSAGE;
   panelsEl.appendChild(defaultMsg);
 
   wrap.appendChild(svgWrap);
@@ -134,6 +230,8 @@ function createWheel(container, size = 340) {
 
   // build panels
   ENABLED.forEach((d, i) => {
+    const otherLabel = scope.organizations.wellness_physical_other || 'Other';
+
     const div = document.createElement('div');
     div.className = 'panel';
     div.id = uid + '-panel-' + i;
@@ -143,8 +241,8 @@ function createWheel(container, size = 340) {
       <ul class="subcats">${d.subs
         .map(
           (s) => `<li>
-        <span class="dot" style="background:${s === 'Other' ? 'var(--color-border-secondary)' : d.color}"></span>
-        <span class="${s === 'Other' ? 'other' : 'subcat-name'}">${s}</span>
+        <span class="dot" style="background:${s === otherLabel ? 'var(--color-border-secondary)' : d.color}"></span>
+        <span class="${s === otherLabel ? 'other' : 'subcat-name'}">${s}</span>
       </li>`,
         )
         .join('')}</ul>`;
@@ -271,11 +369,20 @@ function createWheel(container, size = 340) {
         .fill(d.color)
         .stroke({ color: 'white', width: 2 });
 
+      const titleLength = String(d.title || '').length;
+      var labelSize = sweep < 50 ? 9 : 10.5;
+      if (titleLength > 18) {
+        labelSize -= 1;
+      }
+      if (titleLength > 26) {
+        labelSize -= 0.5;
+      }
+
       const label = g
         .text(d.title)
         .font({
           family: 'sans-serif',
-          size: sweep < 50 ? 10.5 : 12,
+          size: Math.max(7.5, labelSize),
           weight: '600',
           anchor: 'middle',
         })
@@ -305,6 +412,8 @@ function createWheel(container, size = 340) {
   render();
 }
 
+window.createWheel = createWheel;
+
 document.addEventListener('DOMContentLoaded', function () {
   document.body.classList.add('app-ready');
   var themeConfig = {
@@ -314,10 +423,91 @@ document.addEventListener('DOMContentLoaded', function () {
     'theme-primary': 'blue',
     'theme-radius': '1',
   };
-  var url = new URL(window.location);
+  var stringifySearch = function (params) {
+    var keys = Object.keys(params).filter(function (k) {
+      return params[k] !== undefined && params[k] !== null && params[k] !== '';
+    });
+
+    if (!keys.length) {
+      return '';
+    }
+
+    return (
+      '?' +
+      keys
+        .map(function (k) {
+          return (
+            encodeURIComponent(k) + '=' + encodeURIComponent(String(params[k]))
+          );
+        })
+        .join('&')
+    );
+  };
+
+  var queryParams = parseSearchParams(window.location.search);
+  var mergeCurrentSearchIntoRouterHref = function (href) {
+    if (!href) {
+      return href;
+    }
+
+    var hashIndex = href.indexOf('#!/');
+    if (hashIndex < 0) {
+      return href;
+    }
+
+    var queryIndex = href.indexOf('?');
+    var hasQueryBeforeHash = queryIndex >= 0 && queryIndex < hashIndex;
+    if (hasQueryBeforeHash) {
+      return href;
+    }
+
+    var currentSearch = window.location.search || '';
+    if (!currentSearch) {
+      return href;
+    }
+
+    return href.slice(0, hashIndex) + currentSearch + href.slice(hashIndex);
+  };
+
+  var syncRouterLinksWithQueryParams = function () {
+    document.querySelectorAll('a[href*="#!/"]').forEach(function (anchor) {
+      var href = anchor.getAttribute('href');
+      var mergedHref = mergeCurrentSearchIntoRouterHref(href);
+      if (mergedHref && mergedHref !== href) {
+        anchor.setAttribute('href', mergedHref);
+      }
+    });
+  };
+
+  var refreshQueryParams = function () {
+    queryParams = parseSearchParams(window.location.search);
+    syncRouterLinksWithQueryParams();
+    return queryParams;
+  };
+  var getParam = function (key) {
+    return queryParams[key];
+  };
+  var setParam = function (key, value) {
+    queryParams[key] = value;
+  };
+  var deleteParam = function (key) {
+    delete queryParams[key];
+  };
+  var pushQuery = function () {
+    var nextUrl =
+      window.location.pathname +
+      stringifySearch(queryParams) +
+      window.location.hash;
+    window.history.pushState({}, '', nextUrl);
+  };
+
   var form = document.getElementById('offcanvasSettings');
   var resetButton = document.getElementById('reset-changes');
   var checkItems = function () {
+    if (!form) {
+      return;
+    }
+
     for (var key in themeConfig) {
       var value = window.localStorage['tabler-' + key] || themeConfig[key];
       if (!!value) {
@@ -330,31 +520,97 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
   };
-  form.addEventListener('change', function (event) {
-    var target = event.target,
-      name = target.name,
-      value = target.value;
-    for (var key in themeConfig) {
-      if (name === key) {
-        document.documentElement.setAttribute('data-bs-' + key, value);
-        window.localStorage.setItem('tabler-' + key, value);
-        url.searchParams.set(key, value);
+  if (form) {
+    form.addEventListener('change', function (event) {
+      refreshQueryParams();
+      var target = event.target,
+        name = target.name,
+        value = target.value;
+      for (var key in themeConfig) {
+        if (name === key) {
+          document.documentElement.setAttribute('data-bs-' + key, value);
+          window.localStorage.setItem('tabler-' + key, value);
+          setParam(key, value);
+        }
       }
-    }
-    window.history.pushState({}, '', url);
-  });
-  resetButton.addEventListener('click', function () {
-    for (var key in themeConfig) {
-      var value = themeConfig[key];
-      document.documentElement.removeAttribute('data-bs-' + key);
-      window.localStorage.removeItem('tabler-' + key);
-      url.searchParams.delete(key);
-    }
-    checkItems();
-    window.history.pushState({}, '', url);
-  });
+      pushQuery();
+    });
+  }
+
+  if (resetButton) {
+    resetButton.addEventListener('click', function () {
+      refreshQueryParams();
+      for (var key in themeConfig) {
+        var value = themeConfig[key];
+        document.documentElement.removeAttribute('data-bs-' + key);
+        window.localStorage.removeItem('tabler-' + key);
+        deleteParam(key);
+      }
+      checkItems();
+      pushQuery();
+    });
+  }
+
   checkItems();
-  document
-    .querySelectorAll('[data-active-categories]')
-    .forEach((container) => createWheel(container, 340));
+  syncRouterLinksWithQueryParams();
+
+  document.addEventListener('click', function (event) {
+    var anchor = event.target.closest('a[href]');
+    if (!anchor) {
+      return;
+    }
+
+    var href = anchor.getAttribute('href');
+    var mergedHref = mergeCurrentSearchIntoRouterHref(href);
+    if (mergedHref && mergedHref !== href) {
+      event.preventDefault();
+      window.location.assign(mergedHref);
+    }
+  });
+
+  var initWheels = function () {
+    document
+      .querySelectorAll('[data-active-categories]')
+      .forEach(function (container) {
+        createWheel(container, 440);
+      });
+  };
+
+  var initWheelsNowAndNextTick = function () {
+    initWheels();
+    window.setTimeout(initWheels, 0);
+  };
+
+  initWheelsNowAndNextTick();
+
+  // Shiny/router render content after DOMContentLoaded, so re-run wheel setup
+  // when outputs update, hash navigation changes, or DOM nodes are injected.
+  document.addEventListener('shiny:value', initWheelsNowAndNextTick);
+  window.addEventListener('hashchange', initWheelsNowAndNextTick);
+
+  if (window.MutationObserver) {
+    var wheelObserver = new MutationObserver(function () {
+      initWheels();
+    });
+
+    wheelObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  var wheelInitAttempts = 0;
+  var wheelInitTimer = window.setInterval(function () {
+    initWheels();
+    wheelInitAttempts += 1;
+
+    var total = document.querySelectorAll('[data-active-categories]').length;
+    var initialized = document.querySelectorAll(
+      '[data-active-categories].ww-wheel-instance',
+    ).length;
+
+    if ((total > 0 && total === initialized) || wheelInitAttempts >= 20) {
+      window.clearInterval(wheelInitTimer);
+    }
+  }, 300);
 });
