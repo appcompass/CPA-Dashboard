@@ -2,7 +2,7 @@ render_html <- function(ui) {
   as.character(htmltools::renderTags(ui)$html)
 }
 
-ensure_survey_details_csv <- function() {
+ensure_survey_data_csv <- function() {
   survey_csv <- file.path(project_root, "data", "survey_data.csv")
   if (file.exists(survey_csv)) {
     return(survey_csv)
@@ -77,7 +77,7 @@ test_that("organizations_ui renders search page and filter panel", {
 test_that("organization_details_ui renders detail cards", {
   withr::local_dir(project_root)
 
-  detail_data <- read.csv(ensure_survey_details_csv(), skip = 1, stringsAsFactors = FALSE)
+  detail_data <- read.csv(ensure_survey_data_csv(), skip = 1, stringsAsFactors = FALSE)
   first_org_name <- trimws(detail_data[[1]][1])
   first_org_years <- trimws(detail_data[[2]][1])
 
@@ -93,7 +93,7 @@ test_that("organization_details_ui renders detail cards", {
 test_that("organization_details_ui renders the first org when no id is supplied", {
   withr::local_dir(project_root)
 
-  detail_data <- read.csv(ensure_survey_details_csv(), skip = 1, stringsAsFactors = FALSE)
+  detail_data <- read.csv(ensure_survey_data_csv(), skip = 1, stringsAsFactors = FALSE)
   first_org_name <- trimws(detail_data[[1]][1])
 
   html <- render_html(organization_details_ui())
