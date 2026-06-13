@@ -996,16 +996,16 @@
       "checksum": "c30bcd3944bbae1a0ccab817518af8c3"
     },
     "R/data.R": {
-      "checksum": "0d01393a9bf00208b0a9356c1c904a2f"
+      "checksum": "0c748f1f40cf94fae0ae6442da8737f8"
     },
     "R/helpers.R": {
       "checksum": "3c5c6df2e6564f2870a4ca80b4ed5a0b"
     },
     "R/server.R": {
-      "checksum": "decd196477fe617d6c1f3e4a0fdda26b"
+      "checksum": "2656128cf75f95f61874b9041bda55e4"
     },
     "R/templates/components/lang_change_nav_link_ui.R": {
-      "checksum": "5d1e7a117a2018db21e417e993c8af09"
+      "checksum": "2e8c6cbc27990e3fad9ba5739f2e74de"
     },
     "R/templates/components/login_nav_link_ui.R": {
       "checksum": "e735e3a5d6b047b1e44275d5fe2164d1"
@@ -1026,10 +1026,10 @@
       "checksum": "424dfcb903c624e6e0b68a73bd2b1352"
     },
     "R/templates/pages/organization_details_ui.R": {
-      "checksum": "9a86b4a5983377a2dc4fbb81f9c022dd"
+      "checksum": "3327570c37ac0c165f72bb84e6a74064"
     },
     "R/templates/pages/organizations_ui.R": {
-      "checksum": "35a67c54c672ce4d565d9e7290912b48"
+      "checksum": "c2fca058525bd7871e2cd7a15f48133e"
     },
     "R/ui.R": {
       "checksum": "87629f00affdcfc0d5bfc493965c6169"
@@ -1236,13 +1236,13 @@
       "checksum": "1c8da7e1bf81afb3ea8dc2e55752d75e"
     },
     "www/html/index.html": {
-      "checksum": "4026de2d8aab5a4c3512ac73eb589f25"
+      "checksum": "aebc40e5297dbc33a77845a7474d7077"
     },
     "www/html/intro.html": {
       "checksum": "94b78598b02d7d1d1f6bb51e6722dfd1"
     },
     "www/js/app.js": {
-      "checksum": "c26369dee14129137a921f0da7926f82"
+      "checksum": "06af45edee4d1e1f820482c6a641a179"
     },
     "www/js/tabler/tabler-theme.esm.js": {
       "checksum": "56cebccda6acf7f706d2cce32d2cd016"
