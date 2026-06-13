@@ -362,24 +362,38 @@ get_organization_details_context <- function(
   years_served <- get_organization_details_value(row, 2)
   role_length <- get_organization_details_value(row, 3)
 
+  # Youth served demographics requested by dashboard stakeholders.
+  pct_age_12_17 <- get_organization_details_value(row, 4)
+  pct_age_18_25 <- get_organization_details_value(row, 5)
+  pct_age_over26 <- get_organization_details_value(row, 6)
+  pct_women <- get_organization_details_value(row, 10)
+  pct_men <- get_organization_details_value(row, 11)
+  pct_gender <- get_organization_details_value(row, 12)
+  pct_disabilities <- get_organization_details_value(row, 16)
+  pct_spiritual <- get_organization_details_value(row, 17)
+  pct_race_eth <- get_organization_details_value(row, 18)
+  pct_us_born <- get_organization_details_value(row, 19)
+  pct_queer <- get_organization_details_value(row, 20)
+
   established_categories <- get_organization_details_wheel_categories(row, lang, "Established")
   emerging_categories <- get_organization_details_wheel_categories(row, lang, "Emerging")
 
   list(
     details = details,
-    org_name = org_name_value,
-    years_served = years_served,
+    orgname = org_name_value,
+    lengthserve = years_served,
+    pct_age_12_17 = pct_age_12_17,
+    pct_age_18_25 = pct_age_18_25,
+    pct_age_over26 = pct_age_over26,
+    pct_women = pct_women,
+    pct_men = pct_men,
+    pct_gender = pct_gender,
+    pct_disabilities = pct_disabilities,
+    pct_spiritual = pct_spiritual,
+    pct_race_eth = pct_race_eth,
+    pct_us_born = pct_us_born,
+    pct_queer = pct_queer,
     role_length = role_length,
-    age_youth = list(
-      age_12_17 = get_organization_details_value(row, 4),
-      age_18_25 = get_organization_details_value(row, 5),
-      age_26_plus = get_organization_details_value(row, 6)
-    ),
-    age_employees = list(
-      age_12_17 = get_organization_details_value(row, 7),
-      age_18_25 = get_organization_details_value(row, 8),
-      age_26_plus = get_organization_details_value(row, 9)
-    ),
     established_categories = established_categories,
     emerging_categories = emerging_categories,
     has_data = nrow(row) > 0
