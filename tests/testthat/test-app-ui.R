@@ -2,35 +2,6 @@ render_html <- function(ui) {
   as.character(htmltools::renderTags(ui)$html)
 }
 
-ensure_survey_data_csv <- function() {
-  survey_data_csv_path <- file.path(project_root, "data", "survey_data.csv")
-  survey_data_encrypted_path <- paste0(survey_data_csv_path, ".enc")
-
-  if (file.exists(survey_data_csv_path)) {
-    return(survey_data_csv_path)
-  }
-
-  if (!file.exists(survey_data_encrypted_path)) {
-    stop("Could not prepare survey details data for UI tests because data/survey_data.csv.enc is missing.", call. = FALSE)
-  }
-
-  tryCatch(
-    decrypt_data_file(
-      encrypted_path = survey_data_encrypted_path,
-      output_path = survey_data_csv_path
-    ),
-    error = function(e) {
-      stop(
-        "Could not prepare survey details data for UI tests. Ensure CPA_DATA_KEY is set and data/survey_data.csv.enc is readable.",
-        call. = FALSE
-      )
-    }
-  )
-  withr::defer(unlink(survey_data_csv_path), envir = testthat::teardown_env())
-
-  survey_data_csv_path
-}
-
 # ---- app bootstrap ----
 
 test_that("app.R builds a shiny app object", {
@@ -91,7 +62,7 @@ test_that("organizations_ui renders search page and filter panel", {
 test_that("organization_details_ui renders detail cards", {
   withr::local_dir(project_root)
 
-  detail_data <- read.csv(ensure_survey_data_csv(), skip = 1, stringsAsFactors = FALSE)
+  detail_data <- load_organization_details_data()
   first_org_name <- trimws(detail_data[[1]][1])
   first_org_years <- trimws(detail_data[[2]][1])
 
@@ -107,7 +78,7 @@ test_that("organization_details_ui renders detail cards", {
 test_that("organization_details_ui renders the first org when no id is supplied", {
   withr::local_dir(project_root)
 
-  detail_data <- read.csv(ensure_survey_data_csv(), skip = 1, stringsAsFactors = FALSE)
+  detail_data <- load_organization_details_data()
   first_org_name <- trimws(detail_data[[1]][1])
 
   html <- render_html(organization_details_ui())

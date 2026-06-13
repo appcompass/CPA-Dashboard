@@ -16,13 +16,15 @@ test: ## Run testthat tests from tests/testthat
 run: ## Run the Shiny app on host 0.0.0.0 and port 3838
 	@$(RSCRIPT) -e "options(shiny.autoreload = TRUE); shiny::runApp('.', host = '0.0.0.0', port = 3838)"
 
-encrypt-data: ## Encrypt data/survey_data.csv -> data/survey_data.csv.enc (requires CPA_DATA_KEY)
+encrypt-data: ## Encrypt a plaintext CSV to an encrypted payload (requires CPA_DATA_KEY, INPUT, OUTPUT)
+	@test -n "$$INPUT" && test -n "$$OUTPUT"
 	@set -a; [ -f .env ] && . ./.env; set +a; \
-	$(RSCRIPT) -e "source('R/data.R'); encrypt_data_file()"
+	$(RSCRIPT) -e "source('R/data.R'); encrypt_data_file(input_path = Sys.getenv('INPUT'), output_path = Sys.getenv('OUTPUT'))"
 
-decrypt-data: ## Decrypt data/survey_data.csv.enc -> data/survey_data.csv (requires CPA_DATA_KEY)
+decrypt-data: ## Decrypt an encrypted payload to a CSV (requires CPA_DATA_KEY, INPUT, OUTPUT)
+	@test -n "$$INPUT" && test -n "$$OUTPUT"
 	@set -a; [ -f .env ] && . ./.env; set +a; \
-	$(RSCRIPT) -e "source('R/data.R'); decrypt_data_file()"
+	$(RSCRIPT) -e "source('R/data.R'); decrypt_data_file(encrypted_path = Sys.getenv('INPUT'), output_path = Sys.getenv('OUTPUT'))"
 
 manifest: ## Generate manifest.json for Posit Connect/Connect Cloud
 	@$(RSCRIPT) R/scripts/write_manifest.R

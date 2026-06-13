@@ -996,7 +996,7 @@
       "checksum": "c30bcd3944bbae1a0ccab817518af8c3"
     },
     "R/data.R": {
-      "checksum": "0c748f1f40cf94fae0ae6442da8737f8"
+      "checksum": "578fcc7e02c5c1735ebe7c8d1f66fcb9"
     },
     "R/helpers.R": {
       "checksum": "3c5c6df2e6564f2870a4ca80b4ed5a0b"
@@ -1026,7 +1026,7 @@
       "checksum": "424dfcb903c624e6e0b68a73bd2b1352"
     },
     "R/templates/pages/organization_details_ui.R": {
-      "checksum": "3327570c37ac0c165f72bb84e6a74064"
+      "checksum": "5b257bce10c12ded92e4e5937a0f0d97"
     },
     "R/templates/pages/organizations_ui.R": {
       "checksum": "c2fca058525bd7871e2cd7a15f48133e"

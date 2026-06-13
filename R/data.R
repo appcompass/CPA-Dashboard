@@ -96,7 +96,7 @@ encrypt_data_raw <- function(plain_raw, passphrase) {
 }
 
 encrypt_data_file <- function(
-  input_path = file.path("data", "survey_data.csv"),
+  input_path,
   output_path = paste0(input_path, ".enc"),
   passphrase = Sys.getenv("CPA_DATA_KEY"),
   key_env_var = "CPA_DATA_KEY"
@@ -110,6 +110,10 @@ encrypt_data_file <- function(
 
   if (missing(passphrase)) {
     passphrase <- Sys.getenv(key_env_var)
+  }
+
+  if (missing(input_path) || !nzchar(input_path)) {
+    stop("Missing input_path for encryption.", call. = FALSE)
   }
 
   if (!file.exists(input_path)) {
@@ -131,7 +135,7 @@ encrypt_data_file <- function(
 
 decrypt_data_file <- function(
   encrypted_path = file.path("data", "survey_data.csv.enc"),
-  output_path = file.path("data", "survey_data.csv"),
+  output_path = tempfile(fileext = ".csv"),
   passphrase = Sys.getenv("CPA_DATA_KEY"),
   key_env_var = "CPA_DATA_KEY"
 ) {
@@ -254,12 +258,51 @@ get_org_names <- function(survey_data = load_survey_data()) {
   names[nzchar(names)]
 }
 
-load_organization_details_data <- function(path = file.path("data", "survey_data.csv")) {
-  if (!file.exists(path)) {
-    stop(sprintf("Expected data file at '%s'.", path), call. = FALSE)
+load_organization_details_data <- function(
+  encrypted_path = file.path("data", "survey_data.csv.enc"),
+  passphrase = Sys.getenv("CPA_DATA_KEY"),
+  key_env_var = "CPA_DATA_KEY"
+) {
+  if (!file.exists(encrypted_path)) {
+    stop(
+      sprintf(
+        "Expected encrypted data file at '%s'.",
+        encrypted_path
+      ),
+      call. = FALSE
+    )
   }
 
-  read.csv(path, skip = 1, stringsAsFactors = FALSE)
+  if (!requireNamespace("openssl", quietly = TRUE)) {
+    stop("Package 'openssl' is required. Run make install.", call. = FALSE)
+  }
+  if (!requireNamespace("digest", quietly = TRUE)) {
+    stop("Package 'digest' is required. Run make install.", call. = FALSE)
+  }
+
+  if (missing(passphrase)) {
+    passphrase <- Sys.getenv(key_env_var)
+  }
+
+  if (!nzchar(passphrase)) {
+    stop(
+      sprintf(
+        "Found encrypted data at '%s' but no decryption key was provided. Set %s.",
+        encrypted_path,
+        key_env_var
+      ),
+      call. = FALSE
+    )
+  }
+
+  encrypted_raw <- readBin(encrypted_path, what = "raw", n = file.info(encrypted_path)$size)
+  plain_raw <- decrypt_data_raw(encrypted_raw, passphrase)
+
+  temp_path <- tempfile(fileext = ".csv")
+  on.exit(unlink(temp_path), add = TRUE)
+  writeBin(plain_raw, temp_path)
+
+  read.csv(temp_path, skip = 1, stringsAsFactors = FALSE)
 }
 
 get_organization_details_value <- function(row, index, fallback = "N/A") {
@@ -340,6 +383,15 @@ get_organization_details_wheel_categories <- function(row, lang, status_value) {
   categories[!is.na(categories) & nzchar(categories)]
 }
 
+get_organization_details_label <- function(details, key, fallback) {
+  value <- details[[key]]
+  if (is.null(value) || !nzchar(value)) {
+    fallback
+  } else {
+    value
+  }
+}
+
 get_organization_details_context <- function(
   lang = get_lang(),
   org_name = NULL,
@@ -377,9 +429,30 @@ get_organization_details_context <- function(
 
   established_categories <- get_organization_details_wheel_categories(row, lang, "Established")
   emerging_categories <- get_organization_details_wheel_categories(row, lang, "Emerging")
+  labels <- list(
+    page_subtitle_fallback = get_organization_details_label(details, "page_subtitle_fallback", "Organization details"),
+    org_subtitle = get_organization_details_label(details, "org_subtitle", "Serving youth in Greater Boston"),
+    card_age_title = get_organization_details_label(details, "card_age_title", "Age Breakdown"),
+    age_12_17 = get_organization_details_label(details, "age_12_17", "12-17 yrs old"),
+    age_18_25 = get_organization_details_label(details, "age_18_25", "18-25 yrs old"),
+    age_26_plus = get_organization_details_label(details, "age_26_plus", "26+ yrs old"),
+    card_gender_title = get_organization_details_label(details, "card_gender_title", "Gender Identity"),
+    gender_women = get_organization_details_label(details, "gender_women", "Identifies as women"),
+    gender_men = get_organization_details_label(details, "gender_men", "Identifies as men"),
+    gender_other = get_organization_details_label(details, "gender_other", "Identifies as another gender identity"),
+    card_other_demographics_title = get_organization_details_label(details, "card_other_demographics_title", "Additional Demographics"),
+    other_disabilities = get_organization_details_label(details, "other_disabilities", "With one or more disabilities"),
+    other_spiritual = get_organization_details_label(details, "other_spiritual", "Identifies with a religious or spiritual practice"),
+    other_race_eth = get_organization_details_label(details, "other_race_eth", "People of color"),
+    other_us_born = get_organization_details_label(details, "other_us_born", "Born in the United States"),
+    other_queer = get_organization_details_label(details, "other_queer", "Identifies as LGBTQIA+"),
+    empty_established = get_organization_details_label(details, "empty_established", "No established wellness areas were reported."),
+    empty_emerging = get_organization_details_label(details, "empty_emerging", "No emerging wellness areas were reported.")
+  )
 
   list(
     details = details,
+    labels = labels,
     orgname = org_name_value,
     lengthserve = years_served,
     pct_age_12_17 = pct_age_12_17,
