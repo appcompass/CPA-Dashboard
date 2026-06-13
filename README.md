@@ -13,7 +13,7 @@ CPA-Dashboard is a Shiny application built with `shiny.router` and Tabler UI tem
 
 - `app.R` boots the app.
 - `R/helpers.R` contains shared app helpers.
-- `R/data.R` loads survey data and extracts organization names.
+- `R/data.R` decrypts survey data and extracts data used by the app.
 - `R/ui.R` wires the router and top-level UI.
 - `R/server.R` handles route-specific rendering.
 - `R/templates/` contains reusable UI pieces:
@@ -78,26 +78,20 @@ You can keep survey data encrypted in a public repository and decrypt it only at
 export CPA_DATA_KEY="your-strong-secret"
 ```
 
-1. Encrypt the plaintext survey file:
+1. Encrypt a plaintext survey file:
 
 ```bash
-make encrypt-data
+INPUT=/path/to/survey_data.csv OUTPUT=data/survey_data.csv.enc make encrypt-data
 ```
 
 This creates `data/survey_data.csv.enc`.
-
-1. Remove plaintext before pushing publicly:
-
-```bash
-rm -f data/survey_data.csv
-```
 
 1. Run the app with `CPA_DATA_KEY` set so it can decrypt at runtime.
 
 Optional: decrypt locally for inspection/debugging:
 
 ```bash
-make decrypt-data
+INPUT=data/survey_data.csv.enc OUTPUT=/tmp/survey_data.csv make decrypt-data
 ```
 
 Notes:

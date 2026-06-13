@@ -50,6 +50,32 @@ test_that("load_survey_data fails for encrypted file when key is missing", {
   )
 })
 
+test_that("load_organization_details_data reads encrypted file", {
+  withr::local_dir(project_root)
+
+  plain <- tempfile(fileext = ".csv")
+  enc <- paste0(plain, ".enc")
+  passphrase <- "test-key"
+
+  writeLines(
+    c(
+      "Organization,YearsServed,RoleLength",
+      "Organization Name:,How long have you served in this role/title at your organization?,How long have your organization been serving youth in the greater Boston area?",
+      "Org A,8+ years,1-3 years"
+    ),
+    plain
+  )
+
+  encrypt_data_file(input_path = plain, output_path = enc, passphrase = passphrase)
+  unlink(plain)
+
+  data <- load_organization_details_data(encrypted_path = enc, passphrase = passphrase)
+
+  expect_s3_class(data, "data.frame")
+  expect_equal(trimws(data[[1]][1]), "Org A")
+  expect_equal(trimws(data[[2]][1]), "8+ years")
+})
+
 # ---- get_org_names ----
 
 test_that("get_org_names returns a sorted character vector of unique names", {
