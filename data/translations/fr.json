@@ -26,7 +26,9 @@
     "label_organization_name": "Nom de l'organisation",
     "label_organization_id": "Identifiant de l'organisation",
     "placeholder_org_id": "Votre identifiant d'organisation",
-    "btn_sign_in": "Se connecter"
+    "btn_sign_in": "Se connecter",
+    "error_required": "Veuillez sélectionner une organisation et saisir votre identifiant d'organisation.",
+    "error_invalid": "Cet identifiant d'organisation ne correspond pas à l'organisation sélectionnée."
   },
   "organizations": {
     "page_title": "Rechercher des organisations",
@@ -60,7 +62,7 @@
     "age_18_25": "18-25 ans",
     "age_26_plus": "26+ ans",
     "card_established_title": "Domaines de bien-être établis",
-    "card_emerging_title": "Domaines de bien-être émergents (Privé)"
+    "card_emerging_title": "Domaines de bien-être émergents"
   },
   "wheel": {
     "default_message": "Sélectionnez un segment pour en savoir plus.",

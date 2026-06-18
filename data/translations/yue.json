@@ -26,7 +26,9 @@
     "label_organization_name": "機構名稱",
     "label_organization_id": "機構 ID",
     "placeholder_org_id": "你嘅機構 ID",
-    "btn_sign_in": "登入"
+    "btn_sign_in": "登入",
+    "error_required": "請選擇一個機構並輸入您嘅機構 ID。",
+    "error_invalid": "該機構 ID 與所選機構唔相符。"
   },
   "organizations": {
     "page_title": "搜尋機構",
@@ -60,7 +62,7 @@
     "age_18_25": "18-25 歲",
     "age_26_plus": "26+ 歲",
     "card_established_title": "已建立健康範疇",
-    "card_emerging_title": "新興健康範疇（私人）"
+    "card_emerging_title": "新興健康範疇"
   },
   "wheel": {
     "default_message": "請選擇一個區塊以了解更多。",

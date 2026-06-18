@@ -26,7 +26,9 @@
     "label_organization_name": "Tên tổ chức",
     "label_organization_id": "Mã tổ chức",
     "placeholder_org_id": "Mã tổ chức của bạn",
-    "btn_sign_in": "Đăng nhập"
+    "btn_sign_in": "Đăng nhập",
+    "error_required": "Vui lòng chọn một tổ chức và nhập Mã tổ chức của bạn.",
+    "error_invalid": "Mã tổ chức đó không khớp với tổ chức đã chọn."
   },
   "organizations": {
     "page_title": "Tìm kiếm tổ chức",
@@ -60,7 +62,7 @@
     "age_18_25": "18-25 tuổi",
     "age_26_plus": "26+ tuổi",
     "card_established_title": "Các lĩnh vực sức khỏe đã thiết lập",
-    "card_emerging_title": "Các lĩnh vực sức khỏe mới nổi (Riêng tư)"
+    "card_emerging_title": "Các lĩnh vực sức khỏe mới nổi"
   },
   "wheel": {
     "default_message": "Chọn một phần để tìm hiểu thêm.",

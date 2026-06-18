@@ -26,7 +26,9 @@
     "label_organization_name": "Magaca ururka",
     "label_organization_id": "Aqoonsiga ururka",
     "placeholder_org_id": "Aqoonsiga ururkaaga",
-    "btn_sign_in": "Soo gal"
+    "btn_sign_in": "Soo gal",
+    "error_required": "Fadlan dooro urur oo geli Aqoonsiga ururkaaga.",
+    "error_invalid": "Aqoonsiga ururkan kuma habboona ururka la doortay."
   },
   "organizations": {
     "page_title": "Raadi ururro",
@@ -60,7 +62,7 @@
     "age_18_25": "18-25 jir",
     "age_26_plus": "26+ jir",
     "card_established_title": "Meelaha fayoqabka ee la aasaasay",
-    "card_emerging_title": "Meelaha fayoqabka ee soo baxaya (Gaar ah)"
+    "card_emerging_title": "Meelaha fayoqabka ee soo baxaya"
   },
   "wheel": {
     "default_message": "Dooro qaybta si aad wax badan uga barato.",

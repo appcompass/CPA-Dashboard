@@ -614,6 +614,25 @@ get_org_names <- function(survey_data = load_survey_data()) {
   names[nzchar(names)]
 }
 
+# orgname -> dashboard_id lookup, used by the login form to validate the entered
+# Organization ID against the Dashboard ID stored for the selected organization.
+get_org_dashboard_ids <- function(survey_data = load_survey_data()) {
+  empty <- stats::setNames(character(0), character(0))
+  if (is.null(survey_data) || !nrow(survey_data)) {
+    return(empty)
+  }
+  org_col <- if ("orgname" %in% names(survey_data)) survey_data[["orgname"]] else survey_data[[1]]
+  orgname <- trimws(as.character(org_col))
+  dashboard_id <- if ("dashboard_id" %in% names(survey_data)) {
+    trimws(as.character(survey_data[["dashboard_id"]]))
+  } else {
+    rep("", length(orgname))
+  }
+  dashboard_id[is.na(dashboard_id)] <- ""
+  keep <- nzchar(orgname)
+  stats::setNames(dashboard_id[keep], orgname[keep])
+}
+
 # Read a named scalar from a single-row data frame, with a fallback.
 get_named_value <- function(row, col, fallback = "N/A") {
   if (is.null(row) || !nrow(row) || !(col %in% names(row))) {

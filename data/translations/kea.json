@@ -26,7 +26,9 @@
     "label_organization_name": "Nomi di organizason",
     "label_organization_id": "ID di organizason",
     "placeholder_org_id": "Bo ID di organizason",
-    "btn_sign_in": "Entrar"
+    "btn_sign_in": "Entrar",
+    "error_required": "Pur favor skoji un organizason i nseri bu ID di organizason.",
+    "error_invalid": "Kel ID di organizason li ka ta kumbina ku organizason skujidu."
   },
   "organizations": {
     "page_title": "Prokura organizasons",
@@ -60,7 +62,7 @@
     "age_18_25": "18-25 anu",
     "age_26_plus": "26+ anu",
     "card_established_title": "Areas stabelesidu di ben-star",
-    "card_emerging_title": "Areas emergenti di ben-star (Privadu)"
+    "card_emerging_title": "Areas emergenti di ben-star"
   },
   "wheel": {
     "default_message": "Skobertu un segmentu pa sabê más.",

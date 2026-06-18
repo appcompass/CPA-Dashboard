@@ -26,7 +26,9 @@
     "label_organization_name": "Название организации",
     "label_organization_id": "ID организации",
     "placeholder_org_id": "Ваш ID организации",
-    "btn_sign_in": "Войти"
+    "btn_sign_in": "Войти",
+    "error_required": "Пожалуйста, выберите организацию и введите ID организации.",
+    "error_invalid": "Этот ID организации не соответствует выбранной организации."
   },
   "organizations": {
     "page_title": "Поиск организаций",
@@ -60,7 +62,7 @@
     "age_18_25": "18-25 лет",
     "age_26_plus": "26+ лет",
     "card_established_title": "Сформированные направления благополучия",
-    "card_emerging_title": "Новые направления благополучия (частные)"
+    "card_emerging_title": "Новые направления благополучия"
   },
   "wheel": {
     "default_message": "Выберите сегмент, чтобы узнать больше.",

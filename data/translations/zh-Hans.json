@@ -26,7 +26,9 @@
     "label_organization_name": "组织名称",
     "label_organization_id": "组织 ID",
     "placeholder_org_id": "您的组织 ID",
-    "btn_sign_in": "登录"
+    "btn_sign_in": "登录",
+    "error_required": "请选择一个组织并输入您的组织 ID。",
+    "error_invalid": "该组织 ID 与所选组织不匹配。"
   },
   "organizations": {
     "page_title": "搜索组织",
@@ -60,7 +62,7 @@
     "age_18_25": "18-25岁",
     "age_26_plus": "26岁以上",
     "card_established_title": "已建立的健康领域",
-    "card_emerging_title": "新兴健康领域（私密）"
+    "card_emerging_title": "新兴健康领域"
   },
   "wheel": {
     "default_message": "选择一个区段以了解更多。",
