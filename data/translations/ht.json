@@ -26,7 +26,9 @@
     "label_organization_name": "Non òganizasyon",
     "label_organization_id": "ID òganizasyon",
     "placeholder_org_id": "ID òganizasyon ou",
-    "btn_sign_in": "Konekte"
+    "btn_sign_in": "Konekte",
+    "error_required": "Tanpri chwazi yon òganizasyon epi antre ID òganizasyon ou.",
+    "error_invalid": "ID òganizasyon sa a pa koresponn ak òganizasyon ou chwazi a."
   },
   "organizations": {
     "page_title": "Chèche òganizasyon",
@@ -60,7 +62,7 @@
     "age_18_25": "18-25 zan",
     "age_26_plus": "26+ zan",
     "card_established_title": "Zòn byennèt etabli",
-    "card_emerging_title": "Zòn byennèt k ap parèt (Prive)"
+    "card_emerging_title": "Zòn byennèt k ap parèt"
   },
   "wheel": {
     "default_message": "Chwazi yon segman pou aprann plis.",

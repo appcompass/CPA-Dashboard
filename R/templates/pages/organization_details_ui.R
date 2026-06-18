@@ -1,4 +1,4 @@
-organization_details_ui <- function(lang = get_lang()) {
+organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
   organizations <- lang$organizations
   details_context <- get_organization_details_context(lang = lang)
 
@@ -71,8 +71,8 @@ organization_details_ui <- function(lang = get_lang()) {
             )
           ),
 
-          # Gender Identity card
-          div(
+          # Gender Identity card (restricted to logged-in organizations)
+          if (logged_in) div(
             class = "col-sm-12 col-lg-6",
             div(
               class = "card",
@@ -104,8 +104,8 @@ organization_details_ui <- function(lang = get_lang()) {
             )
           ),
 
-          # Additional Demographics card
-          div(
+          # Additional Demographics card (restricted to logged-in organizations)
+          if (logged_in) div(
             class = "col-12",
             div(
               class = "card",

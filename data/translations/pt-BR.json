@@ -26,7 +26,9 @@
     "label_organization_name": "Nome da organização",
     "label_organization_id": "ID da organização",
     "placeholder_org_id": "Seu ID de organização",
-    "btn_sign_in": "Entrar"
+    "btn_sign_in": "Entrar",
+    "error_required": "Selecione uma organização e insira o ID da sua organização.",
+    "error_invalid": "Esse ID de organização não corresponde à organização selecionada."
   },
   "organizations": {
     "page_title": "Pesquisar organizações",
@@ -60,7 +62,7 @@
     "age_18_25": "18-25 anos",
     "age_26_plus": "26+ anos",
     "card_established_title": "Áreas estabelecidas de bem-estar",
-    "card_emerging_title": "Áreas emergentes de bem-estar (Privado)"
+    "card_emerging_title": "Áreas emergentes de bem-estar"
   },
   "wheel": {
     "default_message": "Selecione um segmento para saber mais.",

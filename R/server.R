@@ -149,15 +149,59 @@ app_server <- function(input, output, session) {
   })
 
   output$login_nav_link <- renderUI({
-    req(!is_page("login"))
+    req(!is_page("login"), !authenticated())
     login_nav_link_ui(get_lang(lang_code()))
   })
 
-  org_names <- get_org_names()
+  survey_data <- load_survey_data()
+  org_names <- get_org_names(survey_data)
+  org_dashboard_ids <- get_org_dashboard_ids(survey_data)
 
   output$organizations_list <- renderUI({
     req(is_page("login"))
     organizations_list_ui(org_names)
+  })
+
+  login_message <- reactiveVal(NULL)
+  # Session-wide flag: once any organization logs in, the full (private) detail
+  # sections are unlocked across every organization's dashboard.
+  authenticated <- reactiveVal(FALSE)
+
+  # Validate the submitted Organization ID against the Dashboard ID stored for the
+  # selected organization. On success, route to that organization's dashboard.
+  observeEvent(input$login_submit, {
+    payload <- input$login_submit
+    org <- trimws(as.character(payload$org %||% ""))
+    entered_id <- trimws(as.character(payload$id %||% ""))
+    login <- get_lang(lang_code())$login
+
+    if (!nzchar(org) || !nzchar(entered_id)) {
+      login_message(login$error_required %||%
+        "Please select an organization and enter your Organization ID.")
+      return()
+    }
+
+    expected_id <- if (org %in% names(org_dashboard_ids)) org_dashboard_ids[[org]] else ""
+
+    if (nzchar(expected_id) && identical(tolower(entered_id), tolower(expected_id))) {
+      login_message(NULL)
+      authenticated(TRUE)
+      change_page(
+        paste0("organizations/details?id=", utils::URLencode(org, reserved = TRUE)),
+        session = session
+      )
+    } else {
+      login_message(login$error_invalid %||%
+        "That Organization ID does not match the selected organization.")
+    }
+  })
+
+  output$login_message <- renderUI({
+    msg <- login_message()
+    if (is.null(msg) || !nzchar(msg)) {
+      return(NULL)
+    }
+    div(class = "alert alert-danger mb-3", role = "alert", msg)
   })
 
   output$page_login <- renderUI({
@@ -169,7 +213,7 @@ app_server <- function(input, output, session) {
   })
 
   output$page_organization_details <- renderUI({
-    organization_details_ui(get_lang(lang_code()))
+    organization_details_ui(get_lang(lang_code()), logged_in = authenticated())
   })
 
   output$organization_details <- renderUI({

@@ -26,7 +26,9 @@
     "label_organization_name": "Organization Name",
     "label_organization_id": "Organization ID",
     "placeholder_org_id": "Your organization ID",
-    "btn_sign_in": "Sign in"
+    "btn_sign_in": "Sign in",
+    "error_required": "Please select an organization and enter your Organization ID.",
+    "error_invalid": "That Organization ID does not match the selected organization."
   },
   "organizations": {
     "page_title": "Search Organizations",
@@ -60,7 +62,7 @@
     "age_18_25": "18-25 yrs old",
     "age_26_plus": "26+ yrs old",
     "card_established_title": "Established Areas of Wellness",
-    "card_emerging_title": "Emerging Areas of Wellness (Private)"
+    "card_emerging_title": "Emerging Areas of Wellness"
   },
   "wheel": {
     "default_message": "Select a segment to learn more.",

@@ -26,7 +26,9 @@
     "label_organization_name": "اسم المنظمة",
     "label_organization_id": "معرّف المنظمة",
     "placeholder_org_id": "معرّف منظمتك",
-    "btn_sign_in": "تسجيل الدخول"
+    "btn_sign_in": "تسجيل الدخول",
+    "error_required": "يرجى اختيار منظمة وإدخال معرّف المنظمة.",
+    "error_invalid": "معرّف المنظمة هذا لا يطابق المنظمة المحددة."
   },
   "organizations": {
     "page_title": "البحث عن المنظمات",
@@ -60,7 +62,7 @@
     "age_18_25": "18-25 سنة",
     "age_26_plus": "26+ سنة",
     "card_established_title": "مجالات العافية الراسخة",
-    "card_emerging_title": "مجالات العافية الناشئة (خاصة)"
+    "card_emerging_title": "مجالات العافية الناشئة"
   },
   "wheel": {
     "default_message": "حدد قطاعاً لمعرفة المزيد.",
