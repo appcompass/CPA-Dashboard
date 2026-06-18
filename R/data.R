@@ -754,28 +754,38 @@ get_organization_details_context <- function(
   )
 }
 
-TRANSLATIONS_JSON_PATH <- file.path("data", "translations.json")
+TRANSLATIONS_DIR <- file.path("data", "translations")
 
 load_app_translations <- local({
   cached <- NULL
 
-  function(path = TRANSLATIONS_JSON_PATH) {
+  function(dir = TRANSLATIONS_DIR) {
     if (!is.null(cached)) {
       return(cached)
     }
 
-    if (!file.exists(path)) {
-      stop(sprintf("Expected translations file at '%s'.", path), call. = FALSE)
+    if (!dir.exists(dir)) {
+      stop(sprintf("Expected translations directory at '%s'.", dir), call. = FALSE)
     }
 
     if (!requireNamespace("jsonlite", quietly = TRUE)) {
       stop("Package 'jsonlite' is required. Run make install.", call. = FALSE)
     }
 
-    loaded <- jsonlite::fromJSON(path, simplifyVector = FALSE)
-    if (!is.list(loaded) || !length(loaded)) {
-      stop("Translations JSON is empty or invalid.", call. = FALSE)
+    files <- list.files(dir, pattern = "\\.json$", full.names = TRUE)
+    if (!length(files)) {
+      stop(sprintf("No .json files found in translations directory '%s'.", dir), call. = FALSE)
     }
+
+    loaded <- lapply(files, function(f) {
+      content <- jsonlite::fromJSON(f, simplifyVector = FALSE)
+      if (!is.list(content) || !length(content)) {
+        stop(sprintf("Translations file '%s' is empty or invalid.", f), call. = FALSE)
+      }
+      content
+    })
+    # Name each entry by its locale code (filename without .json)
+    names(loaded) <- tools::file_path_sans_ext(basename(files))
 
     cached <<- loaded
     cached
