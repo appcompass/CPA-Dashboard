@@ -993,10 +993,10 @@
       "checksum": "4f98ed77c00b5f2c5d45a2b4fbc2ecc6"
     },
     "Makefile": {
-      "checksum": "c30bcd3944bbae1a0ccab817518af8c3"
+      "checksum": "06907a492dc5614db7d716a10cd9cbb9"
     },
     "R/data.R": {
-      "checksum": "578fcc7e02c5c1735ebe7c8d1f66fcb9"
+      "checksum": "8d0a7a761529c52947ae01a77ebdd8a5"
     },
     "R/helpers.R": {
       "checksum": "3c5c6df2e6564f2870a4ca80b4ed5a0b"
@@ -1026,7 +1026,7 @@
       "checksum": "424dfcb903c624e6e0b68a73bd2b1352"
     },
     "R/templates/pages/organization_details_ui.R": {
-      "checksum": "5b257bce10c12ded92e4e5937a0f0d97"
+      "checksum": "516909af396f8a32b171eea569f5a7c0"
     },
     "R/templates/pages/organizations_ui.R": {
       "checksum": "c2fca058525bd7871e2cd7a15f48133e"
@@ -1035,7 +1035,7 @@
       "checksum": "87629f00affdcfc0d5bfc493965c6169"
     },
     "README.md": {
-      "checksum": "2c9d2bc45e6a1e05383943e0545df2ad"
+      "checksum": "3e3ebc80f042474263f19e706d2ee535"
     },
     "www/css/styles.css": {
       "checksum": "a804bcffdf49add24d3e84662bbe8931"
