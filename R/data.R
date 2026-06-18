@@ -231,11 +231,19 @@ assert_survey_data_startup_ready <- function(
 # None -> 0%, Don't know -> em dash, blank -> N/A.
 clean_pct <- function(x) {
   x <- trimws(as.character(x %||% ""))
-  if (!nzchar(x) || identical(x, "NA")) return("N/A")
-  if (identical(x, "None")) return("0%")
-  if (x %in% c("Don't know", "Dont know", "Don\u2019t know")) return("\u2014")
+  if (!nzchar(x) || identical(x, "NA")) {
+    return("N/A")
+  }
+  if (identical(x, "None")) {
+    return("0%")
+  }
+  if (x %in% c("Don't know", "Dont know", "Don\u2019t know")) {
+    return("\u2014")
+  }
   inside <- regmatches(x, regexpr("\\(([^)]*)\\)", x))
-  if (length(inside) && nzchar(inside)) return(gsub("[()]", "", inside))
+  if (length(inside) && nzchar(inside)) {
+    return(gsub("[()]", "", inside))
+  }
   x
 }
 
@@ -244,7 +252,9 @@ clean_pct <- function(x) {
 # "More than 10 years" -> ">10". Blank stays blank.
 clean_lengthserve <- function(x) {
   x <- trimws(as.character(x %||% ""))
-  if (!nzchar(x) || identical(x, "NA")) return("")
+  if (!nzchar(x) || identical(x, "NA")) {
+    return("")
+  }
   x <- sub("\\s*years?\\s*$", "", x, ignore.case = TRUE)
   x <- trimws(x)
   x <- sub("^less than\\s*", "<", x, ignore.case = TRUE)
@@ -258,20 +268,69 @@ escape_regex <- function(s) gsub("([][{}()*+?.\\^$|])", "\\\\\\1", s)
 # text_col is the "Other (please specify)" free-text column (occupational and
 # spiritual use *_6_TEXT because they carry an extra option).
 SURVEY_DIMENSIONS <- list(
-  list(key = "physical",      services_col = "Physical",      text_col = "Physical_5_TEXT",      eore_col = "PhysicalEorE",      gap_col = "PhysicalGap"),
-  list(key = "emotional",     services_col = "Emotional",     text_col = "Emotional_5_TEXT",     eore_col = "EmotionalEorE",     gap_col = "EmotionalGap"),
-  list(key = "intellectual",  services_col = "Intellectual",  text_col = "Intellectual_5_TEXT",  eore_col = "IntellectualEorE",  gap_col = "IntellectualGap"),
-  list(key = "occupational",  services_col = "Occupational",  text_col = "Occupational_6_TEXT",  eore_col = "OccupationalEorE",  gap_col = "OccupationalGap"),
-  list(key = "financial",     services_col = "Financial",     text_col = "Financial_5_TEXT",     eore_col = "FinancialEorE",     gap_col = "FinancialGap"),
-  list(key = "social",        services_col = "Social",        text_col = "Social_5_TEXT",        eore_col = "SocialEorE",        gap_col = "SocialGap"),
-  list(key = "environmental", services_col = "Environmental", text_col = "Environmental_5_TEXT", eore_col = "EnvironmentalEorE", gap_col = "EnvironmentalGap"),
-  list(key = "spiritual",     services_col = "Spiritual",     text_col = "Spiritual_6_TEXT",     eore_col = "SpiritualEorE",     gap_col = "SpiritualGap")
+  list(
+    key = "physical",
+    services_col = "Physical",
+    text_col = "Physical_5_TEXT",
+    eore_col = "PhysicalEorE",
+    gap_col = "PhysicalGap"
+  ),
+  list(
+    key = "emotional",
+    services_col = "Emotional",
+    text_col = "Emotional_5_TEXT",
+    eore_col = "EmotionalEorE",
+    gap_col = "EmotionalGap"
+  ),
+  list(
+    key = "intellectual",
+    services_col = "Intellectual",
+    text_col = "Intellectual_5_TEXT",
+    eore_col = "IntellectualEorE",
+    gap_col = "IntellectualGap"
+  ),
+  list(
+    key = "occupational",
+    services_col = "Occupational",
+    text_col = "Occupational_6_TEXT",
+    eore_col = "OccupationalEorE",
+    gap_col = "OccupationalGap"
+  ),
+  list(
+    key = "financial",
+    services_col = "Financial",
+    text_col = "Financial_5_TEXT",
+    eore_col = "FinancialEorE",
+    gap_col = "FinancialGap"
+  ),
+  list(
+    key = "social",
+    services_col = "Social",
+    text_col = "Social_5_TEXT",
+    eore_col = "SocialEorE",
+    gap_col = "SocialGap"
+  ),
+  list(
+    key = "environmental",
+    services_col = "Environmental",
+    text_col = "Environmental_5_TEXT",
+    eore_col = "EnvironmentalEorE",
+    gap_col = "EnvironmentalGap"
+  ),
+  list(
+    key = "spiritual",
+    services_col = "Spiritual",
+    text_col = "Spiritual_6_TEXT",
+    eore_col = "SpiritualEorE",
+    gap_col = "SpiritualGap"
+  )
 )
 
 # dashboard key -> translation label key (used to build data-active-categories).
 DIMENSION_LABEL_KEYS <- c(
   physical = "wellness_physical", emotional = "wellness_emotional",
-  intellectual = "wellness_intellectual", occupational = "wellness_occupational",
+  intellectual = "wellness_intellectual",
+  occupational = "wellness_occupational",
   financial = "wellness_financial", social = "wellness_social",
   environmental = "wellness_environmental", spiritual = "wellness_spiritual"
 )
@@ -322,7 +381,7 @@ build_orgservices_json <- function(row) {
   out <- list()
   for (d in SURVEY_DIMENSIONS) {
     eore <- trimws(as.character(row[[d$eore_col]] %||% ""))
-    gap  <- trimws(as.character(row[[d$gap_col]] %||% ""))
+    gap <- trimws(as.character(row[[d$gap_col]] %||% ""))
 
     state <- if (identical(eore, "Established")) {
       "established"
@@ -378,37 +437,36 @@ build_clean_survey <- function(raw) {
   pct <- function(col) unname(vapply(get_col(col), clean_pct, character(1)))
 
   clean <- data.frame(
-    dashboard_id       = trimws(get_col("Dashboard ID")),
+    dashboard_id = trimws(get_col("Dashboard ID")),
     irb_participant_id = trimws(get_col("IRB Participant ID")),
-    orgname            = trimws(get_col("Organization")),
-    lengthserve        = unname(vapply(get_col("YearsServed"), clean_lengthserve, character(1))),
+    orgname = trimws(get_col("Organization")),
+    lengthserve = unname(vapply(get_col("YearsServed"), clean_lengthserve, character(1))),
 
     # Youth served (rendered today).
-    pct_age_12_17  = pct("Age#1_1"),
-    pct_age_18_25  = pct("Age#1_2"),
+    pct_age_12_17 = pct("Age#1_1"),
+    pct_age_18_25 = pct("Age#1_2"),
     pct_age_over26 = pct("Age#1_3"),
-    pct_women      = pct("Gender#1_1"),
-    pct_men        = pct("Gender#1_2"),
-    pct_gender     = pct("Gender#1_3"),
+    pct_women = pct("Gender#1_1"),
+    pct_men = pct("Gender#1_2"),
+    pct_gender = pct("Gender#1_3"),
     pct_disabilities = pct("OtherDem#1_1"),
-    pct_spiritual    = pct("OtherDem#1_2"),
-    pct_race_eth     = pct("OtherDem#1_3"),
-    pct_us_born      = pct("OtherDem#1_4"),
-    pct_queer        = pct("OtherDem#1_5"),
+    pct_spiritual = pct("OtherDem#1_2"),
+    pct_race_eth = pct("OtherDem#1_3"),
+    pct_us_born = pct("OtherDem#1_4"),
+    pct_queer = pct("OtherDem#1_5"),
 
     # Employees (carried in parallel; not yet rendered. Drop this block for youth-only).
-    emp_pct_age_12_17  = pct("Age#2_1"),
-    emp_pct_age_18_25  = pct("Age#2_2"),
+    emp_pct_age_12_17 = pct("Age#2_1"),
+    emp_pct_age_18_25 = pct("Age#2_2"),
     emp_pct_age_over26 = pct("Age#2_3"),
-    emp_pct_women      = pct("Gender#2_1"),
-    emp_pct_men        = pct("Gender#2_2"),
-    emp_pct_gender     = pct("Gender#2_3"),
+    emp_pct_women = pct("Gender#2_1"),
+    emp_pct_men = pct("Gender#2_2"),
+    emp_pct_gender = pct("Gender#2_3"),
     emp_pct_disabilities = pct("OtherDem#2_1"),
-    emp_pct_spiritual    = pct("OtherDem#2_2"),
-    emp_pct_race_eth     = pct("OtherDem#2_3"),
-    emp_pct_us_born      = pct("OtherDem#2_4"),
-    emp_pct_queer        = pct("OtherDem#2_5"),
-
+    emp_pct_spiritual = pct("OtherDem#2_2"),
+    emp_pct_race_eth = pct("OtherDem#2_3"),
+    emp_pct_us_born = pct("OtherDem#2_4"),
+    emp_pct_queer = pct("OtherDem#2_5"),
     stringsAsFactors = FALSE
   )
 
@@ -445,7 +503,7 @@ merge_survey_data <- function(existing, new_rows) {
   existing <- existing[, all_cols, drop = FALSE]
   new_rows <- new_rows[, all_cols, drop = FALSE]
 
-  combined <- rbind(existing, new_rows)  # new rows last so they win on dedup
+  combined <- rbind(existing, new_rows) # new rows last so they win on dedup
 
   did <- if ("dashboard_id" %in% names(combined)) trimws(as.character(combined$dashboard_id)) else rep("", nrow(combined))
   did[is.na(did)] <- ""
@@ -655,8 +713,7 @@ get_organization_details_wheel_categories <- function(row, lang, status_value) {
   if (is.null(row) || !nrow(row)) {
     return(character(0))
   }
-  state <- switch(
-    status_value,
+  state <- switch(status_value,
     "Established" = "established",
     "Emerging" = "emerging",
     tolower(status_value)

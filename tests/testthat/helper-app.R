@@ -55,7 +55,8 @@ if (!nzchar(Sys.getenv("CPA_DATA_KEY")) && nzchar(Sys.getenv("CI"))) {
   .fixture_clean <- tempfile(fileext = ".csv")
   write.csv(
     transform_survey_export(.fixture_raw),
-    .fixture_clean, row.names = FALSE, na = ""
+    .fixture_clean,
+    row.names = FALSE, na = ""
   )
   encrypt_data_file(
     input_path = .fixture_clean,

@@ -1,6 +1,56 @@
 organizations_ui <- function(lang = get_lang()) {
   organizations <- lang$organizations
-  org_names <- get_org_names()
+  survey_data <- load_survey_data()
+  org_names <- get_org_names(survey_data)
+
+  # Dimension -> Tabler text color for the established-areas badges, matching the
+  # order/colors of the source template. Labels come from the translations.
+  established_badge_colors <- c(
+    physical = "text-blue",
+    emotional = "text-azure",
+    intellectual = "text-purple",
+    occupational = "text-red",
+    financial = "text-yellow",
+    social = "text-green",
+    environmental = "text-teal",
+    spiritual = "text-cyan"
+  )
+
+  # The dimension labels repeat a shared word (e.g. "Physical wellness",
+  # "Emotional wellness"). Drop the word common to every label so the badges read
+  # just "Physical", "Emotional", etc. Computing the common word keeps this working
+  # across languages instead of hard-coding "wellness".
+  dimension_common_words <- {
+    word_sets <- lapply(DIMENSION_LABEL_KEYS, function(label_key) {
+      tolower(strsplit(trimws(organizations[[label_key]] %||% ""), "\\s+")[[1]])
+    })
+    Reduce(intersect, word_sets)
+  }
+
+  strip_common_words <- function(label) {
+    words <- strsplit(trimws(label), "\\s+")[[1]]
+    kept <- words[!tolower(words) %in% dimension_common_words]
+    if (!length(kept)) label else paste(kept, collapse = " ")
+  }
+
+  render_established_badges <- function(orgservices) {
+    badges <- lapply(names(DIMENSION_LABEL_KEYS), function(key) {
+      dim <- orgservices[[key]]
+      if (is.null(dim) || !identical(dim$state, "established")) {
+        return(NULL)
+      }
+      label <- organizations[[DIMENSION_LABEL_KEYS[[key]]]]
+      if (is.null(label) || !nzchar(label)) {
+        return(NULL)
+      }
+      label <- strip_common_words(label)
+      tags$span(
+        class = paste("badge badge-outline", established_badge_colors[[key]], "badge-sm"),
+        label
+      )
+    })
+    Filter(Negate(is.null), badges)
+  }
 
   serving_icon <- tags$svg(
     xmlns = "http://www.w3.org/2000/svg",
@@ -78,10 +128,16 @@ organizations_ui <- function(lang = get_lang()) {
     }))
   }
 
-  organization_card <- function(org_name, org_index) {
+  organization_card <- function(org_name, org_index, orgservices = list(), lengthserve = "") {
     initials <- toupper(substr(gsub("[^A-Za-z0-9]", "", org_name), 1, 2))
     if (!nzchar(initials)) {
       initials <- "OR"
+    }
+
+    serving_text <- if (nzchar(lengthserve) && !identical(lengthserve, "N/A")) {
+      paste(lengthserve, organizations$card_serving_text)
+    } else {
+      organizations$card_serving_text
     }
 
     div(
@@ -123,12 +179,16 @@ organizations_ui <- function(lang = get_lang()) {
                 class = "col-md",
                 div(
                   class = "mt-3 list-inline list-inline-dots mb-0 text-secondary d-sm-block d-none",
-                  div(class = "list-inline-item", serving_icon, organizations$card_serving_text)
+                  div(class = "list-inline-item", serving_icon, serving_text)
                 ),
                 div(
                   class = "mt-3 list mb-0 text-secondary d-block d-sm-none",
-                  div(class = "list-item", serving_icon, organizations$card_serving_text)
+                  div(class = "list-item", serving_icon, serving_text)
                 )
+              ),
+              div(
+                class = "col-md-auto",
+                div(class = "mt-3 badges-list", render_established_badges(orgservices))
               )
             )
           )
@@ -233,7 +293,11 @@ organizations_ui <- function(lang = get_lang()) {
                 )
               } else {
                 tagList(lapply(seq_along(org_names), function(index) {
-                  div(class = "col-12", organization_card(org_names[[index]], index))
+                  org_name <- org_names[[index]]
+                  row <- get_organization_details_row(org_name = org_name, survey_data = survey_data)
+                  orgservices <- parse_orgservices_json(get_named_value(row, "orgservices_json", ""))
+                  lengthserve <- get_named_value(row, "lengthserve", fallback = "")
+                  div(class = "col-12", organization_card(org_name, index, orgservices, lengthserve))
                 }))
               }
             )

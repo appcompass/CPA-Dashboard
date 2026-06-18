@@ -53,8 +53,10 @@ test_that("get_org_names returns a sorted unique character vector", {
 })
 
 test_that("get_org_names trims whitespace and drops blanks", {
-  fake <- data.frame(orgname = c("  Alpha Org ", "Beta Org", "", "  ", "Alpha Org"),
-                     stringsAsFactors = FALSE)
+  fake <- data.frame(
+    orgname = c("  Alpha Org ", "Beta Org", "", "  ", "Alpha Org"),
+    stringsAsFactors = FALSE
+  )
   expect_equal(get_org_names(fake), c("Alpha Org", "Beta Org"))
 })
 
@@ -170,10 +172,14 @@ test_that("build_orgservices_json derives state from EorE then Gap", {
 # ---- cumulative append / merge ----
 
 test_that("merge_survey_data appends new orgs and dedups by dashboard_id (newest wins)", {
-  existing <- data.frame(dashboard_id = c("D1", "D2"), orgname = c("A", "B"),
-                         pct_women = c("0%", "26%-60%"), stringsAsFactors = FALSE)
-  new_rows <- data.frame(dashboard_id = c("D2", "D3"), orgname = c("B", "C"),
-                         pct_women = c("61%-100%", "1%-25%"), stringsAsFactors = FALSE)
+  existing <- data.frame(
+    dashboard_id = c("D1", "D2"), orgname = c("A", "B"),
+    pct_women = c("0%", "26%-60%"), stringsAsFactors = FALSE
+  )
+  new_rows <- data.frame(
+    dashboard_id = c("D2", "D3"), orgname = c("B", "C"),
+    pct_women = c("61%-100%", "1%-25%"), stringsAsFactors = FALSE
+  )
   merged <- merge_survey_data(existing, new_rows)
   expect_equal(sort(merged$dashboard_id), c("D1", "D2", "D3"))
   expect_equal(merged$pct_women[merged$dashboard_id == "D2"], "61%-100%")
@@ -207,15 +213,19 @@ test_that("build_encrypted_survey accumulates across two weekly runs", {
   enc <- tempfile(fileext = ".enc")
 
   r1 <- tempfile(fileext = ".csv")
-  write_raw_export(r1, c("D1", "D2"), c("Org A", "Org B"),
-                   c("8+ years", "4-7 years"), c("A lot (61%-100%)", "None"))
+  write_raw_export(
+    r1, c("D1", "D2"), c("Org A", "Org B"),
+    c("8+ years", "4-7 years"), c("A lot (61%-100%)", "None")
+  )
   build_encrypted_survey(input_csv = r1, output_enc = enc, passphrase = key, append = TRUE)
   wk1 <- load_survey_data(encrypted_path = enc, passphrase = key)
   expect_equal(nrow(wk1), 2L)
 
   r2 <- tempfile(fileext = ".csv")
-  write_raw_export(r2, c("D2", "D3"), c("Org B", "Org C"),
-                   c("8+ years", "1-3 years"), c("Some (26%-60%)", "A little (1%-25%)"))
+  write_raw_export(
+    r2, c("D2", "D3"), c("Org B", "Org C"),
+    c("8+ years", "1-3 years"), c("Some (26%-60%)", "A little (1%-25%)")
+  )
   build_encrypted_survey(input_csv = r2, output_enc = enc, passphrase = key, append = TRUE)
   wk2 <- load_survey_data(encrypted_path = enc, passphrase = key)
 
@@ -227,8 +237,10 @@ test_that("build_encrypted_survey accumulates across two weekly runs", {
 # ---- name-based row + value access ----
 
 test_that("get_organization_details_row matches by orgname", {
-  data <- data.frame(orgname = c("Org A", "Org B"), lengthserve = c("1", "2"),
-                     stringsAsFactors = FALSE)
+  data <- data.frame(
+    orgname = c("Org A", "Org B"), lengthserve = c("1", "2"),
+    stringsAsFactors = FALSE
+  )
   row <- get_organization_details_row("Org B", data)
   expect_equal(row$orgname, "Org B")
   expect_equal(row$lengthserve, "2")
