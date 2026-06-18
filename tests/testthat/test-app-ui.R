@@ -63,8 +63,8 @@ test_that("organization_details_ui renders detail cards", {
   withr::local_dir(project_root)
 
   detail_data <- load_organization_details_data()
-  first_org_name <- trimws(detail_data[[1]][1])
-  first_org_years <- trimws(detail_data[[2]][1])
+  first_org_name <- trimws(detail_data[["orgname"]][1])
+  first_org_years <- trimws(detail_data[["lengthserve"]][1])
 
   html <- render_html(organization_details_ui())
 
@@ -79,7 +79,7 @@ test_that("organization_details_ui renders the first org when no id is supplied"
   withr::local_dir(project_root)
 
   detail_data <- load_organization_details_data()
-  first_org_name <- trimws(detail_data[[1]][1])
+  first_org_name <- trimws(detail_data[["orgname"]][1])
 
   html <- render_html(organization_details_ui())
 
