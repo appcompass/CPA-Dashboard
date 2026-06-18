@@ -50,7 +50,9 @@
     "wellness_physical_screenings": "Baadhitaannada caafimaadka",
     "wellness_physical_other": "Kale",
     "card_established_areas_label": "Meelaha fayoqabka ee la aasaasay",
-    "card_serving_text": "Sano oo adeegsan dhalinyarada Greater Boston"
+    "card_serving_text": "Sano oo adeegsan dhalinyarada Greater Boston",
+    "search_no_results": "Ma jiro urur u dhigma raadintaada.",
+    "search_empty_data": "Ma jiro urur diyaar ah oo ku jira xogta la kaydiyay."
   },
   "organization_details": {
     "org_name_placeholder": "Magaca ururka",

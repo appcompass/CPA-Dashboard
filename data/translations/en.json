@@ -50,7 +50,9 @@
     "wellness_physical_screenings": "Health screenings",
     "wellness_physical_other": "Other",
     "card_established_areas_label": "Established Areas of Wellness",
-    "card_serving_text": "Years Serving youth in Greater Boston"
+    "card_serving_text": "Years Serving youth in Greater Boston",
+    "search_no_results": "No organizations match your search.",
+    "search_empty_data": "No organizations are available in the stored data."
   },
   "organization_details": {
     "org_name_placeholder": "Organization Name",

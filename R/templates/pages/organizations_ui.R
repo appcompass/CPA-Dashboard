@@ -1,7 +1,24 @@
 organizations_ui <- function(lang = get_lang()) {
   organizations <- lang$organizations
+  wheel <- lang$wheel
   survey_data <- load_survey_data()
   org_names <- get_org_names(survey_data)
+
+  # Sub-categories shown under each wellness dimension in the filter sidebar,
+  # mirroring the wellness wheel taxonomy (www/js/app.js WHEEL_META).
+  dimension_sub_keys <- list(
+    physical = c("wellness_physical_fitness", "wellness_physical_nutrition", "wellness_physical_screenings", "wellness_physical_other"),
+    emotional = c("sub_emotional_1", "sub_emotional_2", "sub_emotional_3", "wellness_physical_other"),
+    intellectual = c("sub_intellectual_1", "sub_intellectual_2", "sub_intellectual_3", "wellness_physical_other"),
+    occupational = c("sub_occupational_1", "sub_occupational_2", "sub_occupational_3", "sub_occupational_4", "wellness_physical_other"),
+    financial = c("sub_financial_1", "sub_financial_2", "sub_financial_3", "wellness_physical_other"),
+    social = c("sub_social_1", "sub_social_2", "sub_social_3", "wellness_physical_other"),
+    environmental = c("sub_environmental_1", "sub_environmental_2", "sub_environmental_3", "wellness_physical_other"),
+    spiritual = c("sub_spiritual_1", "sub_spiritual_2", "sub_spiritual_3", "sub_spiritual_4", "wellness_physical_other")
+  )
+
+  # Sub-category labels live in either the organizations or wheel translation scope.
+  sub_label <- function(key) organizations[[key]] %||% wheel[[key]] %||% key
 
   # Dimension -> Tabler text color for the established-areas badges, matching the
   # order/colors of the source template. Labels come from the translations.
@@ -68,63 +85,44 @@ organizations_ui <- function(lang = get_lang()) {
     tags$path(d = "M15 19l2 2l4 -4")
   )
 
-  wellness_group <- function(title, value, checked = FALSE, include_children = TRUE) {
-    checkbox <- function(checkbox_label, checkbox_checked = checked) {
-      tags$label(
-        class = "form-check mt-2",
-        tags$input(
-          type = "checkbox",
-          class = "form-check-input",
-          name = "form-type[]",
-          value = "1",
-          checked = if (checkbox_checked) NA else NULL
-        ),
-        tags$span(class = "form-check-label", checkbox_label)
-      )
-    }
+  # Dimension keys whose state matches `state_value` for a given organization.
+  # Drives both the card data attributes and the sidebar filter matching.
+  dimension_keys_by_state <- function(orgservices, state_value) {
+    matched <- Filter(function(key) {
+      dim <- orgservices[[key]]
+      !is.null(dim) && identical(dim$state, state_value)
+    }, names(DIMENSION_LABEL_KEYS))
+    unlist(matched, use.names = FALSE)
+  }
 
-    children <- if (!include_children) {
-      NULL
-    } else if (identical(title, organizations$wellness_physical)) {
-      tagList(
-        checkbox(organizations$wellness_physical_fitness),
-        checkbox(organizations$wellness_physical_nutrition),
-        checkbox(organizations$wellness_physical_screenings),
-        checkbox(organizations$wellness_physical_other)
-      )
-    } else {
-      checkbox("...")
-    }
-
+  # A checkbox per wellness dimension with its sub-categories nested underneath.
+  # Every box is tagged so the client-side filter can match it against each
+  # organization's areas; children inherit their parent's dimension. `group` is
+  # "established" or "emerging".
+  filter_checkbox <- function(group, dimension, role, label) {
     tags$label(
-      class = "form-check",
+      class = if (identical(role, "child")) "form-check mt-1" else "form-check",
       tags$input(
         type = "checkbox",
         class = "form-check-input",
-        name = "form-type[]",
-        value = value,
-        checked = if (checked) NA else NULL
+        `data-filter-group` = group,
+        `data-filter-dimension` = dimension,
+        `data-filter-role` = role
       ),
-      tags$span(class = "form-check-label", title, children)
+      tags$span(class = "form-check-label", label)
     )
   }
 
-  wellness_items <- list(
-    list(title = organizations$wellness_physical, value = "1"),
-    list(title = organizations$wellness_emotional, value = "2"),
-    list(title = organizations$wellness_intellectual, value = "3"),
-    list(title = organizations$wellness_occupational, value = "4"),
-    list(title = organizations$wellness_financial, value = "5"),
-    list(title = organizations$wellness_social, value = "6"),
-    list(title = organizations$wellness_environmental, value = "7", include_children = FALSE),
-    list(title = organizations$wellness_spiritual, value = "8")
-  )
-
-  render_wellness_groups <- function(check_physical = FALSE) {
-    tagList(lapply(wellness_items, function(item) {
-      include_children <- if (is.null(item$include_children)) TRUE else item$include_children
-      is_checked <- check_physical && identical(item$value, "1")
-      wellness_group(item$title, item$value, checked = is_checked, include_children = include_children)
+  render_wellness_groups <- function(group) {
+    tagList(lapply(names(DIMENSION_LABEL_KEYS), function(key) {
+      children <- lapply(dimension_sub_keys[[key]], function(sub_key) {
+        filter_checkbox(group, key, "child", sub_label(sub_key))
+      })
+      div(
+        class = "mb-2",
+        filter_checkbox(group, key, "parent", organizations[[DIMENSION_LABEL_KEYS[[key]]]]),
+        div(class = "ms-4", children)
+      )
     }))
   }
 
@@ -215,33 +213,14 @@ organizations_ui <- function(lang = get_lang()) {
                 div(
                   class = "col",
                   tags$input(
+                    id = "organizations-search",
                     type = "text",
                     class = "form-control",
-                    placeholder = organizations$search_placeholder
+                    placeholder = organizations$search_placeholder,
+                    autocomplete = "off",
+                    `aria-label` = organizations$search_placeholder
                   )
                 ),
-                div(
-                  class = "col-auto",
-                  a(
-                    href = "#",
-                    class = "btn btn-2 btn-icon",
-                    `aria-label` = "Button",
-                    tags$svg(
-                      xmlns = "http://www.w3.org/2000/svg",
-                      width = "24",
-                      height = "24",
-                      viewBox = "0 0 24 24",
-                      fill = "none",
-                      stroke = "currentColor",
-                      `stroke-width` = "2",
-                      `stroke-linecap` = "round",
-                      `stroke-linejoin` = "round",
-                      class = "icon icon-2",
-                      tags$path(d = "M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"),
-                      tags$path(d = "M21 21l-6 -6")
-                    )
-                  )
-                )
               )
             )
           )
@@ -257,25 +236,27 @@ organizations_ui <- function(lang = get_lang()) {
           div(
             class = "col-md-3",
             tags$form(
+              id = "organizations-filter",
               action = "./",
               method = "get",
               autocomplete = "off",
               novalidate = NA,
+              # Filtering is live; never let the form do a GET navigation/reload.
+              onsubmit = "return false;",
               class = "sticky-top",
               div(class = "form-label", organizations$filter_established_label),
               div(
                 class = "mb-4",
-                render_wellness_groups(check_physical = TRUE)
-              ),
-              div(class = "form-label", organizations$filter_emerging_label),
-              div(
-                class = "mb-4",
-                render_wellness_groups(check_physical = FALSE)
+                render_wellness_groups("established")
               ),
               div(
                 class = "mt-5",
-                tags$button(class = "btn btn-primary w-100", organizations$btn_confirm_filter),
-                a(href = "#", class = "btn btn-link w-100", organizations$btn_reset_filter)
+                tags$button(
+                  type = "button",
+                  id = "organizations-filter-reset",
+                  class = "btn btn-link w-100",
+                  organizations$btn_reset_filter
+                )
               )
             )
           ),
@@ -283,22 +264,40 @@ organizations_ui <- function(lang = get_lang()) {
             class = "col-md-9",
             div(
               class = "row row-cards",
+              id = "organizations-results",
               if (!length(org_names)) {
                 div(
                   class = "col-12",
                   div(
                     class = "alert alert-info",
-                    "No organizations are available in the stored data."
+                    organizations$search_empty_data %||%
+                      "No organizations are available in the stored data."
                   )
                 )
               } else {
-                tagList(lapply(seq_along(org_names), function(index) {
-                  org_name <- org_names[[index]]
-                  row <- get_organization_details_row(org_name = org_name, survey_data = survey_data)
-                  orgservices <- parse_orgservices_json(get_named_value(row, "orgservices_json", ""))
-                  lengthserve <- get_named_value(row, "lengthserve", fallback = "")
-                  div(class = "col-12", organization_card(org_name, index, orgservices, lengthserve))
-                }))
+                tagList(
+                  lapply(seq_along(org_names), function(index) {
+                    org_name <- org_names[[index]]
+                    row <- get_organization_details_row(org_name = org_name, survey_data = survey_data)
+                    orgservices <- parse_orgservices_json(get_named_value(row, "orgservices_json", ""))
+                    lengthserve <- get_named_value(row, "lengthserve", fallback = "")
+                    div(
+                      class = "col-12 organization-result",
+                      `data-org-name` = tolower(org_name),
+                      `data-established` = paste(dimension_keys_by_state(orgservices, "established"), collapse = ","),
+                      organization_card(org_name, index, orgservices, lengthserve)
+                    )
+                  }),
+                  div(
+                    id = "organizations-no-results",
+                    class = "col-12 d-none",
+                    div(
+                      class = "alert alert-info",
+                      organizations$search_no_results %||%
+                        "No organizations match your search."
+                    )
+                  )
+                )
               }
             )
           )

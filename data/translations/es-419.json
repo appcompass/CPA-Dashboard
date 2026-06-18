@@ -50,7 +50,9 @@
     "wellness_physical_screenings": "Exámenes de salud",
     "wellness_physical_other": "Otro",
     "card_established_areas_label": "Áreas establecidas de bienestar",
-    "card_serving_text": "Años sirviendo a jóvenes en Greater Boston"
+    "card_serving_text": "Años sirviendo a jóvenes en Greater Boston",
+    "search_no_results": "Ninguna organización coincide con su búsqueda.",
+    "search_empty_data": "No hay organizaciones disponibles en los datos almacenados."
   },
   "organization_details": {
     "org_name_placeholder": "Nombre de la organización",

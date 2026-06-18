@@ -50,7 +50,9 @@
     "wellness_physical_screenings": "Dépistages de santé",
     "wellness_physical_other": "Autre",
     "card_established_areas_label": "Domaines de bien-être établis",
-    "card_serving_text": "Années au service des jeunes à Greater Boston"
+    "card_serving_text": "Années au service des jeunes à Greater Boston",
+    "search_no_results": "Aucune organisation ne correspond à votre recherche.",
+    "search_empty_data": "Aucune organisation n'est disponible dans les données enregistrées."
   },
   "organization_details": {
     "org_name_placeholder": "Nom de l'organisation",

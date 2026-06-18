@@ -50,7 +50,9 @@
     "wellness_physical_screenings": "الفحوصات الصحية",
     "wellness_physical_other": "أخرى",
     "card_established_areas_label": "مجالات العافية الراسخة",
-    "card_serving_text": "سنوات خدمة الشباب في منطقة غريتر بوسطن"
+    "card_serving_text": "سنوات خدمة الشباب في منطقة غريتر بوسطن",
+    "search_no_results": "لا توجد منظمات تطابق بحثك.",
+    "search_empty_data": "لا توجد منظمات متاحة في البيانات المخزنة."
   },
   "organization_details": {
     "org_name_placeholder": "اسم المنظمة",

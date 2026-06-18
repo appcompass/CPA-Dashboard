@@ -50,7 +50,9 @@
     "wellness_physical_screenings": "健康檢查",
     "wellness_physical_other": "其他",
     "card_established_areas_label": "已建立健康範疇",
-    "card_serving_text": "於大波士頓地區服務青年嘅年數"
+    "card_serving_text": "於大波士頓地區服務青年嘅年數",
+    "search_no_results": "冇機構符合您嘅搜尋。",
+    "search_empty_data": "儲存嘅數據入面冇可用嘅機構。"
   },
   "organization_details": {
     "org_name_placeholder": "機構名稱",

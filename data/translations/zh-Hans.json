@@ -50,7 +50,9 @@
     "wellness_physical_screenings": "健康筛查",
     "wellness_physical_other": "其他",
     "card_established_areas_label": "已建立的健康领域",
-    "card_serving_text": "服务大波士顿地区青年的年数"
+    "card_serving_text": "服务大波士顿地区青年的年数",
+    "search_no_results": "没有符合您搜索的组织。",
+    "search_empty_data": "存储的数据中没有可用的组织。"
   },
   "organization_details": {
     "org_name_placeholder": "组织名称",
