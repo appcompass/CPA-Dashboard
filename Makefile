@@ -8,7 +8,7 @@ help: ## Show available targets and descriptions
 	@awk 'BEGIN {FS = ":.*## "; printf "Usage:\n  make <target>\n\nTargets:\n"} /^[a-zA-Z_-]+:.*## / {printf "  %-10s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 install: ## Install required R packages (shiny, shiny.router, testthat, openssl, digest, rsconnect)
-	@$(RSCRIPT) -e "install.packages(c('shiny', 'shiny.router', 'testthat', 'openssl', 'digest', 'rsconnect'), repos = 'https://cloud.r-project.org')"
+	@$(RSCRIPT) -e "install.packages(c('shiny', 'shiny.router', 'testthat', 'openssl', 'digest', 'jsonlite', 'withr', 'rsconnect'), repos = 'https://cloud.r-project.org')"
 
 test: ## Run testthat tests from tests/testthat
 	@$(RSCRIPT) -e "library(testthat); test_dir('tests/testthat', reporter = 'progress')"

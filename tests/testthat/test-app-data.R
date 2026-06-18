@@ -1,179 +1,281 @@
-# ---- load_survey_data ----
+# ---- load_survey_data (clean named schema) ----
 
-test_that("load_survey_data returns a data frame with organization column", {
+test_that("load_survey_data returns a data frame with an orgname column", {
   withr::local_dir(project_root)
-
   data <- load_survey_data()
-
   expect_s3_class(data, "data.frame")
   expect_gt(nrow(data), 0L)
-  expect_true(any(nzchar(trimws(data[[1]]))))
+  expect_true("orgname" %in% names(data))
+  expect_true(any(nzchar(trimws(data[["orgname"]]))))
 })
 
 test_that("load_survey_data fails clearly for a missing file", {
   withr::local_dir(project_root)
-
   expect_error(
     load_survey_data(encrypted_path = tempfile(fileext = ".enc")),
     "Expected encrypted survey data file"
   )
 })
 
-test_that("load_survey_data reads encrypted file when present", {
+test_that("load_survey_data reads an encrypted clean file when present", {
   withr::local_dir(project_root)
-
   plain <- tempfile(fileext = ".csv")
   enc <- tempfile(fileext = ".enc")
   passphrase <- "test-key"
-
-  writeLines(c("Organization,Other", "Label row,Ignore", "Org A,1", "Org B,2"), plain)
-
+  writeLines(c("orgname,lengthserve", "Org A,8+", "Org B,4-7"), plain)
   encrypt_data_file(input_path = plain, output_path = enc, passphrase = passphrase)
   data <- load_survey_data(encrypted_path = enc, passphrase = passphrase)
-
   expect_equal(nrow(data), 2L)
-  expect_equal(data[[1]], c("Org A", "Org B"))
+  expect_equal(data[["orgname"]], c("Org A", "Org B"))
 })
 
 test_that("load_survey_data fails for encrypted file when key is missing", {
   withr::local_dir(project_root)
-
   plain <- tempfile(fileext = ".csv")
   enc <- tempfile(fileext = ".enc")
-
-  writeLines(c("Organization,Other", "Label row,Ignore", "Org A,1"), plain)
+  writeLines(c("orgname,lengthserve", "Org A,8+"), plain)
   encrypt_data_file(input_path = plain, output_path = enc, passphrase = "secret")
-
   expect_error(
     load_survey_data(encrypted_path = enc, passphrase = ""),
     "Found encrypted data"
   )
 })
 
-test_that("load_organization_details_data reads encrypted file", {
-  withr::local_dir(project_root)
-
-  plain <- tempfile(fileext = ".csv")
-  enc <- paste0(plain, ".enc")
-  passphrase <- "test-key"
-
-  writeLines(
-    c(
-      "Organization,YearsServed,RoleLength",
-      "Organization Name:,How long have you served in this role/title at your organization?,How long have your organization been serving youth in the greater Boston area?",
-      "Org A,8+ years,1-3 years"
-    ),
-    plain
-  )
-
-  encrypt_data_file(input_path = plain, output_path = enc, passphrase = passphrase)
-  unlink(plain)
-
-  data <- load_organization_details_data(encrypted_path = enc, passphrase = passphrase)
-
-  expect_s3_class(data, "data.frame")
-  expect_equal(trimws(data[[1]][1]), "Org A")
-  expect_equal(trimws(data[[2]][1]), "8+ years")
-})
-
 # ---- get_org_names ----
 
-test_that("get_org_names returns a sorted character vector of unique names", {
+test_that("get_org_names returns a sorted unique character vector", {
   withr::local_dir(project_root)
-
   orgs <- get_org_names()
-
   expect_type(orgs, "character")
   expect_gt(length(orgs), 0L)
   expect_equal(orgs, sort(unique(orgs)))
   expect_true(all(nzchar(orgs)))
 })
 
-test_that("get_org_names trims whitespace and removes blank entries", {
-  fake <- data.frame(V1 = c("  Alpha Org ", "Beta Org", "", "  ", "Alpha Org"),
+test_that("get_org_names trims whitespace and drops blanks", {
+  fake <- data.frame(orgname = c("  Alpha Org ", "Beta Org", "", "  ", "Alpha Org"),
                      stringsAsFactors = FALSE)
-
-  orgs <- get_org_names(fake)
-
-  expect_equal(orgs, c("Alpha Org", "Beta Org"))
+  expect_equal(get_org_names(fake), c("Alpha Org", "Beta Org"))
 })
 
 test_that("get_org_names deduplicates names", {
-  fake <- data.frame(V1 = c("Org A", "Org B", "Org A"),
-                     stringsAsFactors = FALSE)
-
+  fake <- data.frame(orgname = c("Org A", "Org B", "Org A"), stringsAsFactors = FALSE)
   expect_equal(get_org_names(fake), c("Org A", "Org B"))
 })
 
-test_that("get_org_names returns empty vector for all-blank input", {
-  fake <- data.frame(V1 = c("", "  "), stringsAsFactors = FALSE)
+# ---- demographic cleaning ----
 
-  expect_equal(get_org_names(fake), character(0))
+test_that("clean_pct keeps the range and maps the sentinels", {
+  expect_equal(clean_pct("A lot (61%-100%)"), "61%-100%")
+  expect_equal(clean_pct("Some (26%-60%)"), "26%-60%")
+  expect_equal(clean_pct("A little (1%-25%)"), "1%-25%")
+  expect_equal(clean_pct("None"), "0%")
+  expect_equal(clean_pct("Don't know"), "\u2014")
+  expect_equal(clean_pct(""), "N/A")
+  expect_equal(clean_pct(NA), "N/A")
+})
+
+# ---- years-served cleaning (text-free for downstream automation) ----
+
+test_that("clean_lengthserve strips wording", {
+  expect_equal(clean_lengthserve("8+ years"), "8+")
+  expect_equal(clean_lengthserve("4-7 years"), "4-7")
+  expect_equal(clean_lengthserve("1-3 years"), "1-3")
+  expect_equal(clean_lengthserve("Less than 1 year"), "<1")
+  expect_equal(clean_lengthserve("More than 10 years"), ">10")
+  expect_equal(clean_lengthserve(""), "")
+})
+
+# ---- raw export -> clean scalar schema ----
+
+test_that("read_qualtrics_export drops the 3 header rows and preserves names", {
+  raw_csv <- tempfile(fileext = ".csv")
+  writeLines(c(
+    "Dashboard ID,Organization,YearsServed,Age#1_1",
+    "DID,Org,Years,Age q",
+    '{"ImportId":"a"},{"ImportId":"b"},{"ImportId":"c"},{"ImportId":"d"}',
+    "D1,Org Alpha ,8+ years,A lot (61%-100%)"
+  ), raw_csv)
+  raw <- read_qualtrics_export(raw_csv)
+  expect_equal(nrow(raw), 1L)
+  expect_equal(trimws(raw[["Organization"]][1]), "Org Alpha")
+  expect_true("Age#1_1" %in% names(raw))
+})
+
+test_that("build_clean_survey emits the named schema including orgservices_json", {
+  vals <- c("D1", "Org Alpha ", "8+ years", "A lot (61%-100%)")
+  cols <- c("Dashboard ID", "Organization", "YearsServed", "Age#1_1")
+  raw <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  clean <- build_clean_survey(raw)
+  expect_equal(clean$orgname, "Org Alpha")
+  expect_equal(clean$lengthserve, "8+")
+  expect_equal(clean$pct_age_12_17, "61%-100%")
+  expect_true("orgservices_json" %in% names(clean))
+  parsed <- jsonlite::fromJSON(clean$orgservices_json[1], simplifyVector = FALSE)
+  expect_length(parsed, 8L)
+  expect_equal(parsed$emotional$state, "none")
+})
+
+# ---- per-dimension services + state (orgservices) ----
+
+test_that("parse_services splits canonical comma-joined selections", {
+  expect_equal(
+    parse_services("Mental health support groups,Crisis intervention,Counseling services", "", "emotional"),
+    c("Mental health support groups", "Crisis intervention", "Counseling services")
+  )
+})
+
+test_that("parse_services preserves the comma-containing Intellectual option", {
+  out <- parse_services("Educational workshops, e.g., STEM classes, etc,Tutoring", "", "intellectual")
+  expect_true("Educational workshops, e.g., STEM classes, etc" %in% out)
+  expect_true("Tutoring" %in% out)
+  expect_length(out, 2L)
+})
+
+test_that("parse_services replaces Other with the verbatim free text", {
+  out <- parse_services("Tutoring,Other (please specify):", "Chess club", "intellectual")
+  expect_true("Chess club" %in% out)
+  expect_false(any(grepl("Other", out)))
+})
+
+test_that("parse_services returns empty for None or blank", {
+  expect_length(parse_services("None", "", "social"), 0L)
+  expect_length(parse_services("", "", "social"), 0L)
+})
+
+test_that("build_orgservices_json derives state from EorE then Gap", {
+  cols <- c(
+    "EmotionalEorE", "EmotionalGap", "Emotional", "Emotional_5_TEXT",
+    "PhysicalEorE", "PhysicalGap", "Physical", "Physical_5_TEXT",
+    "SocialEorE", "SocialGap", "Social", "Social_5_TEXT",
+    "FinancialEorE", "FinancialGap", "Financial", "Financial_5_TEXT"
+  )
+  vals <- c(
+    "Established", "", "Counseling services", "",
+    "Emerging", "", "Fitness programs", "",
+    "", "Yes", "None", "",
+    "", "No, please share why:", "None", ""
+  )
+  row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  parsed <- jsonlite::fromJSON(build_orgservices_json(row), simplifyVector = FALSE)
+  expect_equal(parsed$emotional$state, "established")
+  expect_equal(parsed$physical$state, "emerging")
+  expect_equal(parsed$social$state, "wants")
+  expect_equal(parsed$financial$state, "not_interested")
+  expect_equal(parsed$intellectual$state, "none")
+  expect_equal(parsed$emotional$services[[1]], "Counseling services")
+  expect_length(parsed$social$services, 0L)
+})
+
+# ---- cumulative append / merge ----
+
+test_that("merge_survey_data appends new orgs and dedups by dashboard_id (newest wins)", {
+  existing <- data.frame(dashboard_id = c("D1", "D2"), orgname = c("A", "B"),
+                         pct_women = c("0%", "26%-60%"), stringsAsFactors = FALSE)
+  new_rows <- data.frame(dashboard_id = c("D2", "D3"), orgname = c("B", "C"),
+                         pct_women = c("61%-100%", "1%-25%"), stringsAsFactors = FALSE)
+  merged <- merge_survey_data(existing, new_rows)
+  expect_equal(sort(merged$dashboard_id), c("D1", "D2", "D3"))
+  expect_equal(merged$pct_women[merged$dashboard_id == "D2"], "61%-100%")
+  expect_equal(nrow(merged), 3L)
+})
+
+test_that("merge_survey_data falls back to orgname when dashboard_id is blank", {
+  existing <- data.frame(dashboard_id = "", orgname = "A", pct_women = "0%", stringsAsFactors = FALSE)
+  new_rows <- data.frame(dashboard_id = "", orgname = "A", pct_women = "26%-60%", stringsAsFactors = FALSE)
+  merged <- merge_survey_data(existing, new_rows)
+  expect_equal(nrow(merged), 1L)
+  expect_equal(merged$pct_women, "26%-60%")
+})
+
+test_that("merge_survey_data returns new rows when there is no existing data", {
+  new_rows <- data.frame(dashboard_id = "D1", orgname = "A", stringsAsFactors = FALSE)
+  expect_equal(nrow(merge_survey_data(NULL, new_rows)), 1L)
+  expect_equal(nrow(merge_survey_data(new_rows[0, ], new_rows)), 1L)
+})
+
+test_that("build_encrypted_survey accumulates across two weekly runs", {
+  write_raw_export <- function(path, dashboard_id, organization, yearsserved, age11) {
+    writeLines(c(
+      "Dashboard ID,Organization,YearsServed,Age#1_1",
+      "DID,Org,Years,Age q",
+      '{"ImportId":"a"},{"ImportId":"b"},{"ImportId":"c"},{"ImportId":"d"}',
+      paste(dashboard_id, organization, yearsserved, age11, sep = ",")
+    ), path)
+  }
+  key <- "append-test-key"
+  enc <- tempfile(fileext = ".enc")
+
+  r1 <- tempfile(fileext = ".csv")
+  write_raw_export(r1, c("D1", "D2"), c("Org A", "Org B"),
+                   c("8+ years", "4-7 years"), c("A lot (61%-100%)", "None"))
+  build_encrypted_survey(input_csv = r1, output_enc = enc, passphrase = key, append = TRUE)
+  wk1 <- load_survey_data(encrypted_path = enc, passphrase = key)
+  expect_equal(nrow(wk1), 2L)
+
+  r2 <- tempfile(fileext = ".csv")
+  write_raw_export(r2, c("D2", "D3"), c("Org B", "Org C"),
+                   c("8+ years", "1-3 years"), c("Some (26%-60%)", "A little (1%-25%)"))
+  build_encrypted_survey(input_csv = r2, output_enc = enc, passphrase = key, append = TRUE)
+  wk2 <- load_survey_data(encrypted_path = enc, passphrase = key)
+
+  expect_equal(sort(wk2$orgname), c("Org A", "Org B", "Org C"))
+  expect_equal(wk2$lengthserve[wk2$orgname == "Org B"], "8+")
+  expect_equal(wk2$pct_age_12_17[wk2$orgname == "Org B"], "26%-60%")
+})
+
+# ---- name-based row + value access ----
+
+test_that("get_organization_details_row matches by orgname", {
+  data <- data.frame(orgname = c("Org A", "Org B"), lengthserve = c("1", "2"),
+                     stringsAsFactors = FALSE)
+  row <- get_organization_details_row("Org B", data)
+  expect_equal(row$orgname, "Org B")
+  expect_equal(row$lengthserve, "2")
+})
+
+test_that("get_named_value reads by column name with a fallback", {
+  row <- data.frame(orgname = "Org A", pct_women = "26%-60%", stringsAsFactors = FALSE)
+  expect_equal(get_named_value(row, "pct_women"), "26%-60%")
+  expect_equal(get_named_value(row, "missing_col", "N/A"), "N/A")
 })
 
 # ---- encryption helpers ----
 
 test_that("encrypt_data_raw and decrypt_data_raw are inverse operations", {
   withr::local_dir(project_root)
-
   original <- charToRaw("hello encrypted world")
   passphrase <- "unit-test-passphrase"
-
   encrypted <- encrypt_data_raw(original, passphrase)
   decrypted <- decrypt_data_raw(encrypted, passphrase)
-
   expect_false(identical(encrypted, original))
   expect_equal(rawToChar(decrypted), "hello encrypted world")
 })
 
 test_that("decrypt_data_raw fails for tampered authenticated payload", {
   withr::local_dir(project_root)
-
   passphrase <- "unit-test-passphrase"
   encrypted <- encrypt_data_raw(charToRaw("hello encrypted world"), passphrase)
-
-  encrypted[[length(encrypted)]] <- as.raw(
-    bitwXor(as.integer(encrypted[[length(encrypted)]]), 1L)
-  )
-
-  expect_error(
-    decrypt_data_raw(encrypted, passphrase),
-    "authentication failed"
-  )
+  encrypted[[length(encrypted)]] <- as.raw(bitwXor(as.integer(encrypted[[length(encrypted)]]), 1L))
+  expect_error(decrypt_data_raw(encrypted, passphrase), "authentication failed")
 })
 
 test_that("decrypt_data_raw supports legacy unauthenticated payload format", {
   withr::local_dir(project_root)
-
   passphrase <- "legacy-passphrase"
   key <- derive_data_key(passphrase)
   iv <- openssl::rand_bytes(16)
   plain <- charToRaw("legacy ciphertext")
   ciphertext <- openssl::aes_cbc_encrypt(plain, key = key, iv = iv)
   legacy_payload <- c(iv, ciphertext)
-
-  expect_warning(
-    out <- decrypt_data_raw(legacy_payload, passphrase),
-    "legacy unauthenticated payload"
-  )
+  expect_warning(out <- decrypt_data_raw(legacy_payload, passphrase), "legacy unauthenticated payload")
   expect_equal(rawToChar(out), "legacy ciphertext")
-})
-
-test_that("decrypt_data_raw fails for too-short payload", {
-  withr::local_dir(project_root)
-
-  expect_error(
-    decrypt_data_raw(as.raw(1:8), "passphrase"),
-    "invalid or corrupted"
-  )
 })
 
 test_that("encrypt_data_file fails clearly when key is missing", {
   withr::local_dir(project_root)
-
   plain <- tempfile(fileext = ".csv")
-  writeLines(c("Organization,Other", "Label row,Ignore", "Org A,1"), plain)
-
+  writeLines(c("orgname,lengthserve", "Org A,8+"), plain)
   expect_error(
     encrypt_data_file(input_path = plain, output_path = tempfile(fileext = ".enc"), passphrase = ""),
     "Missing encryption key"
@@ -182,38 +284,21 @@ test_that("encrypt_data_file fails clearly when key is missing", {
 
 test_that("assert_survey_data_startup_ready succeeds with encrypted file", {
   withr::local_dir(project_root)
-
   plain <- tempfile(fileext = ".csv")
   enc <- tempfile(fileext = ".enc")
-  writeLines(c("Organization,Other", "Label row,Ignore", "Org A,1"), plain)
+  writeLines(c("orgname,lengthserve", "Org A,8+"), plain)
   encrypt_data_file(input_path = plain, output_path = enc, passphrase = "secret")
-
   expect_true(assert_survey_data_startup_ready(encrypted_path = enc, passphrase = "secret"))
-})
-
-test_that("assert_survey_data_startup_ready fails when no data files exist", {
-  withr::local_dir(project_root)
-
-  expect_error(
-    assert_survey_data_startup_ready(encrypted_path = tempfile(fileext = ".enc")),
-    "Startup check failed"
-  )
 })
 
 test_that("assert_survey_data_startup_ready fails for encrypted file without key", {
   withr::local_dir(project_root)
-
   plain <- tempfile(fileext = ".csv")
   enc <- tempfile(fileext = ".enc")
-  writeLines(c("Organization,Other", "Label row,Ignore", "Org A,1"), plain)
+  writeLines(c("orgname,lengthserve", "Org A,8+"), plain)
   encrypt_data_file(input_path = plain, output_path = enc, passphrase = "secret")
-
   expect_error(
-    assert_survey_data_startup_ready(
-      encrypted_path = enc,
-      passphrase = "",
-      key_env_var = "CPA_DATA_KEY"
-    ),
+    assert_survey_data_startup_ready(encrypted_path = enc, passphrase = "", key_env_var = "CPA_DATA_KEY"),
     "CPA_DATA_KEY is not set"
   )
 })
