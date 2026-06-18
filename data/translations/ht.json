@@ -50,7 +50,9 @@
     "wellness_physical_screenings": "Depistaj sante",
     "wellness_physical_other": "Lòt",
     "card_established_areas_label": "Zòn byennèt etabli",
-    "card_serving_text": "Ane ap sèvi jèn moun nan Greater Boston"
+    "card_serving_text": "Ane ap sèvi jèn moun nan Greater Boston",
+    "search_no_results": "Pa gen òganizasyon ki koresponn ak rechèch ou a.",
+    "search_empty_data": "Pa gen òganizasyon ki disponib nan done ki anrejistre yo."
   },
   "organization_details": {
     "org_name_placeholder": "Non òganizasyon",

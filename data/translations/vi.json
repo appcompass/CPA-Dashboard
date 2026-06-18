@@ -50,7 +50,9 @@
     "wellness_physical_screenings": "Kiểm tra sức khỏe",
     "wellness_physical_other": "Khác",
     "card_established_areas_label": "Các lĩnh vực sức khỏe đã thiết lập",
-    "card_serving_text": "Năm phục vụ thanh thiếu niên tại Greater Boston"
+    "card_serving_text": "Năm phục vụ thanh thiếu niên tại Greater Boston",
+    "search_no_results": "Không có tổ chức nào khớp với tìm kiếm của bạn.",
+    "search_empty_data": "Không có tổ chức nào trong dữ liệu đã lưu."
   },
   "organization_details": {
     "org_name_placeholder": "Tên tổ chức",

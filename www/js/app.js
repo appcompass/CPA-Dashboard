@@ -728,6 +728,106 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  // Live, client-side filtering of the organizations list. The list is rendered
+  // server-side; the search box and the established-area checkboxes just show/hide
+  // cards. A card passes when its name contains the query AND, if any areas are
+  // selected, it has at least one of them.
+  var selectedDimensions = function () {
+    var boxes = document.querySelectorAll('[data-filter-group]:checked');
+    return Array.prototype.map.call(boxes, function (box) {
+      return box.getAttribute('data-filter-dimension');
+    });
+  };
+
+  var cardAreas = function (card, attr) {
+    return (card.getAttribute(attr) || '')
+      .split(',')
+      .filter(Boolean);
+  };
+
+  var matchesAreas = function (selected, areas) {
+    if (!selected.length) {
+      return true;
+    }
+    return selected.some(function (dim) {
+      return areas.indexOf(dim) !== -1;
+    });
+  };
+
+  var filterOrganizations = function () {
+    var cards = document.querySelectorAll('.organization-result');
+    if (!cards.length) {
+      return;
+    }
+
+    var input = document.getElementById('organizations-search');
+    var query = input ? input.value.trim().toLowerCase() : '';
+    var selected = selectedDimensions();
+    var visible = 0;
+
+    cards.forEach(function (card) {
+      var name = card.getAttribute('data-org-name') || '';
+      var show =
+        (!query || name.indexOf(query) !== -1) &&
+        matchesAreas(selected, cardAreas(card, 'data-established'));
+      card.classList.toggle('d-none', !show);
+      if (show) {
+        visible += 1;
+      }
+    });
+
+    var noResults = document.getElementById('organizations-no-results');
+    if (noResults) {
+      noResults.classList.toggle('d-none', visible !== 0);
+    }
+  };
+
+  document.addEventListener('input', function (event) {
+    if (event.target && event.target.id === 'organizations-search') {
+      filterOrganizations();
+    }
+  });
+
+  document.addEventListener('change', function (event) {
+    var box = event.target;
+    if (!box || !box.hasAttribute('data-filter-group')) {
+      return;
+    }
+    // Toggling a dimension (parent) toggles all of its sub-category children.
+    if (box.getAttribute('data-filter-role') === 'parent') {
+      var selector =
+        '[data-filter-group="' +
+        box.getAttribute('data-filter-group') +
+        '"][data-filter-dimension="' +
+        box.getAttribute('data-filter-dimension') +
+        '"][data-filter-role="child"]';
+      document.querySelectorAll(selector).forEach(function (child) {
+        child.checked = box.checked;
+      });
+    }
+    filterOrganizations();
+  });
+
+  // Reset clears the search box and all checkboxes, then re-filters.
+  document.addEventListener('click', function (event) {
+    if (!event.target.closest('#organizations-filter-reset')) {
+      return;
+    }
+    var input = document.getElementById('organizations-search');
+    if (input) {
+      input.value = '';
+    }
+    document
+      .querySelectorAll('[data-filter-group]:checked')
+      .forEach(function (box) {
+        box.checked = false;
+      });
+    filterOrganizations();
+  });
+
+  // Re-apply the active filter after Shiny/router re-renders the list.
+  document.addEventListener('shiny:value', filterOrganizations);
+
   var initWheels = function () {
     document
       .querySelectorAll('[data-active-categories]')

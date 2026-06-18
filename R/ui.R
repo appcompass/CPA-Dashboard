@@ -22,6 +22,14 @@ router <- router_ui(
   route("organizations/details", uiOutput("page_organization_details"))
 )
 
+# Cache-bust app.js by its modification time so browsers never run a stale copy
+# of the client-side logic (search/filter, wheels) after an update.
+app_js_path <- file.path("www", "js", "app.js")
+app_js_version <- tryCatch(
+  as.integer(as.numeric(file.info(app_js_path)$mtime)),
+  error = function(e) 0L
+)
+
 app_ui <- htmlTemplate(
   "www/html/index.html",
   page_title = "CHANGE Lab",
@@ -29,5 +37,6 @@ app_ui <- htmlTemplate(
   header = uiOutput("header"),
   frontend_translations_script = tags$script(
     HTML(sprintf("window.APP_TRANSLATIONS = %s;", get_frontend_translations_json()))
-  )
+  ),
+  app_script = tags$script(src = sprintf("/js/app.js?v=%d", app_js_version))
 )

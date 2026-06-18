@@ -147,8 +147,8 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
             )
           ),
 
-          # Established Areas of Wellness card
-          div(
+          # Established Areas of Wellness card (hidden when the org has none)
+          if (length(details_context$established_categories)) div(
             class = "col-12",
             div(
               class = "card",
@@ -158,17 +158,13 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
               ),
               div(
                 class = "card-body",
-                if (length(details_context$established_categories)) {
-                  div(`data-active-categories` = paste(details_context$established_categories, collapse = ", "))
-                } else {
-                  div(class = "text-secondary", labels$empty_established)
-                }
+                div(`data-active-categories` = paste(details_context$established_categories, collapse = ", "))
               )
             )
           ),
 
-          # Emerging Areas of Wellness card
-          div(
+          # Emerging Areas of Wellness card (hidden when the org has none)
+          if (length(details_context$emerging_categories)) div(
             class = "col-12",
             div(
               class = "card",
@@ -178,11 +174,7 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
               ),
               div(
                 class = "card-body",
-                if (length(details_context$emerging_categories)) {
-                  div(`data-active-categories` = paste(details_context$emerging_categories, collapse = ", "))
-                } else {
-                  div(class = "text-secondary", labels$empty_emerging)
-                }
+                div(`data-active-categories` = paste(details_context$emerging_categories, collapse = ", "))
               )
             )
           )
