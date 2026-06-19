@@ -2,7 +2,6 @@ library(shiny)
 
 # addResourcePath("img", normalizePath(file.path("www", "img"), mustWork = TRUE))
 
-source(file.path("R", "helpers.R"), local = TRUE)
 source(file.path("R", "data.R"), local = TRUE)
 source(file.path("R", "lang.R"), local = TRUE)
 source(file.path("R", "ui.R"), local = TRUE)

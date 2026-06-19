@@ -126,7 +126,7 @@ organizations_ui <- function(lang = get_lang()) {
     }))
   }
 
-  organization_card <- function(org_name, org_index, orgservices = list(), lengthserve = "") {
+  organization_card <- function(org_name, orgservices = list(), lengthserve = "") {
     initials <- toupper(substr(gsub("[^A-Za-z0-9]", "", org_name), 1, 2))
     if (!nzchar(initials)) {
       initials <- "OR"
@@ -148,7 +148,7 @@ organizations_ui <- function(lang = get_lang()) {
             class = "card-body",
             div(
               class = "avatar avatar-md",
-              style = paste0("background-image: none; background-color: var(--tblr-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600;"),
+              style = "background-image: none; background-color: var(--tblr-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600;",
               initials
             )
           )
@@ -208,19 +208,13 @@ organizations_ui <- function(lang = get_lang()) {
             class = "col-auto ms-auto d-print-none",
             div(
               class = "mb-3",
-              div(
-                class = "row g-2",
-                div(
-                  class = "col",
-                  tags$input(
-                    id = "organizations-search",
-                    type = "text",
-                    class = "form-control",
-                    placeholder = organizations$search_placeholder,
-                    autocomplete = "off",
-                    `aria-label` = organizations$search_placeholder
-                  )
-                ),
+              tags$input(
+                id = "organizations-search",
+                type = "text",
+                class = "form-control",
+                placeholder = organizations$search_placeholder,
+                autocomplete = "off",
+                `aria-label` = organizations$search_placeholder
               )
             )
           )
@@ -237,10 +231,7 @@ organizations_ui <- function(lang = get_lang()) {
             class = "col-md-3",
             tags$form(
               id = "organizations-filter",
-              action = "./",
-              method = "get",
               autocomplete = "off",
-              novalidate = NA,
               # Filtering is live; never let the form do a GET navigation/reload.
               onsubmit = "return false;",
               class = "sticky-top",
@@ -276,8 +267,7 @@ organizations_ui <- function(lang = get_lang()) {
                 )
               } else {
                 tagList(
-                  lapply(seq_along(org_names), function(index) {
-                    org_name <- org_names[[index]]
+                  lapply(org_names, function(org_name) {
                     row <- get_organization_details_row(org_name = org_name, survey_data = survey_data)
                     orgservices <- parse_orgservices_json(get_named_value(row, "orgservices_json", ""))
                     lengthserve <- get_named_value(row, "lengthserve", fallback = "")
@@ -285,7 +275,7 @@ organizations_ui <- function(lang = get_lang()) {
                       class = "col-12 organization-result",
                       `data-org-name` = tolower(org_name),
                       `data-established` = paste(dimension_keys_by_state(orgservices, "established"), collapse = ","),
-                      organization_card(org_name, index, orgservices, lengthserve)
+                      organization_card(org_name, orgservices, lengthserve)
                     )
                   }),
                   div(

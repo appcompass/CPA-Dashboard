@@ -642,15 +642,6 @@ get_named_value <- function(row, col, fallback = "N/A") {
   if (!nzchar(value) || identical(value, "NA")) fallback else value
 }
 
-# Backwards-compatible positional accessor (kept for any external callers/tests).
-get_organization_details_value <- function(row, index, fallback = "N/A") {
-  if (is.null(row) || !nrow(row) || index > ncol(row)) {
-    return(fallback)
-  }
-  value <- trimws(as.character(row[[index]][[1]]))
-  if (!nzchar(value) || identical(value, "NA")) fallback else value
-}
-
 get_organization_details_row <- function(
   org_name = NULL,
   survey_data = load_organization_details_data()
@@ -712,35 +703,6 @@ get_dimension_categories <- function(orgservices, lang, state_value) {
   out
 }
 
-# Services the org provides, keyed by dimension (for the click-to-expand panels).
-get_organization_services_by_dimension <- function(orgservices) {
-  out <- list()
-  for (key in names(DIMENSION_LABEL_KEYS)) {
-    dim <- orgservices[[key]]
-    services <- if (!is.null(dim) && !is.null(dim$services)) {
-      vapply(dim$services, function(s) as.character(s), character(1))
-    } else {
-      character(0)
-    }
-    out[[key]] <- unname(services)
-  }
-  out
-}
-
-# status_value accepts the old "Established"/"Emerging" tokens and the state tokens.
-get_organization_details_wheel_categories <- function(row, lang, status_value) {
-  if (is.null(row) || !nrow(row)) {
-    return(character(0))
-  }
-  state <- switch(status_value,
-    "Established" = "established",
-    "Emerging" = "emerging",
-    tolower(status_value)
-  )
-  orgservices <- parse_orgservices_json(get_named_value(row, "orgservices_json", ""))
-  get_dimension_categories(orgservices, lang, state)
-}
-
 get_organization_details_label <- function(details, key, fallback) {
   value <- details[[key]]
   if (is.null(value) || !nzchar(value)) fallback else value
@@ -784,8 +746,6 @@ get_organization_details_context <- function(
   orgservices <- parse_orgservices_json(get_named_value(row, "orgservices_json", ""))
   established_categories <- get_dimension_categories(orgservices, lang, "established")
   emerging_categories <- get_dimension_categories(orgservices, lang, "emerging")
-  wants_categories <- get_dimension_categories(orgservices, lang, "wants")
-  services_by_dimension <- get_organization_services_by_dimension(orgservices)
 
   labels <- list(
     page_subtitle_fallback = get_organization_details_label(details, "page_subtitle_fallback", "Organization details"),
@@ -824,8 +784,6 @@ get_organization_details_context <- function(
     pct_queer = pct_queer,
     established_categories = established_categories,
     emerging_categories = emerging_categories,
-    wants_categories = wants_categories,
-    services_by_dimension = services_by_dimension,
     has_data = nrow(row) > 0
   )
 }

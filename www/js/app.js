@@ -644,9 +644,6 @@ document.addEventListener('DOMContentLoaded', function () {
     syncRouterLinksWithQueryParams();
     return queryParams;
   };
-  var getParam = function (key) {
-    return queryParams[key];
-  };
   var setParam = function (key, value) {
     queryParams[key] = value;
   };
