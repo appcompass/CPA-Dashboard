@@ -3,15 +3,16 @@ build_manifest_app_files <- function() {
     "app.R",
     "Makefile",
     "README.md",
-    "R/helpers.R",
+    # Sourced by app.R, in order.
     "R/data.R",
+    "R/lang.R",
     "R/ui.R",
     "R/server.R",
     list.files("R/templates", recursive = TRUE, full.names = TRUE),
     list.files("www/css", recursive = TRUE, full.names = TRUE),
     list.files("www/html", recursive = TRUE, full.names = TRUE),
     list.files("www/js", recursive = TRUE, full.names = TRUE),
-    file.path("data", "sample_data.csv"),
+    list.files("data/translations", recursive = TRUE, full.names = TRUE),
     file.path("data", "survey_data.csv.enc")
   )
 

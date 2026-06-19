@@ -979,25 +979,64 @@
   },
   "files": {
     "app.R": {
-      "checksum": "a9ba54a437b8823dcd6246de22679ef3"
-    },
-    "data/sample_data.csv": {
-      "checksum": "234f28dc220236b7d2606acad2edb5c3"
+      "checksum": "7720d232a4d2f75c29b65593b5ec2a67"
     },
     "data/survey_data.csv.enc": {
       "checksum": "c2633d644884fe633bb5b8c6f05996c2"
     },
+    "data/translations/ar.json": {
+      "checksum": "22e9cfbc6b6fe83c5e05b52fb47c1697"
+    },
+    "data/translations/en.json": {
+      "checksum": "2958f28489137def39f6a83f7ad057cb"
+    },
+    "data/translations/es-419.json": {
+      "checksum": "9d556b7c58b893ac64cdebe3c23b37d2"
+    },
+    "data/translations/es.json": {
+      "checksum": "9d556b7c58b893ac64cdebe3c23b37d2"
+    },
+    "data/translations/fr-FR.json": {
+      "checksum": "40a4b4aef88d77b30a7a176f2f026d80"
+    },
+    "data/translations/fr.json": {
+      "checksum": "40a4b4aef88d77b30a7a176f2f026d80"
+    },
+    "data/translations/ht.json": {
+      "checksum": "1599de85cfaa38d9acec901e3413c299"
+    },
+    "data/translations/kea.json": {
+      "checksum": "4f52ea135084df5f936379629aa4b2ae"
+    },
+    "data/translations/pt-BR.json": {
+      "checksum": "6770c7c7e73d79c7e7ca32524b4117e7"
+    },
+    "data/translations/ru.json": {
+      "checksum": "6650b781499800e3033a5d8a90125748"
+    },
+    "data/translations/so.json": {
+      "checksum": "133547a6b187cfcebdf3b15a2bef0698"
+    },
+    "data/translations/vi.json": {
+      "checksum": "795b50563f10f93649bd2894b17d0f07"
+    },
+    "data/translations/yue.json": {
+      "checksum": "c0f86ea5e723057265ffdc94e4bd18f7"
+    },
+    "data/translations/zh-Hans.json": {
+      "checksum": "90e6f4a6ee3aca517e0511b5820ad4e2"
+    },
     "Makefile": {
-      "checksum": "3fa343babb4cddca1b4e7197848e2ff3"
+      "checksum": "fe49925ed8493362a85521d31a8a2b6d"
     },
     "R/data.R": {
-      "checksum": "e1e5025dd9422fad507aaa4938fda99a"
+      "checksum": "404d5ecd18fac4fc68a294e4ec3a1920"
     },
-    "R/helpers.R": {
-      "checksum": "3c5c6df2e6564f2870a4ca80b4ed5a0b"
+    "R/lang.R": {
+      "checksum": "15a2d8cbbfb563c496d9d043cd89ef69"
     },
     "R/server.R": {
-      "checksum": "2656128cf75f95f61874b9041bda55e4"
+      "checksum": "a73cdbff6768cecded1b9a69ceb41ce7"
     },
     "R/templates/components/lang_change_nav_link_ui.R": {
       "checksum": "2e8c6cbc27990e3fad9ba5739f2e74de"
@@ -1018,16 +1057,16 @@
       "checksum": "a68d4c02a7d57afc97e61d9ba74f2fae"
     },
     "R/templates/pages/login_ui.R": {
-      "checksum": "424dfcb903c624e6e0b68a73bd2b1352"
+      "checksum": "f7fe9d0d40685b45d59d729cd39f27b4"
     },
     "R/templates/pages/organization_details_ui.R": {
-      "checksum": "516909af396f8a32b171eea569f5a7c0"
+      "checksum": "7058657fbcde4703c24bb41e0a518b1e"
     },
     "R/templates/pages/organizations_ui.R": {
-      "checksum": "c2fca058525bd7871e2cd7a15f48133e"
+      "checksum": "c0e466f49a75108c674293ce6ef53d38"
     },
     "R/ui.R": {
-      "checksum": "87629f00affdcfc0d5bfc493965c6169"
+      "checksum": "96c6a10ae2009a6b1e59581a2db7d873"
     },
     "README.md": {
       "checksum": "3e3ebc80f042474263f19e706d2ee535"
@@ -1231,13 +1270,13 @@
       "checksum": "1c8da7e1bf81afb3ea8dc2e55752d75e"
     },
     "www/html/index.html": {
-      "checksum": "aebc40e5297dbc33a77845a7474d7077"
+      "checksum": "f22b52656dcc0b0c12fab665c4f254d5"
     },
     "www/html/intro.html": {
       "checksum": "94b78598b02d7d1d1f6bb51e6722dfd1"
     },
     "www/js/app.js": {
-      "checksum": "06af45edee4d1e1f820482c6a641a179"
+      "checksum": "27adaa1eadda11743227c52543809ca2"
     },
     "www/js/tabler/tabler-theme.esm.js": {
       "checksum": "56cebccda6acf7f706d2cce32d2cd016"

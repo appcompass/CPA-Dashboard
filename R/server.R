@@ -215,11 +215,4 @@ app_server <- function(input, output, session) {
   output$page_organization_details <- renderUI({
     organization_details_ui(get_lang(lang_code()), logged_in = authenticated())
   })
-
-  output$organization_details <- renderUI({
-    req(is_page("organizations/details"))
-
-    id <- get_query_param("id")
-    req(!is.null(id), nzchar(id))
-  })
 }

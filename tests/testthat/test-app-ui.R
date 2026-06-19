@@ -55,8 +55,9 @@ test_that("organizations_ui renders search page and filter panel", {
   html <- render_html(organizations_ui())
 
   expect_match(html, "Search Organizations", fixed = TRUE)
+  expect_match(html, "organizations-search", fixed = TRUE)
   expect_match(html, "Established Areas", fixed = TRUE)
-  expect_match(html, "Confirm Filter", fixed = TRUE)
+  expect_match(html, "organizations-filter", fixed = TRUE)
 })
 
 test_that("organization_details_ui renders detail cards", {
@@ -71,8 +72,11 @@ test_that("organization_details_ui renders detail cards", {
   expect_match(html, first_org_name, fixed = TRUE)
   expect_match(html, first_org_years, fixed = TRUE)
   expect_match(html, "Age Breakdown", fixed = TRUE)
+  # Established/Emerging cards render only when the org has those areas; the
+  # first org reliably has established areas. Gender/demographics are gated to
+  # logged-in users, so they are absent here.
   expect_match(html, "Established Areas of Wellness", fixed = TRUE)
-  expect_match(html, "Emerging Areas of Wellness", fixed = TRUE)
+  expect_false(grepl("Gender Identity", html, fixed = TRUE))
 })
 
 test_that("organization_details_ui renders the first org when no id is supplied", {
