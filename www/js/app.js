@@ -255,7 +255,15 @@ function buildWheelItems() {
     const panelTitle = organizations[meta.titleKey] || meta.canonicalTitle;
     const wheelTitle = stripWellnessFromTitle(panelTitle, meta.canonicalTitle);
     const subs = meta.subKeys.map(function (key) {
-      return organizations[key] || wheel[key] || key;
+      // "Other" filters by a dimension-specific catch-all key; the rest by their
+      // own subcategory key. filterKey is what the organizations page matches on.
+      var filterKey =
+        key === 'wellness_physical_other' ? meta.key + '_other' : key;
+      return {
+        key: key,
+        filterKey: filterKey,
+        label: organizations[key] || wheel[key] || key,
+      };
     });
 
     return {
@@ -331,25 +339,26 @@ function createWheel(container, size = 340) {
 
   // build panels
   ENABLED.forEach((d, i) => {
-    const otherLabel = scope.organizations.wellness_physical_other || 'Other';
-
     const div = document.createElement('div');
     div.className = 'panel';
     div.id = uid + '-panel-' + i;
     if (d.icon) {
       div.setAttribute('data-icon', d.icon);
     }
+    // Every subcategory (including "Other") links to the organizations list,
+    // pre-filtered to orgs that provide it as an established service.
+    const subItems = d.subs
+      .map((s) => {
+        const dot = `<span class="dot" style="background:${d.color}"></span>`;
+        const cls = 'subcat-name subcat-link';
+        const name = `<a class="${cls}" href="#!/organizations?subcat=${encodeURIComponent(s.filterKey)}">${s.label}</a>`;
+        return `<li>${dot}${name}</li>`;
+      })
+      .join('');
     div.innerHTML = `
       <p class="panel-title" style="color:${d.color}">${d.panelTitle || d.title}</p>
       <p class="panel-desc">${d.desc}</p>
-      <ul class="subcats">${d.subs
-        .map(
-          (s) => `<li>
-        <span class="dot" style="background:${s === otherLabel ? 'var(--color-border-secondary)' : d.color}"></span>
-        <span class="${s === otherLabel ? 'other' : 'subcat-name'}">${s}</span>
-      </li>`,
-        )
-        .join('')}</ul>`;
+      <ul class="subcats">${subItems}</ul>`;
     panelsEl.appendChild(div);
   });
 
@@ -576,6 +585,19 @@ document.addEventListener('DOMContentLoaded', function () {
   document.body.classList.add('app-ready');
   applyThemeSettingsTranslations();
 
+  // The marketing/gradient body styling applies only to the home route ("#!/").
+  var HOME_BODY_CLASSES = ['body-marketing', 'body-gradient'];
+  var updateHomeBodyClasses = function () {
+    var path = (window.location.hash || '').replace(/^#!?\/?/, '').split('?')[0];
+    var isHome = path === '' || path === '/';
+    HOME_BODY_CLASSES.forEach(function (cls) {
+      document.body.classList.toggle(cls, isHome);
+    });
+  };
+  updateHomeBodyClasses();
+  window.addEventListener('hashchange', updateHomeBodyClasses);
+  document.addEventListener('shiny:value', updateHomeBodyClasses);
+
   var themeConfig = {
     theme: 'light',
     'theme-base': 'gray',
@@ -727,27 +749,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Live, client-side filtering of the organizations list. The list is rendered
   // server-side; the search box and the established-area checkboxes just show/hide
-  // cards. A card passes when its name contains the query AND, if any areas are
-  // selected, it has at least one of them.
-  var selectedDimensions = function () {
-    var boxes = document.querySelectorAll('[data-filter-group]:checked');
-    return Array.prototype.map.call(boxes, function (box) {
-      return box.getAttribute('data-filter-dimension');
-    });
+  // cards. A checkbox carrying data-filter-subcat filters by that specific
+  // subcategory (matched against data-established-subcats); any other checked box
+  // filters by its dimension (matched against data-established). A card passes
+  // when its name contains the query AND, if anything is selected, it matches at
+  // least one selected dimension or subcategory.
+  var collectSelection = function () {
+    var dims = [];
+    var subs = [];
+    document
+      .querySelectorAll('[data-filter-group]:checked')
+      .forEach(function (box) {
+        var sub = box.getAttribute('data-filter-subcat');
+        if (sub) {
+          subs.push(sub);
+        } else {
+          dims.push(box.getAttribute('data-filter-dimension'));
+        }
+      });
+    return { dims: dims, subs: subs };
   };
 
   var cardAreas = function (card, attr) {
-    return (card.getAttribute(attr) || '')
-      .split(',')
-      .filter(Boolean);
+    return (card.getAttribute(attr) || '').split(',').filter(Boolean);
   };
 
-  var matchesAreas = function (selected, areas) {
-    if (!selected.length) {
-      return true;
-    }
-    return selected.some(function (dim) {
-      return areas.indexOf(dim) !== -1;
+  var intersects = function (selected, areas) {
+    return selected.some(function (item) {
+      return areas.indexOf(item) !== -1;
     });
   };
 
@@ -759,14 +788,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var input = document.getElementById('organizations-search');
     var query = input ? input.value.trim().toLowerCase() : '';
-    var selected = selectedDimensions();
+    var sel = collectSelection();
+    var hasAreaFilter = sel.dims.length > 0 || sel.subs.length > 0;
     var visible = 0;
 
     cards.forEach(function (card) {
       var name = card.getAttribute('data-org-name') || '';
-      var show =
-        (!query || name.indexOf(query) !== -1) &&
-        matchesAreas(selected, cardAreas(card, 'data-established'));
+      var areaMatch =
+        !hasAreaFilter ||
+        intersects(sel.dims, cardAreas(card, 'data-established')) ||
+        intersects(sel.subs, cardAreas(card, 'data-established-subcats'));
+      var show = (!query || name.indexOf(query) !== -1) && areaMatch;
       card.classList.toggle('d-none', !show);
       if (show) {
         visible += 1;
@@ -822,8 +854,46 @@ document.addEventListener('DOMContentLoaded', function () {
     filterOrganizations();
   });
 
+  // Deep link from a wheel subcategory: #!/organizations?subcat=<key>. On arrival,
+  // tick that subcategory checkbox once and filter. Guarded so it applies a given
+  // subcat a single time and never fights subsequent user interaction.
+  var appliedSubcat = null;
+  var hashSubcat = function () {
+    var hash = window.location.hash || '';
+    var q = hash.indexOf('?');
+    if (q < 0) {
+      return '';
+    }
+    var params = parseSearchParams(hash.slice(q));
+    return params.subcat || '';
+  };
+
+  var applyDeepLinkFilter = function () {
+    var subcat = hashSubcat();
+    if (!subcat || subcat === appliedSubcat) {
+      return;
+    }
+    var box = document.querySelector('[data-filter-subcat="' + subcat + '"]');
+    if (!box) {
+      return;
+    }
+    appliedSubcat = subcat;
+    document
+      .querySelectorAll('[data-filter-group]:checked')
+      .forEach(function (b) {
+        b.checked = false;
+      });
+    box.checked = true;
+    filterOrganizations();
+  };
+
   // Re-apply the active filter after Shiny/router re-renders the list.
-  document.addEventListener('shiny:value', filterOrganizations);
+  document.addEventListener('shiny:value', function () {
+    filterOrganizations();
+    applyDeepLinkFilter();
+  });
+  window.addEventListener('hashchange', applyDeepLinkFilter);
+  applyDeepLinkFilter();
 
   var initWheels = function () {
     document

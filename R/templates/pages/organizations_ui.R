@@ -95,11 +95,58 @@ organizations_ui <- function(lang = get_lang()) {
     unlist(matched, use.names = FALSE)
   }
 
+  # Match a stored survey service string against a subcategory label, tolerant of
+  # trailing detail ("Educational workshops, e.g. ...") and minor word forms
+  # ("Nutrition" vs "Nutritional"). Both inputs are already lowercased/trimmed.
+  service_matches_label <- function(service, label) {
+    if (!nzchar(service) || !nzchar(label)) {
+      return(FALSE)
+    }
+    if (service == label || startsWith(service, label) || startsWith(label, service)) {
+      return(TRUE)
+    }
+    sw <- strsplit(service, "\\s+")[[1]]
+    lw <- strsplit(label, "\\s+")[[1]]
+    length(sw) == length(lw) && length(sw) > 0 &&
+      all(mapply(function(a, b) startsWith(a, b) || startsWith(b, a), sw, lw))
+  }
+
+  # Subcategory keys an organization provides as ESTABLISHED services. Each curated
+  # subcategory it matches is emitted by its key; any established service in a
+  # dimension that matches no curated subcategory contributes a dimension-specific
+  # "<dimension>_other" key (the "Other" catch-all).
+  established_subcat_keys <- function(orgservices) {
+    out <- character(0)
+    for (key in names(DIMENSION_LABEL_KEYS)) {
+      dim <- orgservices[[key]]
+      if (is.null(dim) || !identical(dim$state, "established")) next
+      services <- tolower(trimws(vapply(dim$services %||% list(), as.character, character(1))))
+      services <- services[nzchar(services)]
+      if (!length(services)) next
+
+      curated_keys <- setdiff(dimension_sub_keys[[key]], "wellness_physical_other")
+      curated_labels <- tolower(trimws(vapply(curated_keys, sub_label, character(1))))
+      has_other <- FALSE
+      for (service in services) {
+        matched <- vapply(curated_labels, service_matches_label, logical(1), service = service)
+        if (any(matched)) {
+          out <- c(out, curated_keys[matched])
+        } else {
+          has_other <- TRUE
+        }
+      }
+      if (has_other) {
+        out <- c(out, paste0(key, "_other"))
+      }
+    }
+    unique(out)
+  }
+
   # A checkbox per wellness dimension with its sub-categories nested underneath.
   # Every box is tagged so the client-side filter can match it against each
   # organization's areas; children inherit their parent's dimension. `group` is
   # "established" or "emerging".
-  filter_checkbox <- function(group, dimension, role, label) {
+  filter_checkbox <- function(group, dimension, role, label, subcat = NULL) {
     tags$label(
       class = if (identical(role, "child")) "form-check mt-1" else "form-check",
       tags$input(
@@ -107,7 +154,8 @@ organizations_ui <- function(lang = get_lang()) {
         class = "form-check-input",
         `data-filter-group` = group,
         `data-filter-dimension` = dimension,
-        `data-filter-role` = role
+        `data-filter-role` = role,
+        `data-filter-subcat` = subcat
       ),
       tags$span(class = "form-check-label", label)
     )
@@ -116,7 +164,13 @@ organizations_ui <- function(lang = get_lang()) {
   render_wellness_groups <- function(group) {
     tagList(lapply(names(DIMENSION_LABEL_KEYS), function(key) {
       children <- lapply(dimension_sub_keys[[key]], function(sub_key) {
-        filter_checkbox(group, key, "child", sub_label(sub_key))
+        # "Other" is the dimension-specific catch-all (<dimension>_other).
+        subcat <- if (identical(sub_key, "wellness_physical_other")) {
+          paste0(key, "_other")
+        } else {
+          sub_key
+        }
+        filter_checkbox(group, key, "child", sub_label(sub_key), subcat = subcat)
       })
       div(
         class = "mb-2",
@@ -275,6 +329,7 @@ organizations_ui <- function(lang = get_lang()) {
                       class = "col-12 organization-result",
                       `data-org-name` = tolower(org_name),
                       `data-established` = paste(dimension_keys_by_state(orgservices, "established"), collapse = ","),
+                      `data-established-subcats` = paste(established_subcat_keys(orgservices), collapse = ","),
                       organization_card(org_name, orgservices, lengthserve)
                     )
                   }),
