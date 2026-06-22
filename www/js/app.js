@@ -585,6 +585,51 @@ document.addEventListener('DOMContentLoaded', function () {
   document.body.classList.add('app-ready');
   applyThemeSettingsTranslations();
 
+  // Fade the page in only once shiny.router has shown the route that matches the
+  // current URL. On a deep link the router briefly activates the default ("/")
+  // route before switching to the requested one, so revealing on the first
+  // resolved route would flash the home page. We wait until the visible route's
+  // data-path matches the hash.
+  var revealApp = function () {
+    document.body.classList.add('router-ready');
+  };
+  var normPath = function (p) {
+    return p === '/' || p == null ? '' : p;
+  };
+  var hashRoutePath = function () {
+    var hash = window.location.hash || '';
+    return normPath((hash.replace(/^#!?\/?/, '').split('?')[0]) || '');
+  };
+  var routerMatchesHash = function () {
+    var active = document.querySelector(
+      '#router-page-wrapper .router:not(.router-hidden)'
+    );
+    if (!active) {
+      return false;
+    }
+    return normPath(active.getAttribute('data-path')) === hashRoutePath();
+  };
+  if (routerMatchesHash()) {
+    revealApp();
+  } else {
+    var wrapper = document.getElementById('router-page-wrapper');
+    if (wrapper && window.MutationObserver) {
+      var routerObserver = new MutationObserver(function () {
+        if (routerMatchesHash()) {
+          revealApp();
+          routerObserver.disconnect();
+        }
+      });
+      routerObserver.observe(wrapper, {
+        attributes: true,
+        subtree: true,
+        attributeFilter: ['class'],
+      });
+    }
+    // Safety net: never leave the page hidden if the signal is missed.
+    window.setTimeout(revealApp, 4000);
+  }
+
   // The marketing/gradient body styling applies only to the home route ("#!/").
   var HOME_BODY_CLASSES = ['body-marketing', 'body-gradient'];
   var updateHomeBodyClasses = function () {
