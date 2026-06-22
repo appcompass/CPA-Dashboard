@@ -1,3 +1,5 @@
+# Top navigation bar: brand, primary nav (Home/Organizations), and the language,
+# theme, and login controls (each rendered by its own component via server.R).
 header_ui <- function(lang = get_lang()) {
   header <- lang$header
   app <- lang$app

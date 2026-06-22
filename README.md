@@ -12,8 +12,8 @@ CPA-Dashboard is a Shiny application built with `shiny.router` and Tabler UI tem
 ## Project structure
 
 - `app.R` boots the app.
-- `R/helpers.R` contains shared app helpers.
 - `R/data.R` decrypts survey data and extracts data used by the app.
+- `R/lang.R` loads the translations and language settings.
 - `R/ui.R` wires the router and top-level UI.
 - `R/server.R` handles route-specific rendering.
 - `R/templates/` contains reusable UI pieces:
@@ -38,17 +38,42 @@ make run
 
 This starts the app on `http://0.0.0.0:3838`.
 
-## Deploy to Posit Connect Cloud
+## How updates go live (automatic deployment)
 
-Connect Cloud expects a `manifest.json` file in the project root.
+The live dashboard is hosted on Posit Connect Cloud, which is connected to this
+GitHub repository. You never have to publish the app by hand — it updates itself.
 
-Generate/update it before publishing:
+Here is the whole flow:
+
+1. You make your changes on a branch and open a pull request.
+2. A reviewer approves it and merges the pull request into the `main` branch.
+3. Posit Connect Cloud notices that `main` has changed, rebuilds the app with
+   your latest changes, and publishes it to the live site automatically.
+
+Within a few minutes of merging to `main`, the live dashboard shows your changes.
+
+Good to know:
+
+- Only changes merged into `main` go live. Work on other branches is safe to
+  experiment with and won't affect the live site.
+- Every pull request automatically runs the test suite first, so problems are
+  usually caught before anything reaches `main`.
+- The secret data key (`CPA_DATA_KEY`) lives securely inside Posit Connect Cloud,
+  which lets the live app read the encrypted survey data. It is never stored in
+  the code.
+
+### When you add or remove files
+
+Connect Cloud reads a `manifest.json` file in the project root to know which
+files and R packages the app needs. If you add, rename, or remove files (or add
+a new R package), refresh that list and commit it as part of your change:
 
 ```bash
 make manifest
 ```
 
-If you see `Unable to locate manifest.json`, regenerate it and republish.
+If a deploy fails with `Unable to locate manifest.json`, regenerate it with the
+command above and commit the result.
 
 ## Routing
 

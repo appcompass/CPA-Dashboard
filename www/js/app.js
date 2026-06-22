@@ -1,5 +1,12 @@
+// Client-side behavior for the dashboard, built on the jQuery that Shiny loads:
+// the interactive wellness wheel (SVG.js), live organizations filtering, theme
+// settings, language-aware router links, and the initial page fade-in. Reads
+// translations from window.APP_TRANSLATIONS (injected by main_ui.R).
+
 const WHEEL_DEFAULT_MESSAGE = 'Select a segment to learn more.';
 
+// Wellness dimensions: color, icon, and the translation keys for the title,
+// description, and sub-categories that populate each wheel segment and panel.
 const WHEEL_META = [
   {
     key: 'physical',

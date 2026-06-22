@@ -1,3 +1,5 @@
+# Light/dark theme toggle in the header. Reads the current theme from the URL
+# query (?theme=) and links to the opposite mode, preserving search + hash.
 theme_toggle_nav_link_ui <- function(search = "", hash = "", lang = get_lang()) {
   header <- lang$header
 

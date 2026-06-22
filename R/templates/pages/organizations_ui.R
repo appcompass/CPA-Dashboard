@@ -1,3 +1,6 @@
+# Organizations search page: a name search box, a wellness-area filter sidebar,
+# and a card per organization. Filtering happens client-side in www/js/app.js
+# using the data-* attributes stamped on the cards and filter checkboxes here.
 organizations_ui <- function(lang = get_lang()) {
   organizations <- lang$organizations
   wheel <- lang$wheel
@@ -145,7 +148,7 @@ organizations_ui <- function(lang = get_lang()) {
   # A checkbox per wellness dimension with its sub-categories nested underneath.
   # Every box is tagged so the client-side filter can match it against each
   # organization's areas; children inherit their parent's dimension. `group` is
-  # "established" or "emerging".
+  # the data-filter-group value (currently only "established").
   filter_checkbox <- function(group, dimension, role, label, subcat = NULL) {
     tags$label(
       class = if (identical(role, "child")) "form-check mt-1" else "form-check",

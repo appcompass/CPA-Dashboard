@@ -1,3 +1,5 @@
+# Login page: organization picker + Organization ID. The form posts its values
+# to Shiny (input$login_submit), which validates them in server.R.
 login_ui <- function(lang = get_lang()) {
   login <- lang$login
 

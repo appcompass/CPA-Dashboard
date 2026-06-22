@@ -53,6 +53,8 @@ SUPPORTED_LANGUAGES <- data.frame(
 
 translations <- load_app_translations()
 
+# Fallback source file for each supported code when it has no translation file of
+# its own (e.g. a regional variant reuses its base language; the rest fall to en).
 TRANSLATION_SOURCE <- c(
   "en" = "en",
   "es-419" = "es",

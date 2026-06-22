@@ -1,3 +1,5 @@
+# Single organization dashboard. Age breakdown and the wellness wheels are always
+# shown; the gender and additional-demographics cards are gated behind `logged_in`.
 organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
   organizations <- lang$organizations
   details_context <- get_organization_details_context(lang = lang)
