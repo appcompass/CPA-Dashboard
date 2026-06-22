@@ -307,6 +307,11 @@ function createWheel(container, size = 340) {
 
   const isCentered = $container.is('[data-wheel-centered]');
 
+  const sizeAttr = parseFloat($container.attr('data-wheel-size'));
+  if (!Number.isNaN(sizeAttr) && sizeAttr > 0) {
+    size = sizeAttr;
+  }
+
   const wheelScale = size / 340;
   const scaledPx = function (base, min) {
     return Math.max(min, Math.round(base * wheelScale));
@@ -330,11 +335,13 @@ function createWheel(container, size = 340) {
 
   $container.addClass('ww-wheel-instance');
 
-  const $svgWrap = $('<div>').addClass('ww-svg-wrap').css({
-    width: size + 'px',
-    height: size + 'px',
-    overflow: 'visible',
-  });
+  const $svgWrap = $('<div>')
+    .addClass('ww-svg-wrap')
+    .css({
+      width: size + 'px',
+      height: size + 'px',
+      overflow: 'visible',
+    });
   const $panelsEl = $('<div>').addClass('ww-panel-wrap');
   const $panelInner = $('<div>').addClass('ww-panel-inner');
   const $defaultMsg = $('<div>')
@@ -348,7 +355,7 @@ function createWheel(container, size = 340) {
   $container.append($wrap.append($svgWrap, $panelsEl));
 
   if (isCentered) {
-    $panelsEl.css('left', (size + 32) + 'px');
+    $panelsEl.css('left', size + 32 + 'px');
   }
 
   // build panels
@@ -615,7 +622,10 @@ function createWheel(container, size = 340) {
     const resizeObserver = new ResizeObserver(function () {
       if (activeSegIdx >= 0) {
         const offset = Math.max(0, ($wrap.width() - size) / 2);
-        $svgWrap.css({ transition: 'none', transform: 'translateX(-' + offset + 'px)' });
+        $svgWrap.css({
+          transition: 'none',
+          transform: 'translateX(-' + offset + 'px)',
+        });
         window.requestAnimationFrame(function () {
           $svgWrap.css('transition', '');
         });
@@ -645,7 +655,7 @@ $(function () {
   };
   var hashRoutePath = function () {
     var hash = window.location.hash || '';
-    return normPath((hash.replace(/^#!?\/?/, '').split('?')[0]) || '');
+    return normPath(hash.replace(/^#!?\/?/, '').split('?')[0] || '');
   };
   var routerMatchesHash = function () {
     var $active = $('#router-page-wrapper .router:not(.router-hidden)');
@@ -679,7 +689,9 @@ $(function () {
   // The marketing/gradient body styling applies only to the home route ("#!/").
   var HOME_BODY_CLASSES = 'body-marketing body-gradient';
   var updateHomeBodyClasses = function () {
-    var path = (window.location.hash || '').replace(/^#!?\/?/, '').split('?')[0];
+    var path = (window.location.hash || '')
+      .replace(/^#!?\/?/, '')
+      .split('?')[0];
     var isHome = path === '' || path === '/';
     $body.toggleClass(HOME_BODY_CLASSES, isHome);
   };
