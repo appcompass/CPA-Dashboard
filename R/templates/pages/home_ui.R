@@ -92,7 +92,7 @@ home_ui <- function(lang = get_lang()) {
         ),
         # Same interactive wellness wheel as the organization details page,
         # showing all eight dimensions (rendered by createWheel in app.js).
-        div(`data-active-categories` = wheel_categories)
+        div(`data-active-categories` = wheel_categories, `data-wheel-centered` = "true")
       )
     ),
 
