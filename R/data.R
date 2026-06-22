@@ -348,6 +348,73 @@ DIMENSION_LABEL_KEYS <- c(
   environmental = "wellness_environmental", spiritual = "wellness_spiritual"
 )
 
+# Sub-categories under each wellness dimension, mirroring the wellness wheel
+# taxonomy (www/js/app.js WHEEL_META). Used both to render the filter sidebar and
+# to match an organization's stored services to a subcategory. "wellness_physical_
+# other" is the shared "Other" label key.
+DIMENSION_SUB_KEYS <- list(
+  physical = c("wellness_physical_fitness", "wellness_physical_nutrition", "wellness_physical_screenings", "wellness_physical_other"),
+  emotional = c("sub_emotional_1", "sub_emotional_2", "sub_emotional_3", "wellness_physical_other"),
+  intellectual = c("sub_intellectual_1", "sub_intellectual_2", "sub_intellectual_3", "wellness_physical_other"),
+  occupational = c("sub_occupational_1", "sub_occupational_2", "sub_occupational_3", "sub_occupational_4", "wellness_physical_other"),
+  financial = c("sub_financial_1", "sub_financial_2", "sub_financial_3", "wellness_physical_other"),
+  social = c("sub_social_1", "sub_social_2", "sub_social_3", "wellness_physical_other"),
+  environmental = c("sub_environmental_1", "sub_environmental_2", "sub_environmental_3", "wellness_physical_other"),
+  spiritual = c("sub_spiritual_1", "sub_spiritual_2", "sub_spiritual_3", "sub_spiritual_4", "wellness_physical_other")
+)
+
+# Match a stored survey service string against a subcategory label, tolerant of
+# trailing detail ("Educational workshops, e.g. ...") and minor word forms
+# ("Nutrition" vs "Nutritional"). Both inputs should be lowercased/trimmed.
+service_matches_label <- function(service, label) {
+  if (!nzchar(service) || !nzchar(label)) {
+    return(FALSE)
+  }
+  if (service == label || startsWith(service, label) || startsWith(label, service)) {
+    return(TRUE)
+  }
+  sw <- strsplit(service, "\\s+")[[1]]
+  lw <- strsplit(label, "\\s+")[[1]]
+  length(sw) == length(lw) && length(sw) > 0 &&
+    all(mapply(function(a, b) startsWith(a, b) || startsWith(b, a), sw, lw))
+}
+
+# Subcategory keys an organization provides as ESTABLISHED services. Each curated
+# subcategory it matches is emitted by its key; any established service that
+# matches no curated subcategory contributes a dimension-specific "<dimension>_
+# other" key (the "Other" catch-all). Matching always uses English labels (the
+# language the survey services are stored in) so the keys are stable regardless
+# of the UI language.
+established_subcat_keys <- function(orgservices) {
+  en <- get_lang("en")
+  sub_label <- function(key) en$organizations[[key]] %||% en$wheel[[key]] %||% key
+
+  out <- character(0)
+  for (key in names(DIMENSION_LABEL_KEYS)) {
+    dim <- orgservices[[key]]
+    if (is.null(dim) || !identical(dim$state, "established")) next
+    services <- tolower(trimws(vapply(dim$services %||% list(), as.character, character(1))))
+    services <- services[nzchar(services)]
+    if (!length(services)) next
+
+    curated_keys <- setdiff(DIMENSION_SUB_KEYS[[key]], "wellness_physical_other")
+    curated_labels <- tolower(trimws(vapply(curated_keys, sub_label, character(1))))
+    has_other <- FALSE
+    for (service in services) {
+      matched <- vapply(curated_labels, service_matches_label, logical(1), service = service)
+      if (any(matched)) {
+        out <- c(out, curated_keys[matched])
+      } else {
+        has_other <- TRUE
+      }
+    }
+    if (has_other) {
+      out <- c(out, paste0(key, "_other"))
+    }
+  }
+  unique(out)
+}
+
 # Multi-selects are comma-joined, but some option labels themselves contain commas
 # (only the Intellectual one here). Those are extracted before splitting so they
 # are not shattered.

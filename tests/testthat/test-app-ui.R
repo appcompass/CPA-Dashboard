@@ -83,6 +83,21 @@ test_that("organization_details_ui renders detail cards", {
   expect_false(grepl("Gender Identity", html, fixed = TRUE))
 })
 
+test_that("organization_details_ui gates gender and demographics behind login", {
+  withr::local_dir(project_root)
+
+  logged_out <- render_html(organization_details_ui(logged_in = FALSE))
+  logged_in <- render_html(organization_details_ui(logged_in = TRUE))
+
+  # Age breakdown is always public.
+  expect_match(logged_out, "Age Breakdown", fixed = TRUE)
+  # Gender + additional demographics are hidden when logged out, shown when in.
+  expect_false(grepl("Gender Identity", logged_out, fixed = TRUE))
+  expect_false(grepl("Additional Demographics", logged_out, fixed = TRUE))
+  expect_match(logged_in, "Gender Identity", fixed = TRUE)
+  expect_match(logged_in, "Additional Demographics", fixed = TRUE)
+})
+
 test_that("organization_details_ui renders the first org when no id is supplied", {
   withr::local_dir(project_root)
 
