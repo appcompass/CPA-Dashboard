@@ -204,6 +204,10 @@ app_server <- function(input, output, session) {
     div(class = "alert alert-danger mb-3", role = "alert", msg)
   })
 
+  output$page_home <- renderUI({
+    home_ui(get_lang(lang_code()))
+  })
+
   output$page_login <- renderUI({
     login_ui(get_lang(lang_code()))
   })
