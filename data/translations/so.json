@@ -4,7 +4,6 @@
     "page_title": "CHANGE Lab"
   },
   "header": {
-    "brand_label": "Gudiga CPA",
     "toggle_nav_aria": "Beddel hagidda",
     "enable_dark_mode_aria": "Daar hab mugdi ah",
     "enable_dark_mode_title": "Daar hab mugdi ah",
@@ -18,8 +17,22 @@
     "label": "Soo gal"
   },
   "home": {
-    "heading": "Ku soo dhawoow Gudiga CPA!",
-    "subtext": "Kani waa bogga hore."
+    "hero_title": "Dashboard-ka Qiimaynta Iskaashatada Bulshada",
+    "hero_description": "Dashboard-ka Qiimaynta Iskaashatada Bulshada waa goob isdhexgal ah oo muujisa adeegyada caafimaadka guud ee ururada gobolka Greater Boston ay siiyaan dhallinyarada midabaysan iyo qoysaskooda. Waxaan ku qeexnaa caafimaadka guud siddeed cabbir: jirka, shucuurta, garaadka, shaqada, maaliyadda, bulshada, deegaanka, iyo ruuxa. Sahami ururo kala duwan adoo ku shaandhaynaya magaca, goobta, iyo cabbirrada caafimaadka guud.",
+    "cta_browse": "Fiiri ururada",
+    "dimensions_title": "Siddeedda cabbir ee caafimaadka guud",
+    "dimensions_description": "Waxaan ku qeexnaa caafimaadka guud siddeed cabbir.",
+    "purpose_title": "Ujeeddadayada",
+    "purpose_body": "Ujeeddada dashboard-kani waa inuu noqdo xarun isku xirka ururada si ay isula xiraan oo ay u taageeraan dhallinyarada midabaysan iyo qoysaskooda gobolka Greater Boston. Isticmaalayaashu waxay ogaan karaan meelaha ay ururadu ku takhasuseen si ay u dhisaan xiriiro, u weydiistaan talo, iyo gudbin. Iyada oo loo marayo sahan iyo wareysiyo lala yeesho ururada, waxaan rajaynaynaa inaan natiijooyinkayaga u soo bandhigno bulshada oo aan abuurno boos siiya mudnaanta matalaad kala duwan iyo ku darista dhammaan qaybaha caafimaadka guud si loo taageero si fiican baahiyaha dhaqamada kala duwan ee dhallinyarada midabaysan ee Boston iyo meel ka baxsan.",
+    "howto_title": "Sida loo isticmaalo dashboard-ka",
+    "howto_step1_title": "Fiiri ururada",
+    "howto_step1_body": "Eeg ururada iskaashiga ah ee u adeega dhallinyarada midabaysan iyo qoysaskooda gobolka Greater Boston.",
+    "howto_step2_title": "Raadi oo shaandhee",
+    "howto_step2_body": "Yaree liiska adoo isticmaalaya magaca iyo meelaha caafimaadka guud ee la aasaasay iyo adeegyadooda hoose.",
+    "howto_step3_title": "Sahami meelaha caafimaadka guud",
+    "howto_step3_body": "Fur urur si aad u aragto giraangirta caafimaadka guud iyo meelaheeda la aasaasay iyo kuwa soo kacaya.",
+    "howto_step4_title": "Isku xir oo gudbi",
+    "howto_step4_body": "Ogow khibradda urur kasta si aad u dhisto xiriiro, u weydiisato talo, iyo aad u gudbiso."
   },
   "login": {
     "heading": "Soo gal akoonkaaga",
@@ -34,8 +47,6 @@
     "page_title": "Raadi ururro",
     "search_placeholder": "Magac ku raadi...",
     "filter_established_label": "Meelaha la aasaasay",
-    "filter_emerging_label": "Meelaha soo baxaya (gaar ah?)",
-    "btn_confirm_filter": "Xaqiiji shaandhaynta",
     "btn_reset_filter": "Ku celi dejinta asalka",
     "wellness_physical": "Fayoqabka jirka",
     "wellness_emotional": "Fayoqabka shucuurta",
@@ -58,8 +69,6 @@
     "org_name_placeholder": "Magaca ururka",
     "org_subtitle": "Sano oo adeegsan dhalinyarada Greater Boston",
     "card_age_title": "Kala qaybinta da’da",
-    "card_age_youth_title": "Dhalinyarada uu ururkaagu u adeego",
-    "card_age_employee_title": "Shaqaalaha ururkaaga",
     "age_12_17": "12-17 jir",
     "age_18_25": "18-25 jir",
     "age_26_plus": "26+ jir",

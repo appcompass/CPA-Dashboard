@@ -4,7 +4,6 @@
     "page_title": "CHANGE Lab"
   },
   "header": {
-    "brand_label": "CPA Dashboard",
     "toggle_nav_aria": "Toggle navigation",
     "enable_dark_mode_aria": "Enable dark mode",
     "enable_dark_mode_title": "Enable dark mode",
@@ -18,8 +17,22 @@
     "label": "Login"
   },
   "home": {
-    "heading": "Welcome to the CPA Dashboard!",
-    "subtext": "This is the home page."
+    "hero_title": "Community Partners Assessment Dashboard",
+    "hero_description": "The Community Partners Assessment Dashboard is an interactive platform that visualizes the wellness services organizations across the greater Boston area provide for youth of color and their families. We define wellness across eight dimensions: physical, emotional, intellectual, occupational, financial, social, environmental, and spiritual. Explore different organizations by filtering for name, location, and wellness dimensions.",
+    "cta_browse": "Browse Organizations",
+    "dimensions_title": "Eight Dimensions of Wellness",
+    "dimensions_description": "We define wellness across eight dimensions.",
+    "purpose_title": "Our Purpose",
+    "purpose_body": "The goal of this dashboard is to serve as a networking hub for organizations to connect with each other to uplift youth of color and their families in the greater Boston area. Users can discover organizations' areas of expertise to build connections, ask for guidance, and for referrals. Through surveying and interviewing organizations, we hope to present our findings to the community and create a site that prioritizes diverse representation and inclusion of all domains of wellness to better support the multicultural needs of youth of color in Boston and beyond.",
+    "howto_title": "How to use the dashboard",
+    "howto_step1_title": "Browse organizations",
+    "howto_step1_body": "View the partner organizations serving youth of color and their families across Greater Boston.",
+    "howto_step2_title": "Search and filter",
+    "howto_step2_body": "Narrow the list by name and by established areas of wellness and their sub-services.",
+    "howto_step3_title": "Explore wellness areas",
+    "howto_step3_body": "Open an organization to see its wellness wheel and its established and emerging areas.",
+    "howto_step4_title": "Connect and refer",
+    "howto_step4_body": "Discover each organization's expertise to build connections, seek guidance, and make referrals."
   },
   "login": {
     "heading": "Login to your account",
@@ -34,8 +47,6 @@
     "page_title": "Search Organizations",
     "search_placeholder": "Search by name...",
     "filter_established_label": "Established Areas",
-    "filter_emerging_label": "Emerging Areas (private?)",
-    "btn_confirm_filter": "Confirm Filter",
     "btn_reset_filter": "Reset to defaults",
     "wellness_physical": "Physical wellness",
     "wellness_emotional": "Emotional wellness",
@@ -58,8 +69,6 @@
     "org_name_placeholder": "Organization Name",
     "org_subtitle": "Years Serving youth in Greater Boston",
     "card_age_title": "Age Breakdown",
-    "card_age_youth_title": "Youth served by your organization",
-    "card_age_employee_title": "Employees of your organization",
     "age_12_17": "12-17 yrs old",
     "age_18_25": "18-25 yrs old",
     "age_26_plus": "26+ yrs old",

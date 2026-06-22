@@ -4,7 +4,6 @@
     "page_title": "CHANGE Lab"
   },
   "header": {
-    "brand_label": "Painel CPA",
     "toggle_nav_aria": "Troka navegason",
     "enable_dark_mode_aria": "Ativa modu skuru",
     "enable_dark_mode_title": "Ativa modu skuru",
@@ -18,8 +17,22 @@
     "label": "Entrar"
   },
   "home": {
-    "heading": "Benvindu pa Painel CPA!",
-    "subtext": "Es li e pagina inisial."
+    "hero_title": "Painel di Avaliason di Parseirus Komunitáriu",
+    "hero_description": "Painel di Avaliason di Parseirus Komunitáriu é un platafórma interativu ki ta mostra servisus di ben-star ki organizasons na área di Grande Boston ta oferese pa jovens di kor i ses família. Nu ta defini ben-star na oitu dimenson: fíziku, emosional, intelektual, okupasional, finanseru, sosial, ambiental i spiritual. Splora diferentes organizason através di filtru pa nómi, lokalizason i dimenson di ben-star.",
+    "cta_browse": "Splora organizasons",
+    "dimensions_title": "Oitu dimenson di ben-star",
+    "dimensions_description": "Nu ta defini ben-star na oitu dimenson.",
+    "purpose_title": "Nos propózitu",
+    "purpose_body": "Objetivu di kel painel li é sirbi komu un sentru di koneson pa organizasons konekta ku kunpanheru pa apoia jovens di kor i ses família na área di Grande Boston. Uzuáriu pode diskubri área di spesializason di kada organizason pa kria koneson, pidi orientason i referénsia. Através di inkéritu i intrevista ku organizasons, nu ta spera prezenta nos rezultadu pa komunidadi i kria un sítiu ki ta prioriza reprezentason diversu i inkluzon di tudu dimenson di ben-star pa apoia midjór nesesidadis multikultural di jovens di kor na Boston i alén.",
+    "howto_title": "Kuma ki ta uza painel",
+    "howto_step1_title": "Splora organizasons",
+    "howto_step1_body": "Odja organizasons parseiru ki ta sirbi jovens di kor i ses família na Grande Boston.",
+    "howto_step2_title": "Buska i filtra",
+    "howto_step2_body": "Reduzi lista pa nómi i pa área stabelesidu di ben-star i ses sub-servisu.",
+    "howto_step3_title": "Splora área di ben-star",
+    "howto_step3_body": "Abri un organizason pa odja se roda di ben-star i ses área stabelesidu i emergenti.",
+    "howto_step4_title": "Konekta i referi",
+    "howto_step4_body": "Diskubri spesializason di kada organizason pa kria koneson, pidi orientason i fazi referénsia."
   },
   "login": {
     "heading": "Entrar na bo konta",
@@ -34,8 +47,6 @@
     "page_title": "Prokura organizasons",
     "search_placeholder": "Prokura pa nomi...",
     "filter_established_label": "Areas stabelesidu",
-    "filter_emerging_label": "Areas emergenti (privadu?)",
-    "btn_confirm_filter": "Konfirma filtro",
     "btn_reset_filter": "Repo pa padron",
     "wellness_physical": "Ben-star fisiku",
     "wellness_emotional": "Ben-star emusional",
@@ -58,8 +69,6 @@
     "org_name_placeholder": "Nomi di organizason",
     "org_subtitle": "Anhos a sirbi jovens na Grande Boston",
     "card_age_title": "Distribuison pa idadi",
-    "card_age_youth_title": "Jovens sirbidu pa bu organizason",
-    "card_age_employee_title": "Funsionarius di bu organizason",
     "age_12_17": "12-17 anu",
     "age_18_25": "18-25 anu",
     "age_26_plus": "26+ anu",

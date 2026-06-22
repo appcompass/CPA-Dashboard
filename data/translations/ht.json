@@ -4,7 +4,6 @@
     "page_title": "CHANGE Lab"
   },
   "header": {
-    "brand_label": "Tablo de Bò CPA",
     "toggle_nav_aria": "Chanje navigasyon",
     "enable_dark_mode_aria": "Aktive mòd nwa",
     "enable_dark_mode_title": "Aktive mòd nwa",
@@ -18,8 +17,22 @@
     "label": "Konekte"
   },
   "home": {
-    "heading": "Byenveni nan Tablo de Bò CPA!",
-    "subtext": "Sa a se paj akèy la."
+    "hero_title": "Tablo Evalyasyon Patnè Kominotè",
+    "hero_description": "Tablo Evalyasyon Patnè Kominotè a se yon platfòm entèraktif ki montre sèvis byennèt òganizasyon nan zòn Greater Boston yo bay jèn moun ki gen koulè ak fanmi yo. Nou defini byennèt nan uit dimansyon: fizik, emosyonèl, entèlektyèl, pwofesyonèl, finansye, sosyal, anviwònmantal ak espirityèl. Eksplore diferan òganizasyon lè w filtre selon non, kote, ak dimansyon byennèt.",
+    "cta_browse": "Gade òganizasyon yo",
+    "dimensions_title": "Uit dimansyon byennèt",
+    "dimensions_description": "Nou defini byennèt nan uit dimansyon.",
+    "purpose_title": "Objektif nou",
+    "purpose_body": "Objektif tablo sa a se sèvi kòm yon sant rezo pou òganizasyon yo konekte youn ak lòt pou sipòte jèn moun ki gen koulè ak fanmi yo nan zòn Greater Boston. Itilizatè yo ka dekouvri domèn ekspètiz òganizasyon yo pou bati koneksyon, mande konsèy, ak referans. Atravè sondaj ak entèvyou ak òganizasyon yo, nou espere prezante rezilta nou bay kominote a epi kreye yon sit ki bay priyorite reprezantasyon divès ak enklizyon tout domèn byennèt pou pi byen sipòte bezwen miltikiltirèl jèn moun ki gen koulè nan Boston ak pi lwen.",
+    "howto_title": "Kijan pou itilize tablo a",
+    "howto_step1_title": "Gade òganizasyon yo",
+    "howto_step1_body": "Gade òganizasyon patnè k ap sèvi jèn moun ki gen koulè ak fanmi yo nan Greater Boston.",
+    "howto_step2_title": "Chèche ak filtre",
+    "howto_step2_body": "Redui lis la selon non ak selon zòn byennèt ki etabli ak sou-sèvis yo.",
+    "howto_step3_title": "Eksplore zòn byennèt",
+    "howto_step3_body": "Louvri yon òganizasyon pou wè wou byennèt li ak zòn ki etabli ak sa k ap parèt yo.",
+    "howto_step4_title": "Konekte ak refere",
+    "howto_step4_body": "Dekouvri ekspètiz chak òganizasyon pou bati koneksyon, mande konsèy, ak fè referans."
   },
   "login": {
     "heading": "Konekte nan kont ou",
@@ -34,8 +47,6 @@
     "page_title": "Chèche òganizasyon",
     "search_placeholder": "Chèche pa non...",
     "filter_established_label": "Zòn etabli",
-    "filter_emerging_label": "Zòn k ap parèt (prive?)",
-    "btn_confirm_filter": "Konfime filtre",
     "btn_reset_filter": "Retounen nan valè pa defò",
     "wellness_physical": "Byennèt fizik",
     "wellness_emotional": "Byennèt emosyonèl",
@@ -58,8 +69,6 @@
     "org_name_placeholder": "Non òganizasyon",
     "org_subtitle": "Ane ap sèvi jèn moun nan Greater Boston",
     "card_age_title": "Distribisyon laj",
-    "card_age_youth_title": "Jèn moun òganizasyon ou a sèvi",
-    "card_age_employee_title": "Anplwaye òganizasyon ou a",
     "age_12_17": "12-17 zan",
     "age_18_25": "18-25 zan",
     "age_26_plus": "26+ zan",
