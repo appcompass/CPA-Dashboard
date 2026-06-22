@@ -252,6 +252,112 @@ test_that("get_named_value reads by column name with a fallback", {
   expect_equal(get_named_value(row, "missing_col", "N/A"), "N/A")
 })
 
+# ---- login dashboard-id lookup ----
+
+test_that("get_org_dashboard_ids maps org names to their dashboard ids", {
+  data <- data.frame(
+    orgname = c("Org A", "Org B", "  "),
+    dashboard_id = c("D1", "D2", "D9"),
+    stringsAsFactors = FALSE
+  )
+  ids <- get_org_dashboard_ids(data)
+  expect_equal(unname(ids[["Org A"]]), "D1")
+  expect_equal(unname(ids[["Org B"]]), "D2")
+  # blank organization names are dropped
+  expect_false(any(!nzchar(names(ids))))
+})
+
+test_that("get_org_dashboard_ids returns an empty vector for empty data", {
+  empty <- get_org_dashboard_ids(
+    data.frame(orgname = character(0), dashboard_id = character(0))
+  )
+  expect_length(empty, 0L)
+})
+
+# ---- wellness category mapping + details context ----
+
+test_that("get_dimension_categories maps states to translated dimension labels", {
+  cols <- c("EmotionalEorE", "Emotional", "PhysicalEorE", "Physical")
+  vals <- c("Established", "Counseling services", "Emerging", "Fitness programs")
+  row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  os <- parse_orgservices_json(build_orgservices_json(row))
+  lang <- get_lang("en")
+
+  expect_equal(get_dimension_categories(os, lang, "established"), "Emotional wellness")
+  expect_equal(get_dimension_categories(os, lang, "emerging"), "Physical wellness")
+  expect_length(get_dimension_categories(os, lang, "wants"), 0L)
+})
+
+test_that("get_organization_details_context exposes demographics and wellness categories", {
+  cols <- c(
+    "Dashboard ID", "Organization", "YearsServed", "Age#1_1",
+    "EmotionalEorE", "Emotional", "PhysicalEorE", "Physical"
+  )
+  vals <- c(
+    "Org01", "Test Org", "8+ years", "A lot (61%-100%)",
+    "Established", "Counseling services", "Emerging", "Fitness programs"
+  )
+  raw <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  clean <- build_clean_survey(raw)
+
+  ctx <- get_organization_details_context(
+    lang = get_lang("en"), org_name = "Test Org", survey_data = clean
+  )
+
+  expect_true(ctx$has_data)
+  expect_equal(ctx$orgname, "Test Org")
+  expect_equal(ctx$lengthserve, "8+")
+  expect_equal(ctx$pct_age_12_17, "61%-100%")
+  expect_true("Emotional wellness" %in% ctx$established_categories)
+  expect_true("Physical wellness" %in% ctx$emerging_categories)
+  expect_false("Physical wellness" %in% ctx$established_categories)
+})
+
+# ---- service -> subcategory matching ----
+
+test_that("service_matches_label handles exact, truncated, and word-form matches", {
+  expect_true(service_matches_label("fitness programs", "fitness programs"))
+  # stored service carries extra detail beyond the curated label
+  expect_true(service_matches_label(
+    "educational workshops, e.g., stem classes, etc", "educational workshops"
+  ))
+  # minor word-form difference ("Nutrition" vs "Nutritional")
+  expect_true(service_matches_label("nutrition education", "nutritional education"))
+  expect_false(service_matches_label("mentoring", "tutoring"))
+  expect_false(service_matches_label("", "tutoring"))
+})
+
+test_that("established_subcat_keys maps established services to subcategory keys", {
+  cols <- c(
+    "IntellectualEorE", "Intellectual",
+    "SocialEorE", "Social",
+    "PhysicalEorE", "Physical"
+  )
+  vals <- c(
+    "Established", "Tutoring,Some bespoke offering", # curated + free-text
+    "Established", "Mentoring",
+    "Emerging", "Fitness programs" # emerging, so excluded
+  )
+  row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  os <- parse_orgservices_json(build_orgservices_json(row))
+
+  keys <- established_subcat_keys(os)
+  expect_true("sub_intellectual_3" %in% keys) # Tutoring
+  expect_true("intellectual_other" %in% keys) # the bespoke free-text service
+  expect_true("sub_social_1" %in% keys) # Mentoring
+  # Physical is only emerging here, so no physical keys are emitted.
+  expect_false("wellness_physical_fitness" %in% keys)
+  expect_false("physical_other" %in% keys)
+})
+
+test_that("established_subcat_keys returns nothing when there are no services", {
+  cols <- c("IntellectualEorE", "Intellectual")
+  vals <- c("Established", "") # established state but no listed services
+  row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  os <- parse_orgservices_json(build_orgservices_json(row))
+  expect_length(established_subcat_keys(os), 0L)
+})
+
 # ---- encryption helpers ----
 
 test_that("encrypt_data_raw and decrypt_data_raw are inverse operations", {
