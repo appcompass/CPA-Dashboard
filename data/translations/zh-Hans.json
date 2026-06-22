@@ -4,7 +4,6 @@
     "page_title": "CHANGE Lab"
   },
   "header": {
-    "brand_label": "CPA 仪表板",
     "toggle_nav_aria": "切换导航",
     "enable_dark_mode_aria": "启用深色模式",
     "enable_dark_mode_title": "启用深色模式",
@@ -18,8 +17,22 @@
     "label": "登录"
   },
   "home": {
-    "heading": "欢迎使用 CPA 仪表板！",
-    "subtext": "这是主页。"
+    "hero_title": "社区伙伴评估仪表板",
+    "hero_description": "社区伙伴评估仪表板是一个互动平台，展示大波士顿地区各组织为有色人种青年及其家庭提供的健康服务。我们将健康定义为八个维度：身体、情感、智力、职业、财务、社交、环境和精神。通过按名称、位置和健康维度筛选来探索不同的组织。",
+    "cta_browse": "浏览组织",
+    "dimensions_title": "健康的八个维度",
+    "dimensions_description": "我们将健康定义为八个维度。",
+    "purpose_title": "我们的宗旨",
+    "purpose_body": "本仪表板的目标是成为一个交流枢纽，让各组织相互联系，共同帮助大波士顿地区的有色人种青年及其家庭。用户可以了解各组织的专长领域，以建立联系、寻求指导和获得转介。通过对组织进行调查和访谈，我们希望向社区展示我们的发现，并创建一个优先考虑多元代表性、涵盖所有健康领域的网站，从而更好地满足波士顿及其他地区有色人种青年的多元文化需求。",
+    "howto_title": "如何使用仪表板",
+    "howto_step1_title": "浏览组织",
+    "howto_step1_body": "查看在整个大波士顿地区为有色人种青年及其家庭服务的合作组织。",
+    "howto_step2_title": "搜索和筛选",
+    "howto_step2_body": "按名称以及已建立的健康领域及其子服务来缩小列表范围。",
+    "howto_step3_title": "探索健康领域",
+    "howto_step3_body": "打开某个组织以查看其健康轮盘及其已建立和新兴的领域。",
+    "howto_step4_title": "联系与转介",
+    "howto_step4_body": "了解每个组织的专长，以建立联系、寻求指导并进行转介。"
   },
   "login": {
     "heading": "登录您的账户",
@@ -34,8 +47,6 @@
     "page_title": "搜索组织",
     "search_placeholder": "按名称搜索...",
     "filter_established_label": "已建立的领域",
-    "filter_emerging_label": "新兴领域（私密？）",
-    "btn_confirm_filter": "确认筛选",
     "btn_reset_filter": "重置为默认值",
     "wellness_physical": "身体健康",
     "wellness_emotional": "情感健康",
@@ -58,8 +69,6 @@
     "org_name_placeholder": "组织名称",
     "org_subtitle": "服务大波士顿地区青年的年数",
     "card_age_title": "年龄分布",
-    "card_age_youth_title": "您的组织服务的青少年",
-    "card_age_employee_title": "您的组织的员工",
     "age_12_17": "12-17岁",
     "age_18_25": "18-25岁",
     "age_26_plus": "26岁以上",

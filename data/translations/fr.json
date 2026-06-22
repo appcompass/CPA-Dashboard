@@ -4,7 +4,6 @@
     "page_title": "CHANGE Lab"
   },
   "header": {
-    "brand_label": "Tableau de bord CPA",
     "toggle_nav_aria": "Basculer la navigation",
     "enable_dark_mode_aria": "Activer le mode sombre",
     "enable_dark_mode_title": "Activer le mode sombre",
@@ -18,8 +17,22 @@
     "label": "Se connecter"
   },
   "home": {
-    "heading": "Bienvenue dans le tableau de bord CPA !",
-    "subtext": "Ceci est la page d'accueil."
+    "hero_title": "Tableau de bord d'évaluation des partenaires communautaires",
+    "hero_description": "Le tableau de bord d'évaluation des partenaires communautaires est une plateforme interactive qui visualise les services de bien-être que les organisations de la région du Grand Boston offrent aux jeunes de couleur et à leurs familles. Nous définissons le bien-être selon huit dimensions : physique, émotionnelle, intellectuelle, professionnelle, financière, sociale, environnementale et spirituelle. Explorez différentes organisations en filtrant par nom, lieu et dimensions de bien-être.",
+    "cta_browse": "Parcourir les organisations",
+    "dimensions_title": "Huit dimensions du bien-être",
+    "dimensions_description": "Nous définissons le bien-être selon huit dimensions.",
+    "purpose_title": "Notre mission",
+    "purpose_body": "L'objectif de ce tableau de bord est de servir de plateforme de mise en réseau permettant aux organisations de se connecter les unes aux autres afin de soutenir les jeunes de couleur et leurs familles dans la région du Grand Boston. Les utilisateurs peuvent découvrir les domaines d'expertise des organisations pour créer des liens, demander des conseils et obtenir des références. Grâce à des enquêtes et des entretiens avec les organisations, nous espérons présenter nos conclusions à la communauté et créer un site qui privilégie une représentation diversifiée et l'inclusion de tous les domaines du bien-être afin de mieux répondre aux besoins multiculturels des jeunes de couleur à Boston et au-delà.",
+    "howto_title": "Comment utiliser le tableau de bord",
+    "howto_step1_title": "Parcourir les organisations",
+    "howto_step1_body": "Consultez les organisations partenaires qui servent les jeunes de couleur et leurs familles dans le Grand Boston.",
+    "howto_step2_title": "Rechercher et filtrer",
+    "howto_step2_body": "Affinez la liste par nom et par domaines de bien-être établis et leurs sous-services.",
+    "howto_step3_title": "Explorer les domaines de bien-être",
+    "howto_step3_body": "Ouvrez une organisation pour voir sa roue du bien-être ainsi que ses domaines établis et émergents.",
+    "howto_step4_title": "Se connecter et orienter",
+    "howto_step4_body": "Découvrez l'expertise de chaque organisation pour créer des liens, demander des conseils et faire des références."
   },
   "login": {
     "heading": "Connectez-vous à votre compte",
@@ -34,8 +47,6 @@
     "page_title": "Rechercher des organisations",
     "search_placeholder": "Rechercher par nom...",
     "filter_established_label": "Domaines établis",
-    "filter_emerging_label": "Domaines émergents (privés ?)",
-    "btn_confirm_filter": "Confirmer le filtre",
     "btn_reset_filter": "Réinitialiser les valeurs par défaut",
     "wellness_physical": "Bien-être physique",
     "wellness_emotional": "Bien-être émotionnel",
@@ -58,8 +69,6 @@
     "org_name_placeholder": "Nom de l'organisation",
     "org_subtitle": "Années au service des jeunes à Greater Boston",
     "card_age_title": "Répartition par âge",
-    "card_age_youth_title": "Jeunes desservis par votre organisation",
-    "card_age_employee_title": "Employés de votre organisation",
     "age_12_17": "12-17 ans",
     "age_18_25": "18-25 ans",
     "age_26_plus": "26+ ans",

@@ -4,7 +4,6 @@
     "page_title": "CHANGE Lab"
   },
   "header": {
-    "brand_label": "Bảng điều khiển CPA",
     "toggle_nav_aria": "Chuyển đổi điều hướng",
     "enable_dark_mode_aria": "Bật chế độ tối",
     "enable_dark_mode_title": "Bật chế độ tối",
@@ -18,8 +17,22 @@
     "label": "Đăng nhập"
   },
   "home": {
-    "heading": "Chào mừng đến với Bảng điều khiển CPA!",
-    "subtext": "Đây là trang chủ."
+    "hero_title": "Bảng thông tin Đánh giá Đối tác Cộng đồng",
+    "hero_description": "Bảng thông tin Đánh giá Đối tác Cộng đồng là một nền tảng tương tác trực quan hóa các dịch vụ chăm sóc sức khỏe toàn diện mà các tổ chức trong khu vực Greater Boston cung cấp cho thanh thiếu niên da màu và gia đình của họ. Chúng tôi định nghĩa sức khỏe toàn diện qua tám khía cạnh: thể chất, cảm xúc, trí tuệ, nghề nghiệp, tài chính, xã hội, môi trường và tinh thần. Khám phá các tổ chức khác nhau bằng cách lọc theo tên, vị trí và các khía cạnh sức khỏe toàn diện.",
+    "cta_browse": "Xem các tổ chức",
+    "dimensions_title": "Tám khía cạnh của sức khỏe toàn diện",
+    "dimensions_description": "Chúng tôi định nghĩa sức khỏe toàn diện qua tám khía cạnh.",
+    "purpose_title": "Mục đích của chúng tôi",
+    "purpose_body": "Mục tiêu của bảng thông tin này là trở thành một trung tâm kết nối để các tổ chức liên hệ với nhau nhằm nâng đỡ thanh thiếu niên da màu và gia đình của họ trong khu vực Greater Boston. Người dùng có thể khám phá các lĩnh vực chuyên môn của các tổ chức để xây dựng kết nối, xin hướng dẫn và giới thiệu. Thông qua khảo sát và phỏng vấn các tổ chức, chúng tôi hy vọng trình bày các phát hiện của mình với cộng đồng và tạo ra một trang web ưu tiên sự đại diện đa dạng và sự bao gồm của tất cả các lĩnh vực sức khỏe toàn diện để hỗ trợ tốt hơn nhu cầu đa văn hóa của thanh thiếu niên da màu ở Boston và xa hơn nữa.",
+    "howto_title": "Cách sử dụng bảng thông tin",
+    "howto_step1_title": "Xem các tổ chức",
+    "howto_step1_body": "Xem các tổ chức đối tác phục vụ thanh thiếu niên da màu và gia đình của họ trên khắp Greater Boston.",
+    "howto_step2_title": "Tìm kiếm và lọc",
+    "howto_step2_body": "Thu hẹp danh sách theo tên và theo các lĩnh vực sức khỏe đã thiết lập cùng các dịch vụ phụ của chúng.",
+    "howto_step3_title": "Khám phá các lĩnh vực sức khỏe",
+    "howto_step3_body": "Mở một tổ chức để xem bánh xe sức khỏe cùng các lĩnh vực đã thiết lập và đang hình thành.",
+    "howto_step4_title": "Kết nối và giới thiệu",
+    "howto_step4_body": "Khám phá chuyên môn của từng tổ chức để xây dựng kết nối, xin hướng dẫn và giới thiệu."
   },
   "login": {
     "heading": "Đăng nhập vào tài khoản của bạn",
@@ -34,8 +47,6 @@
     "page_title": "Tìm kiếm tổ chức",
     "search_placeholder": "Tìm kiếm theo tên...",
     "filter_established_label": "Các lĩnh vực đã thiết lập",
-    "filter_emerging_label": "Các lĩnh vực mới nổi (riêng tư?)",
-    "btn_confirm_filter": "Xác nhận bộ lọc",
     "btn_reset_filter": "Đặt lại mặc định",
     "wellness_physical": "Sức khỏe thể chất",
     "wellness_emotional": "Sức khỏe cảm xúc",
@@ -58,8 +69,6 @@
     "org_name_placeholder": "Tên tổ chức",
     "org_subtitle": "Năm phục vụ thanh thiếu niên tại Greater Boston",
     "card_age_title": "Phân tích độ tuổi",
-    "card_age_youth_title": "Thanh thiếu niên được phục vụ bởi tổ chức của bạn",
-    "card_age_employee_title": "Nhân viên của tổ chức của bạn",
     "age_12_17": "12-17 tuổi",
     "age_18_25": "18-25 tuổi",
     "age_26_plus": "26+ tuổi",

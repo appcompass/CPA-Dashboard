@@ -16,7 +16,7 @@ source(file.path("R", "templates", "components", "login_nav_link_ui.R"), local =
 source(file.path("R", "templates", "components", "organizations_list_ui.R"), local = TRUE)
 
 router <- router_ui(
-  route("/", home_ui()),
+  route("/", uiOutput("page_home")),
   route("login", uiOutput("page_login")),
   route("organizations", uiOutput("page_organizations")),
   route("organizations/details", uiOutput("page_organization_details"))

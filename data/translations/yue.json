@@ -4,7 +4,6 @@
     "page_title": "CHANGE Lab"
   },
   "header": {
-    "brand_label": "CPA 控制台",
     "toggle_nav_aria": "切換導覽",
     "enable_dark_mode_aria": "啟用深色模式",
     "enable_dark_mode_title": "啟用深色模式",
@@ -18,8 +17,22 @@
     "label": "登入"
   },
   "home": {
-    "heading": "歡迎使用 CPA 控制台！",
-    "subtext": "呢個係主頁。"
+    "hero_title": "社區夥伴評估儀表板",
+    "hero_description": "社區夥伴評估儀表板係一個互動平台，展示大波士頓地區各機構為有色人種青年及佢哋嘅家庭提供嘅健康服務。我哋將健康分為八個範疇：身體、情感、智力、職業、財務、社交、環境同精神。透過按名稱、地點同健康範疇篩選嚟探索唔同嘅機構。",
+    "cta_browse": "瀏覽機構",
+    "dimensions_title": "健康嘅八個範疇",
+    "dimensions_description": "我哋將健康分為八個範疇。",
+    "purpose_title": "我哋嘅宗旨",
+    "purpose_body": "呢個儀表板嘅目標係成為一個聯繫樞紐，俾各機構互相聯繫，一齊幫助大波士頓地區嘅有色人種青年同佢哋嘅家庭。用戶可以了解各機構嘅專長範疇，從而建立聯繫、尋求指導同獲得轉介。透過對機構進行問卷調查同訪談，我哋希望向社區展示我哋嘅發現，並建立一個優先考慮多元代表性、涵蓋所有健康範疇嘅網站，從而更好咁滿足波士頓及其他地區有色人種青年嘅多元文化需要。",
+    "howto_title": "點樣使用儀表板",
+    "howto_step1_title": "瀏覽機構",
+    "howto_step1_body": "查看喺整個大波士頓地區為有色人種青年同佢哋嘅家庭服務嘅合作機構。",
+    "howto_step2_title": "搜尋同篩選",
+    "howto_step2_body": "按名稱以及已確立嘅健康範疇同佢哋嘅子服務嚟縮窄清單。",
+    "howto_step3_title": "探索健康範疇",
+    "howto_step3_body": "開啟某個機構以查看佢嘅健康輪盤同埋已確立同新興嘅範疇。",
+    "howto_step4_title": "聯繫同轉介",
+    "howto_step4_body": "了解每個機構嘅專長，從而建立聯繫、尋求指導同進行轉介。"
   },
   "login": {
     "heading": "登入你嘅帳戶",
@@ -34,8 +47,6 @@
     "page_title": "搜尋機構",
     "search_placeholder": "按名稱搜尋...",
     "filter_established_label": "已建立範疇",
-    "filter_emerging_label": "新興範疇（私人？）",
-    "btn_confirm_filter": "確認篩選",
     "btn_reset_filter": "重設為預設值",
     "wellness_physical": "身體健康",
     "wellness_emotional": "情緒健康",
@@ -58,8 +69,6 @@
     "org_name_placeholder": "機構名稱",
     "org_subtitle": "於大波士頓地區服務青年嘅年數",
     "card_age_title": "年齡分佈",
-    "card_age_youth_title": "你機構服務嘅青年",
-    "card_age_employee_title": "你機構嘅員工",
     "age_12_17": "12-17 歲",
     "age_18_25": "18-25 歲",
     "age_26_plus": "26+ 歲",

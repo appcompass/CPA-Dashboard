@@ -4,7 +4,6 @@
     "page_title": "CHANGE Lab"
   },
   "header": {
-    "brand_label": "Painel CPA",
     "toggle_nav_aria": "Alternar navegação",
     "enable_dark_mode_aria": "Ativar modo escuro",
     "enable_dark_mode_title": "Ativar modo escuro",
@@ -18,8 +17,22 @@
     "label": "Entrar"
   },
   "home": {
-    "heading": "Bem-vindo ao Painel CPA!",
-    "subtext": "Esta é a página inicial."
+    "hero_title": "Painel de Avaliação de Parceiros Comunitários",
+    "hero_description": "O Painel de Avaliação de Parceiros Comunitários é uma plataforma interativa que visualiza os serviços de bem-estar que as organizações da região da Grande Boston oferecem a jovens negros e suas famílias. Definimos o bem-estar em oito dimensões: física, emocional, intelectual, ocupacional, financeira, social, ambiental e espiritual. Explore diferentes organizações filtrando por nome, localização e dimensões de bem-estar.",
+    "cta_browse": "Explorar organizações",
+    "dimensions_title": "Oito dimensões do bem-estar",
+    "dimensions_description": "Definimos o bem-estar em oito dimensões.",
+    "purpose_title": "Nosso propósito",
+    "purpose_body": "O objetivo deste painel é servir como um polo de conexão para que as organizações se conectem umas com as outras a fim de apoiar jovens negros e suas famílias na região da Grande Boston. Os usuários podem descobrir as áreas de especialização das organizações para criar conexões, pedir orientação e obter encaminhamentos. Por meio de pesquisas e entrevistas com organizações, esperamos apresentar nossos resultados à comunidade e criar um site que priorize a representação diversa e a inclusão de todos os domínios do bem-estar para melhor atender às necessidades multiculturais de jovens negros em Boston e além.",
+    "howto_title": "Como usar o painel",
+    "howto_step1_title": "Explorar organizações",
+    "howto_step1_body": "Veja as organizações parceiras que atendem jovens negros e suas famílias na Grande Boston.",
+    "howto_step2_title": "Buscar e filtrar",
+    "howto_step2_body": "Restrinja a lista por nome e por áreas estabelecidas de bem-estar e seus subserviços.",
+    "howto_step3_title": "Explorar áreas de bem-estar",
+    "howto_step3_body": "Abra uma organização para ver sua roda de bem-estar e suas áreas estabelecidas e emergentes.",
+    "howto_step4_title": "Conectar e encaminhar",
+    "howto_step4_body": "Descubra a especialidade de cada organização para criar conexões, pedir orientação e fazer encaminhamentos."
   },
   "login": {
     "heading": "Faça login na sua conta",
@@ -34,8 +47,6 @@
     "page_title": "Pesquisar organizações",
     "search_placeholder": "Pesquisar por nome...",
     "filter_established_label": "Áreas estabelecidas",
-    "filter_emerging_label": "Áreas emergentes (privadas?)",
-    "btn_confirm_filter": "Confirmar filtro",
     "btn_reset_filter": "Redefinir padrões",
     "wellness_physical": "Bem-estar físico",
     "wellness_emotional": "Bem-estar emocional",
@@ -58,8 +69,6 @@
     "org_name_placeholder": "Nome da organização",
     "org_subtitle": "Anos servindo jovens em Greater Boston",
     "card_age_title": "Distribuição etária",
-    "card_age_youth_title": "Jovens atendidos pela sua organização",
-    "card_age_employee_title": "Funcionários da sua organização",
     "age_12_17": "12-17 anos",
     "age_18_25": "18-25 anos",
     "age_26_plus": "26+ anos",

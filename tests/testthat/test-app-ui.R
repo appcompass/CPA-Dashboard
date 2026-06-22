@@ -28,13 +28,17 @@ test_that("header_ui renders navbar with brand and nav links", {
 
 # ---- pages ----
 
-test_that("home_ui renders welcome heading", {
+test_that("home_ui renders hero, dimensions, purpose and how-to sections", {
   withr::local_dir(project_root)
 
   html <- render_html(home_ui())
 
-  expect_match(html, "Welcome to the CPA Dashboard", fixed = TRUE)
-  expect_match(html, "home page", fixed = TRUE)
+  expect_match(html, "Community Partners Assessment Dashboard", fixed = TRUE)
+  expect_match(html, "hero-title", fixed = TRUE)
+  expect_match(html, "Eight Dimensions of Wellness", fixed = TRUE)
+  expect_match(html, "Our Purpose", fixed = TRUE)
+  expect_match(html, "How to use the dashboard", fixed = TRUE)
+  expect_match(html, "Browse Organizations", fixed = TRUE)
 })
 
 test_that("login_ui renders login form fields", {
