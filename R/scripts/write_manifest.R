@@ -1,3 +1,7 @@
+# Generates manifest.json (the file list + package deps) for Posit Connect /
+# Connect Cloud deployment. Run via `make manifest`.
+
+# The app files to bundle; non-existent entries are dropped before writing.
 build_manifest_app_files <- function() {
   app_files <- c(
     "app.R",

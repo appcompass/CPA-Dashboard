@@ -1,3 +1,5 @@
+# Landing page: hero intro, the eight wellness dimensions shown as the wellness
+# wheel, the project's purpose, and a "how to use the dashboard" walkthrough.
 home_ui <- function(lang = get_lang()) {
   home <- lang$home
   organizations <- lang$organizations

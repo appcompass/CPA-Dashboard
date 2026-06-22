@@ -1,3 +1,4 @@
+# Organization-name <select> used by the login form.
 organizations_list_ui <- function(org_names) {
   org_options <- lapply(org_names, function(name) {
     tags$option(value = name, name)

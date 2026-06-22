@@ -1,3 +1,4 @@
+# Page footer: a copyright line with the current year.
 footer_ui <- function() {
   tags$footer(
     class = "footer footer-transparent d-print-none",

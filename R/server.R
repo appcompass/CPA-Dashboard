@@ -3,6 +3,7 @@ library(shiny.router)
 app_server <- function(input, output, session) {
   router_server()
 
+  # Coerce a raw URL ?lang= value to a supported code, falling back to the default.
   normalize_lang_code <- function(code) {
     if (is.null(code) || !length(code)) {
       return(DEFAULT_LANG_CODE)
@@ -19,8 +20,10 @@ app_server <- function(input, output, session) {
     code
   }
 
+  # Active UI language, kept in sync with the ?lang= query parameter.
   lang_code <- reactiveVal(DEFAULT_LANG_CODE)
 
+  # URL -> state: adopt the language from the query string on load and navigation.
   observeEvent(session$clientData$url_search,
     {
       search <- session$clientData$url_search
@@ -33,6 +36,8 @@ app_server <- function(input, output, session) {
     ignoreNULL = FALSE
   )
 
+  # State -> URL: when the user picks a language, persist it to the query string
+  # (preserving any other params and the hash) so the choice survives reloads.
   observeEvent(input$selected_lang, {
     selected_input <- input$selected_lang
 
@@ -86,6 +91,7 @@ app_server <- function(input, output, session) {
     )
   })
 
+  # Keep the document <title> in sync with the active route and language.
   observeEvent(list(get_page(session), lang_code()),
     {
       lang <- get_lang(lang_code())
@@ -153,6 +159,7 @@ app_server <- function(input, output, session) {
     login_nav_link_ui(get_lang(lang_code()))
   })
 
+  # Loaded once and shared by the login org picker and login validation below.
   survey_data <- load_survey_data()
   org_names <- get_org_names(survey_data)
   org_dashboard_ids <- get_org_dashboard_ids(survey_data)

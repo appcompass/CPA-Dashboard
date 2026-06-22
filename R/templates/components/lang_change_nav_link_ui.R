@@ -1,3 +1,5 @@
+# Language switcher dropdown in the header. Each item sets the `selected_lang`
+# Shiny input (see server.R), which updates the ?lang= query and re-renders.
 lang_change_nav_link_ui <- function(active_code = Sys.getenv("APP_LANG", DEFAULT_LANG_CODE)) {
   if (!active_code %in% rownames(SUPPORTED_LANGUAGES)) {
     active_code <- DEFAULT_LANG_CODE

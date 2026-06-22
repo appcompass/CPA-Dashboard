@@ -1,3 +1,4 @@
+# "Login" button in the header nav (hidden once authenticated; see server.R).
 login_nav_link_ui <- function(lang = get_lang()) {
   login_nav <- lang$login_nav_link
 

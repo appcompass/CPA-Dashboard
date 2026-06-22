@@ -1,5 +1,13 @@
+# ---------------------------------------------------------------------------
+# Encrypted survey data. The dataset is stored as an authenticated "v2" payload:
+# magic ("CPA2") + IV + AES-256-CBC ciphertext + HMAC-SHA256 tag, with separate
+# encryption and MAC keys derived from the CPA_DATA_KEY passphrase.
+# ---------------------------------------------------------------------------
+
+# Marks v2 (authenticated) payloads; absence means a legacy unauthenticated file.
 DATA_ENCRYPTION_MAGIC <- charToRaw("CPA2")
 
+# Master key = SHA-256 of the passphrase (also the legacy single-key value).
 derive_data_key <- function(passphrase) {
   if (!nzchar(passphrase)) {
     stop("Data encryption key is empty.", call. = FALSE)
@@ -8,6 +16,7 @@ derive_data_key <- function(passphrase) {
   openssl::sha256(charToRaw(passphrase))
 }
 
+# Separate encryption and MAC keys derived from the master key (key separation).
 derive_data_keys <- function(passphrase) {
   master_key <- derive_data_key(passphrase)
 
@@ -17,6 +26,7 @@ derive_data_keys <- function(passphrase) {
   )
 }
 
+# Constant-time byte comparison so MAC verification doesn't leak via timing.
 raw_equal_ct <- function(a, b) {
   if (length(a) != length(b)) {
     return(FALSE)
@@ -39,6 +49,7 @@ is_v2_payload <- function(encrypted_raw) {
     identical(encrypted_raw[seq_along(DATA_ENCRYPTION_MAGIC)], DATA_ENCRYPTION_MAGIC)
 }
 
+# Authenticate then decrypt a v2 payload; legacy payloads decrypt with a warning.
 decrypt_data_raw <- function(encrypted_raw, passphrase) {
   if (length(encrypted_raw) <= 16) {
     stop("Encrypted data is invalid or corrupted.", call. = FALSE)
@@ -85,6 +96,7 @@ decrypt_data_raw <- function(encrypted_raw, passphrase) {
   openssl::aes_cbc_decrypt(ciphertext, key = legacy_key, iv = iv)
 }
 
+# Build a v2 payload: magic + IV + AES-CBC ciphertext, with an HMAC tag appended.
 encrypt_data_raw <- function(plain_raw, passphrase) {
   keys <- derive_data_keys(passphrase)
   iv <- openssl::rand_bytes(16)
@@ -262,6 +274,7 @@ clean_lengthserve <- function(x) {
   trimws(x)
 }
 
+# Escape regex metacharacters so a string can be matched literally in a pattern.
 escape_regex <- function(s) gsub("([][{}()*+?.\\^$|])", "\\\\\\1", s)
 
 # 8 dimensions of wellbeing: dashboard key -> raw Qualtrics column names.
@@ -608,6 +621,7 @@ load_organization_details_data <- function(
   load_survey_data(encrypted_path = encrypted_path, passphrase = passphrase, key_env_var = key_env_var)
 }
 
+# Sorted, de-duplicated list of non-empty organization names.
 get_org_names <- function(survey_data = load_survey_data()) {
   col <- if ("orgname" %in% names(survey_data)) survey_data[["orgname"]] else survey_data[[1]]
   names <- sort(unique(trimws(col)))
@@ -642,6 +656,7 @@ get_named_value <- function(row, col, fallback = "N/A") {
   if (!nzchar(value) || identical(value, "NA")) fallback else value
 }
 
+# The single data row for `org_name`, or the first non-empty org when unmatched.
 get_organization_details_row <- function(
   org_name = NULL,
   survey_data = load_organization_details_data()
@@ -703,11 +718,15 @@ get_dimension_categories <- function(orgservices, lang, state_value) {
   out
 }
 
+# A translation label by key, with a fallback when missing/empty.
 get_organization_details_label <- function(details, key, fallback) {
   value <- details[[key]]
   if (is.null(value) || !nzchar(value)) fallback else value
 }
 
+# Everything the details page needs for one organization: resolved name, labels,
+# demographic percentages, and the established/emerging wellness categories. When
+# `org_name` is NULL it is read from the ?id query param.
 get_organization_details_context <- function(
   lang = get_lang(),
   org_name = NULL,
@@ -826,6 +845,8 @@ load_app_translations <- local({
   }
 })
 
+# All translations as JSON for the client (window.APP_TRANSLATIONS in app.js),
+# which uses them for the wellness wheel and theme-settings panel.
 get_frontend_translations_json <- function() {
   if (!requireNamespace("jsonlite", quietly = TRUE)) {
     stop("Package 'jsonlite' is required. Run make install.", call. = FALSE)
