@@ -190,16 +190,17 @@ function getTranslationScope() {
 }
 
 function applyThemeSettingsTranslations() {
-  const panel = document.getElementById('offcanvasSettings');
-  if (!panel) {
+  const $panel = $('#offcanvasSettings');
+  if (!$panel.length) {
     return;
   }
 
   const scope = getTranslationScope();
   const fallbackScope = (window.APP_TRANSLATIONS || {}).en || {};
 
-  panel.querySelectorAll('[data-i18n]').forEach(function (node) {
-    const key = node.getAttribute('data-i18n');
+  $panel.find('[data-i18n]').each(function () {
+    const $node = $(this);
+    const key = $node.attr('data-i18n');
     if (!key) {
       return;
     }
@@ -210,13 +211,13 @@ function applyThemeSettingsTranslations() {
       return;
     }
 
-    const attrName = node.getAttribute('data-i18n-attr');
+    const attrName = $node.attr('data-i18n-attr');
     if (attrName) {
-      node.setAttribute(attrName, translated);
+      $node.attr(attrName, translated);
       return;
     }
 
-    node.textContent = translated;
+    $node.text(translated);
   });
 }
 
@@ -292,7 +293,8 @@ const R_OUT = 220,
   CY = 250;
 
 function createWheel(container, size = 340) {
-  if (!container || container.classList.contains('ww-wheel-instance')) {
+  const $container = $(container);
+  if (!$container.length || $container.hasClass('ww-wheel-instance')) {
     return;
   }
 
@@ -304,7 +306,7 @@ function createWheel(container, size = 340) {
   const scope = getTranslationScope();
   const ALL = buildWheelItems();
 
-  const attrValue = container.dataset.activeCategories || '';
+  const attrValue = $container.attr('data-active-categories') || '';
   const allowedTitles = attrValue
     .split(',')
     .map((s) => s.trim().toLowerCase())
@@ -317,34 +319,28 @@ function createWheel(container, size = 340) {
   // unique id prefix per instance
   const uid = 'ww-' + Math.random().toString(36).slice(2, 7);
 
-  container.classList.add('ww-wheel-instance');
+  $container.addClass('ww-wheel-instance');
 
-  const wrap = document.createElement('div');
-  wrap.className = 'ww-wrap';
+  const $svgWrap = $('<div>').css({
+    flexShrink: 0,
+    width: size + 'px',
+    height: size + 'px',
+    overflow: 'visible',
+  });
+  const $panelsEl = $('<div>').css({
+    flex: 1,
+    minWidth: 0,
+    position: 'relative',
+  });
+  const $defaultMsg = $('<div>')
+    .addClass('default-msg')
+    .text(scope.wheel.default_message || WHEEL_DEFAULT_MESSAGE);
+  $panelsEl.append($defaultMsg);
 
-  const svgWrap = document.createElement('div');
-  svgWrap.style.cssText = `flex-shrink:0;width:${size}px;height:${size}px;overflow:visible`;
-
-  const panelsEl = document.createElement('div');
-  panelsEl.style.cssText = 'flex:1;min-width:0;position:relative';
-
-  const defaultMsg = document.createElement('div');
-  defaultMsg.className = 'default-msg';
-  defaultMsg.textContent = scope.wheel.default_message || WHEEL_DEFAULT_MESSAGE;
-  panelsEl.appendChild(defaultMsg);
-
-  wrap.appendChild(svgWrap);
-  wrap.appendChild(panelsEl);
-  container.appendChild(wrap);
+  $container.append($('<div>').addClass('ww-wrap').append($svgWrap, $panelsEl));
 
   // build panels
   ENABLED.forEach((d, i) => {
-    const div = document.createElement('div');
-    div.className = 'panel';
-    div.id = uid + '-panel-' + i;
-    if (d.icon) {
-      div.setAttribute('data-icon', d.icon);
-    }
     // Every subcategory (including "Other") links to the organizations list,
     // pre-filtered to orgs that provide it as an established service.
     const subItems = d.subs
@@ -355,16 +351,23 @@ function createWheel(container, size = 340) {
         return `<li>${dot}${name}</li>`;
       })
       .join('');
-    div.innerHTML = `
-      <p class="panel-title" style="color:${d.color}">${d.panelTitle || d.title}</p>
+    const $panel = $('<div>')
+      .addClass('panel')
+      .attr('id', uid + '-panel-' + i)
+      .html(
+        `<p class="panel-title" style="color:${d.color}">${d.panelTitle || d.title}</p>
       <p class="panel-desc">${d.desc}</p>
-      <ul class="subcats">${subItems}</ul>`;
-    panelsEl.appendChild(div);
+      <ul class="subcats">${subItems}</ul>`,
+      );
+    if (d.icon) {
+      $panel.attr('data-icon', d.icon);
+    }
+    $panelsEl.append($panel);
   });
 
   // SVG.js instance
   const draw = SVG()
-    .addTo(svgWrap)
+    .addTo($svgWrap[0])
     .viewbox(0, 0, 500, 500)
     .size(size, size)
     .attr('overflow', 'visible');
@@ -397,15 +400,12 @@ function createWheel(container, size = 340) {
   }
 
   function showPanel(idx) {
-    panelsEl
-      .querySelectorAll('.panel')
-      .forEach((p) => p.classList.remove('visible'));
+    $panelsEl.find('.panel').removeClass('visible');
     if (idx >= 0) {
-      defaultMsg.style.display = 'none';
-      const p = document.getElementById(uid + '-panel-' + idx);
-      if (p) p.classList.add('visible');
+      $defaultMsg.hide();
+      $panelsEl.find('#' + uid + '-panel-' + idx).addClass('visible');
     } else {
-      defaultMsg.style.display = 'block';
+      $defaultMsg.show();
     }
   }
 
@@ -581,8 +581,9 @@ function createWheel(container, size = 340) {
 
 window.createWheel = createWheel;
 
-document.addEventListener('DOMContentLoaded', function () {
-  document.body.classList.add('app-ready');
+$(function () {
+  var $body = $('body');
+  $body.addClass('app-ready');
   applyThemeSettingsTranslations();
 
   // Fade the page in only once shiny.router has shown the route that matches the
@@ -591,7 +592,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // resolved route would flash the home page. We wait until the visible route's
   // data-path matches the hash.
   var revealApp = function () {
-    document.body.classList.add('router-ready');
+    $body.addClass('router-ready');
   };
   var normPath = function (p) {
     return p === '/' || p == null ? '' : p;
@@ -601,17 +602,16 @@ document.addEventListener('DOMContentLoaded', function () {
     return normPath((hash.replace(/^#!?\/?/, '').split('?')[0]) || '');
   };
   var routerMatchesHash = function () {
-    var active = document.querySelector(
-      '#router-page-wrapper .router:not(.router-hidden)'
-    );
-    if (!active) {
+    var $active = $('#router-page-wrapper .router:not(.router-hidden)');
+    if (!$active.length) {
       return false;
     }
-    return normPath(active.getAttribute('data-path')) === hashRoutePath();
+    return normPath($active.attr('data-path')) === hashRoutePath();
   };
   if (routerMatchesHash()) {
     revealApp();
   } else {
+    // MutationObserver has no jQuery equivalent; keep it native.
     var wrapper = document.getElementById('router-page-wrapper');
     if (wrapper && window.MutationObserver) {
       var routerObserver = new MutationObserver(function () {
@@ -631,17 +631,15 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // The marketing/gradient body styling applies only to the home route ("#!/").
-  var HOME_BODY_CLASSES = ['body-marketing', 'body-gradient'];
+  var HOME_BODY_CLASSES = 'body-marketing body-gradient';
   var updateHomeBodyClasses = function () {
     var path = (window.location.hash || '').replace(/^#!?\/?/, '').split('?')[0];
     var isHome = path === '' || path === '/';
-    HOME_BODY_CLASSES.forEach(function (cls) {
-      document.body.classList.toggle(cls, isHome);
-    });
+    $body.toggleClass(HOME_BODY_CLASSES, isHome);
   };
   updateHomeBodyClasses();
-  window.addEventListener('hashchange', updateHomeBodyClasses);
-  document.addEventListener('shiny:value', updateHomeBodyClasses);
+  $(window).on('hashchange', updateHomeBodyClasses);
+  $(document).on('shiny:value', updateHomeBodyClasses);
 
   var themeConfig = {
     theme: 'light',
@@ -697,11 +695,12 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   var syncRouterLinksWithQueryParams = function () {
-    document.querySelectorAll('a[href*="#!/"]').forEach(function (anchor) {
-      var href = anchor.getAttribute('href');
+    $('a[href*="#!/"]').each(function () {
+      var $anchor = $(this);
+      var href = $anchor.attr('href');
       var mergedHref = mergeCurrentSearchIntoRouterHref(href);
       if (mergedHref && mergedHref !== href) {
-        anchor.setAttribute('href', mergedHref);
+        $anchor.attr('href', mergedHref);
       }
     });
   };
@@ -725,66 +724,50 @@ document.addEventListener('DOMContentLoaded', function () {
     window.history.pushState({}, '', nextUrl);
   };
 
-  var form = document.getElementById('offcanvasSettings');
-  var resetButton = document.getElementById('reset-changes');
+  var $settingsForm = $('#offcanvasSettings');
   var checkItems = function () {
-    if (!form) {
+    if (!$settingsForm.length) {
       return;
     }
-
-    for (var key in themeConfig) {
+    Object.keys(themeConfig).forEach(function (key) {
       var value = window.localStorage['tabler-' + key] || themeConfig[key];
-      if (!!value) {
-        var radios = form.querySelectorAll(`[name="${key}"]`);
-        if (!!radios) {
-          radios.forEach((radio) => {
-            radio.checked = radio.value === value;
-          });
-        }
+      if (value) {
+        $settingsForm.find('[name="' + key + '"]').each(function () {
+          $(this).prop('checked', this.value === value);
+        });
       }
-    }
+    });
   };
-  if (form) {
-    form.addEventListener('change', function (event) {
-      refreshQueryParams();
-      var target = event.target,
-        name = target.name,
-        value = target.value;
-      for (var key in themeConfig) {
-        if (name === key) {
-          document.documentElement.setAttribute('data-bs-' + key, value);
-          window.localStorage.setItem('tabler-' + key, value);
-          setParam(key, value);
-        }
-      }
-      pushQuery();
-    });
-  }
 
-  if (resetButton) {
-    resetButton.addEventListener('click', function () {
-      refreshQueryParams();
-      for (var key in themeConfig) {
-        var value = themeConfig[key];
-        document.documentElement.removeAttribute('data-bs-' + key);
-        window.localStorage.removeItem('tabler-' + key);
-        deleteParam(key);
-      }
-      checkItems();
-      pushQuery();
+  $settingsForm.on('change', function (event) {
+    refreshQueryParams();
+    var name = event.target.name;
+    var value = event.target.value;
+    if (Object.prototype.hasOwnProperty.call(themeConfig, name)) {
+      $('html').attr('data-bs-' + name, value);
+      window.localStorage.setItem('tabler-' + name, value);
+      setParam(name, value);
+    }
+    pushQuery();
+  });
+
+  $(document).on('click', '#reset-changes', function () {
+    refreshQueryParams();
+    Object.keys(themeConfig).forEach(function (key) {
+      $('html').removeAttr('data-bs-' + key);
+      window.localStorage.removeItem('tabler-' + key);
+      deleteParam(key);
     });
-  }
+    checkItems();
+    pushQuery();
+  });
 
   checkItems();
   syncRouterLinksWithQueryParams();
 
-  document.addEventListener('click', function (event) {
-    var anchor = event.target.closest('a[href]');
-    if (!anchor) {
-      return;
-    }
-
-    var href = anchor.getAttribute('href');
+  // Merge the current ?lang=... search into router links at click time.
+  $(document).on('click', 'a[href]', function (event) {
+    var href = $(this).attr('href');
     var mergedHref = mergeCurrentSearchIntoRouterHref(href);
     if (mergedHref && mergedHref !== href) {
       event.preventDefault();
@@ -802,21 +785,20 @@ document.addEventListener('DOMContentLoaded', function () {
   var collectSelection = function () {
     var dims = [];
     var subs = [];
-    document
-      .querySelectorAll('[data-filter-group]:checked')
-      .forEach(function (box) {
-        var sub = box.getAttribute('data-filter-subcat');
-        if (sub) {
-          subs.push(sub);
-        } else {
-          dims.push(box.getAttribute('data-filter-dimension'));
-        }
-      });
+    $('[data-filter-group]:checked').each(function () {
+      var $box = $(this);
+      var sub = $box.attr('data-filter-subcat');
+      if (sub) {
+        subs.push(sub);
+      } else {
+        dims.push($box.attr('data-filter-dimension'));
+      }
+    });
     return { dims: dims, subs: subs };
   };
 
-  var cardAreas = function (card, attr) {
-    return (card.getAttribute(attr) || '').split(',').filter(Boolean);
+  var cardAreas = function ($card, attr) {
+    return ($card.attr(attr) || '').split(',').filter(Boolean);
   };
 
   var intersects = function (selected, areas) {
@@ -826,76 +808,54 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   var filterOrganizations = function () {
-    var cards = document.querySelectorAll('.organization-result');
-    if (!cards.length) {
+    var $cards = $('.organization-result');
+    if (!$cards.length) {
       return;
     }
 
-    var input = document.getElementById('organizations-search');
-    var query = input ? input.value.trim().toLowerCase() : '';
+    var query = ($('#organizations-search').val() || '').trim().toLowerCase();
     var sel = collectSelection();
     var hasAreaFilter = sel.dims.length > 0 || sel.subs.length > 0;
     var visible = 0;
 
-    cards.forEach(function (card) {
-      var name = card.getAttribute('data-org-name') || '';
+    $cards.each(function () {
+      var $card = $(this);
+      var name = $card.attr('data-org-name') || '';
       var areaMatch =
         !hasAreaFilter ||
-        intersects(sel.dims, cardAreas(card, 'data-established')) ||
-        intersects(sel.subs, cardAreas(card, 'data-established-subcats'));
+        intersects(sel.dims, cardAreas($card, 'data-established')) ||
+        intersects(sel.subs, cardAreas($card, 'data-established-subcats'));
       var show = (!query || name.indexOf(query) !== -1) && areaMatch;
-      card.classList.toggle('d-none', !show);
+      $card.toggleClass('d-none', !show);
       if (show) {
         visible += 1;
       }
     });
 
-    var noResults = document.getElementById('organizations-no-results');
-    if (noResults) {
-      noResults.classList.toggle('d-none', visible !== 0);
-    }
+    $('#organizations-no-results').toggleClass('d-none', visible !== 0);
   };
 
-  document.addEventListener('input', function (event) {
-    if (event.target && event.target.id === 'organizations-search') {
-      filterOrganizations();
-    }
-  });
+  $(document).on('input', '#organizations-search', filterOrganizations);
 
-  document.addEventListener('change', function (event) {
-    var box = event.target;
-    if (!box || !box.hasAttribute('data-filter-group')) {
-      return;
-    }
+  $(document).on('change', '[data-filter-group]', function () {
+    var $box = $(this);
     // Toggling a dimension (parent) toggles all of its sub-category children.
-    if (box.getAttribute('data-filter-role') === 'parent') {
+    if ($box.attr('data-filter-role') === 'parent') {
       var selector =
         '[data-filter-group="' +
-        box.getAttribute('data-filter-group') +
+        $box.attr('data-filter-group') +
         '"][data-filter-dimension="' +
-        box.getAttribute('data-filter-dimension') +
+        $box.attr('data-filter-dimension') +
         '"][data-filter-role="child"]';
-      document.querySelectorAll(selector).forEach(function (child) {
-        child.checked = box.checked;
-      });
+      $(selector).prop('checked', $box.prop('checked'));
     }
     filterOrganizations();
   });
 
   // Reset clears the search box and all checkboxes, then re-filters.
-  document.addEventListener('click', function (event) {
-    if (!event.target.closest('#organizations-filter-reset')) {
-      return;
-    }
-    var input = document.getElementById('organizations-search');
-    if (input) {
-      input.value = '';
-    }
-    document
-      .querySelectorAll('[data-filter-group]:checked')
-      .forEach(function (box) {
-        box.checked = false;
-      });
+  $(document).on('click', '#organizations-filter-reset', function () {
+    $('#organizations-search').val('');
+    $('[data-filter-group]:checked').prop('checked', false);
     filterOrganizations();
   });
 
@@ -918,34 +878,28 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!subcat || subcat === appliedSubcat) {
       return;
     }
-    var box = document.querySelector('[data-filter-subcat="' + subcat + '"]');
-    if (!box) {
+    var $box = $('[data-filter-subcat="' + subcat + '"]');
+    if (!$box.length) {
       return;
     }
     appliedSubcat = subcat;
-    document
-      .querySelectorAll('[data-filter-group]:checked')
-      .forEach(function (b) {
-        b.checked = false;
-      });
-    box.checked = true;
+    $('[data-filter-group]:checked').prop('checked', false);
+    $box.prop('checked', true);
     filterOrganizations();
   };
 
   // Re-apply the active filter after Shiny/router re-renders the list.
-  document.addEventListener('shiny:value', function () {
+  $(document).on('shiny:value', function () {
     filterOrganizations();
     applyDeepLinkFilter();
   });
-  window.addEventListener('hashchange', applyDeepLinkFilter);
+  $(window).on('hashchange', applyDeepLinkFilter);
   applyDeepLinkFilter();
 
   var initWheels = function () {
-    document
-      .querySelectorAll('[data-active-categories]')
-      .forEach(function (container) {
-        createWheel(container, 440);
-      });
+    $('[data-active-categories]').each(function () {
+      createWheel(this, 440);
+    });
   };
 
   var initWheelsNowAndNextTick = function () {
@@ -956,11 +910,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   initWheelsNowAndNextTick();
 
-  // Shiny/router render content after DOMContentLoaded, so re-run wheel setup
-  // when outputs update, hash navigation changes, or DOM nodes are injected.
-  document.addEventListener('shiny:value', initWheelsNowAndNextTick);
-  window.addEventListener('hashchange', initWheelsNowAndNextTick);
+  // Shiny/router render content after load, so re-run wheel setup when outputs
+  // update, hash navigation changes, or DOM nodes are injected.
+  $(document).on('shiny:value', initWheelsNowAndNextTick);
+  $(window).on('hashchange', initWheelsNowAndNextTick);
 
+  // MutationObserver has no jQuery equivalent; keep it native.
   if (window.MutationObserver) {
     var wheelObserver = new MutationObserver(function () {
       initWheels();
@@ -977,10 +932,8 @@ document.addEventListener('DOMContentLoaded', function () {
     initWheels();
     wheelInitAttempts += 1;
 
-    var total = document.querySelectorAll('[data-active-categories]').length;
-    var initialized = document.querySelectorAll(
-      '[data-active-categories].ww-wheel-instance',
-    ).length;
+    var total = $('[data-active-categories]').length;
+    var initialized = $('[data-active-categories].ww-wheel-instance').length;
 
     if ((total > 0 && total === initialized) || wheelInitAttempts >= 20) {
       window.clearInterval(wheelInitTimer);
