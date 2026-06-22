@@ -305,6 +305,8 @@ function createWheel(container, size = 340) {
     return;
   }
 
+  const isCentered = $container.is('[data-wheel-centered]');
+
   const wheelScale = size / 340;
   const scaledPx = function (base, min) {
     return Math.max(min, Math.round(base * wheelScale));
@@ -328,23 +330,26 @@ function createWheel(container, size = 340) {
 
   $container.addClass('ww-wheel-instance');
 
-  const $svgWrap = $('<div>').css({
-    flexShrink: 0,
+  const $svgWrap = $('<div>').addClass('ww-svg-wrap').css({
     width: size + 'px',
     height: size + 'px',
     overflow: 'visible',
   });
-  const $panelsEl = $('<div>').css({
-    flex: 1,
-    minWidth: 0,
-    position: 'relative',
-  });
+  const $panelsEl = $('<div>').addClass('ww-panel-wrap');
+  const $panelInner = $('<div>').addClass('ww-panel-inner');
   const $defaultMsg = $('<div>')
     .addClass('default-msg')
     .text(scope.wheel.default_message || WHEEL_DEFAULT_MESSAGE);
-  $panelsEl.append($defaultMsg);
+  $panelInner.append($defaultMsg);
+  $panelsEl.append($panelInner);
 
-  $container.append($('<div>').addClass('ww-wrap').append($svgWrap, $panelsEl));
+  const $wrap = $('<div>').addClass('ww-wrap');
+  if (isCentered) $wrap.addClass('ww-centered');
+  $container.append($wrap.append($svgWrap, $panelsEl));
+
+  if (isCentered) {
+    $panelsEl.css('left', (size + 32) + 'px');
+  }
 
   // build panels
   ENABLED.forEach((d, i) => {
@@ -369,7 +374,7 @@ function createWheel(container, size = 340) {
     if (d.icon) {
       $panel.attr('data-icon', d.icon);
     }
-    $panelsEl.append($panel);
+    $panelInner.append($panel);
   });
 
   // SVG.js instance
@@ -406,13 +411,34 @@ function createWheel(container, size = 340) {
     return arcPath(-90, 269.999);
   }
 
+  let centeredTimer = null;
+
+  const updateCenteredLayout = function (isActive) {
+    if (!isCentered) return;
+    window.clearTimeout(centeredTimer);
+    if (isActive) {
+      const offset = Math.max(0, ($wrap.width() - size) / 2);
+      $svgWrap.css('transform', 'translateX(-' + offset + 'px)');
+      centeredTimer = window.setTimeout(function () {
+        $wrap.addClass('ww-has-active');
+      }, 560);
+    } else {
+      $wrap.removeClass('ww-has-active');
+      centeredTimer = window.setTimeout(function () {
+        $svgWrap.css('transform', '');
+      }, 210);
+    }
+  };
+
   function showPanel(idx) {
     $panelsEl.find('.panel').removeClass('visible');
     if (idx >= 0) {
       $defaultMsg.hide();
       $panelsEl.find('#' + uid + '-panel-' + idx).addClass('visible');
+      updateCenteredLayout(true);
     } else {
-      $defaultMsg.show();
+      if (!isCentered) $defaultMsg.show();
+      updateCenteredLayout(false);
     }
   }
 
@@ -584,6 +610,19 @@ function createWheel(container, size = 340) {
   }
 
   render();
+
+  if (isCentered && window.ResizeObserver) {
+    const resizeObserver = new ResizeObserver(function () {
+      if (activeSegIdx >= 0) {
+        const offset = Math.max(0, ($wrap.width() - size) / 2);
+        $svgWrap.css({ transition: 'none', transform: 'translateX(-' + offset + 'px)' });
+        window.requestAnimationFrame(function () {
+          $svgWrap.css('transition', '');
+        });
+      }
+    });
+    resizeObserver.observe($wrap[0]);
+  }
 }
 
 window.createWheel = createWheel;

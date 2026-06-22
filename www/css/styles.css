@@ -86,7 +86,8 @@ body.router-ready .page .page-wrapper {
 }
 .panel-desc {
   font-size: 13px;
-  color: var(--color-text-secondary);
+  --tblr-text-opacity: 1;
+  color: rgba(var(--tblr-secondary-rgb), var(--tblr-text-opacity)) !important;
   margin: 0 0 14px;
   line-height: 1.7;
 }
@@ -123,4 +124,72 @@ body.router-ready .page .page-wrapper {
   color: var(--color-text-secondary);
   font-size: 13.5px;
   padding-top: 2rem;
+}
+
+.ww-svg-wrap {
+  flex-shrink: 0;
+}
+
+.ww-panel-wrap {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+/* Centered mode: wheel starts centered; panel hidden until wheel animation completes */
+.ww-wrap.ww-centered {
+  position: relative;
+  justify-content: center;
+  gap: 0;
+  min-height: 440px;
+}
+.ww-centered .ww-svg-wrap {
+  transition: transform 0.55s ease;
+}
+.ww-centered .ww-panel-wrap {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    visibility 0s 0.2s,
+    opacity 0.2s ease; /* close: fade then hide */
+}
+.ww-centered.ww-has-active .ww-panel-wrap {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    visibility 0s,
+    opacity 0.4s ease; /* open: show immediately, fade in */
+}
+.ww-centered .ww-panel-inner {
+  transform: translateX(20px);
+  transition: transform 0.4s ease;
+}
+.ww-centered.ww-has-active .ww-panel-inner {
+  transform: translateX(0);
+}
+.ww-centered .default-msg {
+  display: none;
+}
+
+/* Larger panel fonts for centered (home page) wheel */
+.ww-centered .panel-title {
+  font-size: 24px;
+  margin: 0 0 14px;
+}
+.ww-centered .panel-desc {
+  font-size: 16px;
+  margin: 0 0 20px;
+}
+.ww-centered .subcats li {
+  font-size: 16px;
+  gap: 10px;
+}
+.ww-centered .subcats li .dot {
+  width: 9px;
+  height: 9px;
+  margin-top: 5px;
 }
