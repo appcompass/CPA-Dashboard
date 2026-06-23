@@ -55,13 +55,13 @@ home_ui <- function(lang = get_lang()) {
         p(class = "hero-description hero-description-wide", hp(
           "hero_description",
           paste(
-            "The Community Partners Assessment Dashboard is an interactive platform",
-            "that visualizes the wellness services organizations across the greater",
-            "Boston area provide for youth of color and their families. We define",
-            "wellness across eight dimensions: physical, emotional, intellectual,",
-            "occupational, financial, social, environmental, and spiritual. Explore",
-            "different organizations by filtering for name, location, and wellness",
-            "dimensions."
+            "The Community Partners Assessment (CPA) Dashboard is an interactive",
+            "platform that visualizes the different wellness services and programs",
+            "that organizations across the greater Boston area provide for youth of",
+            "color and their families! We define wellness across eight dimensions:",
+            "physical, emotional, intellectual, occupational, financial, social,",
+            "environmental, and spiritual. Explore organizations by filtering for",
+            "name, location, wellness dimensions, and more!"
           )
         )),
         div(
