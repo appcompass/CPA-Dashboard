@@ -19,19 +19,22 @@ SUPPORTED_LANGUAGES <- data.frame(
     "ar",
     "so"
   ),
+  # Each language's name in its own language (endonym), shown in the language
+  # selector. Regional qualifiers are kept (and localized) where they were
+  # present, to distinguish variants.
   label = c(
     "English",
-    "Spanish (Latin American)",
-    "Haitian Creole",
-    "Simplified Chinese",
-    "Vietnamese",
-    "Cantonese",
-    "Portuguese (Brazilian)",
-    "Cabo Verdean Creole",
-    "Russian",
-    "French (European)",
-    "Arabic (Standard)",
-    "Somali"
+    "Español (Latinoamérica)",
+    "Kreyòl Ayisyen",
+    "简体中文",
+    "Tiếng Việt",
+    "粵語",
+    "Português (Brasil)",
+    "Kabuverdianu",
+    "Русский",
+    "Français (Europe)",
+    "العربية",
+    "Soomaali"
   ),
   flag_icon = c(
     "flag-country-us", # English
