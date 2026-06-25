@@ -42,6 +42,43 @@ home_ui <- function(lang = get_lang()) {
     )
   }
 
+  # A visually distinct callout (icon + heading + body, with an optional footer)
+  # used below the numbered steps for the login and customization notes. `icon`
+  # is one or more tags$path() children for the inline SVG glyph.
+  howto_callout <- function(icon, title, body, footer = NULL) {
+    div(
+      class = "col-md-6",
+      div(
+        class = "card h-100",
+        div(
+          class = "card-body",
+          div(
+            class = "d-flex align-items-center mb-2",
+            tags$span(
+              class = "shape shape-md bg-primary-lt text-primary me-3",
+              tags$svg(
+                xmlns = "http://www.w3.org/2000/svg",
+                width = "24",
+                height = "24",
+                viewBox = "0 0 24 24",
+                fill = "none",
+                stroke = "currentColor",
+                `stroke-width` = "2",
+                `stroke-linecap` = "round",
+                `stroke-linejoin` = "round",
+                class = "icon icon-1",
+                icon
+              )
+            ),
+            h3(class = "h3 m-0", title)
+          ),
+          p(class = "text-secondary mb-0", body),
+          footer
+        )
+      )
+    )
+  }
+
   tagList(
     # Hero / intro
     div(
@@ -132,6 +169,15 @@ home_ui <- function(lang = get_lang()) {
           class = "section-header",
           h2(class = "section-title", hp(
             "howto_title", "How to use the dashboard"
+          )),
+          div(class = "section-description", hp(
+            "howto_disclaimer",
+            paste(
+              "This dashboard celebrates what each organization offers. It is not",
+              "a ranking, report card, or evaluation tool. Wellness areas are",
+              "self-reported and shown to spark connection and referrals — not to",
+              "compare or rank organizations."
+            )
           ))
         ),
         div(
@@ -149,7 +195,7 @@ home_ui <- function(lang = get_lang()) {
             hp("howto_step2_title", "Search and filter"),
             hp(
               "howto_step2_body",
-              "Narrow the list by name and by established areas of wellness and their sub-services."
+              "Narrow the list by name and by an organization's areas of wellness and their sub-services."
             )
           ),
           howto_step(
@@ -157,7 +203,7 @@ home_ui <- function(lang = get_lang()) {
             hp("howto_step3_title", "Explore wellness areas"),
             hp(
               "howto_step3_body",
-              "Open an organization to see its wellness wheel and its established and emerging areas."
+              "Open an organization to see its wellness wheel, its established strengths, and the areas it's growing into."
             )
           ),
           howto_step(
@@ -166,6 +212,56 @@ home_ui <- function(lang = get_lang()) {
             hp(
               "howto_step4_body",
               "Discover each organization's expertise to build connections, seek guidance, and make referrals."
+            )
+          )
+        ),
+        div(
+          class = "row g-4 mt-2",
+          howto_callout(
+            tagList(
+              tags$path(d = "M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6"),
+              tags$path(d = "M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"),
+              tags$path(d = "M8 11v-4a4 4 0 1 1 8 0v4")
+            ),
+            hp("howto_login_title", "See the full profile — log in"),
+            hp(
+              "howto_login_body",
+              paste(
+                "The public view shows a summary of each organization. Verified",
+                "organization members can log in to view and update complete",
+                "profile details — contact information, full service descriptions,",
+                "and more. Logging in keeps your organization's information",
+                "accurate so partners can reach you and refer to you."
+              )
+            ),
+            footer = p(
+              class = "text-secondary mt-3 mb-0",
+              hp(
+                "howto_login_contact",
+                "Need a password or having trouble logging in? Contact "
+              ),
+              a(
+                href = "mailto:changelabboston@gmail.com",
+                "changelabboston@gmail.com"
+              )
+            )
+          ),
+          howto_callout(
+            tagList(
+              tags$path(d = "M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"),
+              tags$path(d = "M3.6 9h16.8"),
+              tags$path(d = "M3.6 15h16.8"),
+              tags$path(d = "M11.5 3a17 17 0 0 0 0 18"),
+              tags$path(d = "M12.5 3a17 17 0 0 1 0 18")
+            ),
+            hp("howto_customize_title", "Make it yours"),
+            hp(
+              "howto_customize_body",
+              paste(
+                "Switch the dashboard into any of our supported languages using",
+                "the language selector in the navigation — your choice carries",
+                "across the site."
+              )
             )
           )
         )
