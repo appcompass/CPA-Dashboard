@@ -23,7 +23,21 @@ test_that("header_ui renders navbar with brand and nav links", {
   expect_match(html, "navbar", fixed = TRUE)
   expect_match(html, "CPA Dashboard", fixed = TRUE)
   expect_match(html, "Home", fixed = TRUE)
+  expect_match(html, "About", fixed = TRUE)
   expect_match(html, "Organizations", fixed = TRUE)
+})
+
+test_that("footer_ui renders social links and contact email", {
+  withr::local_dir(project_root)
+
+  html <- render_html(footer_ui())
+
+  expect_match(html, "bsky.app/profile/changelab", fixed = TRUE)
+  expect_match(html, "linkedin.com/in/change-lab", fixed = TRUE)
+  expect_match(html, "instagram.com/changelabboston", fixed = TRUE)
+  expect_match(html, "changelabboston.com", fixed = TRUE)
+  expect_match(html, "changelabboston@gmail.com", fixed = TRUE)
+  expect_match(html, "© CHANGE Lab", fixed = TRUE)
 })
 
 # ---- pages ----
@@ -38,7 +52,24 @@ test_that("home_ui renders hero, dimensions, purpose and how-to sections", {
   expect_match(html, "Eight Dimensions of Wellness", fixed = TRUE)
   expect_match(html, "Our Purpose", fixed = TRUE)
   expect_match(html, "How to use the dashboard", fixed = TRUE)
+  expect_match(html, "It is not a ranking, report card, or evaluation tool", fixed = TRUE)
+  expect_match(html, "See the full profile", fixed = TRUE)
+  expect_match(html, "changelabboston@gmail.com", fixed = TRUE)
+  expect_match(html, "Make it yours", fixed = TRUE)
   expect_match(html, "Browse Organizations", fixed = TRUE)
+})
+
+test_that("about_ui renders lab info, vision/mission, CPA and contact", {
+  withr::local_dir(project_root)
+
+  html <- render_html(about_ui())
+
+  expect_match(html, "About CHANGE Lab", fixed = TRUE)
+  expect_match(html, "Our Vision", fixed = TRUE)
+  expect_match(html, "Our Mission", fixed = TRUE)
+  expect_match(html, "What is the CPA?", fixed = TRUE)
+  expect_match(html, "Connect with Us", fixed = TRUE)
+  expect_match(html, "changelabboston@gmail.com", fixed = TRUE)
 })
 
 test_that("login_ui renders login form fields", {
