@@ -104,6 +104,7 @@ app_server <- function(input, output, session) {
 
       route_titles <- c(
         "/" = lang$header$nav_home,
+        "about" = lang$header$nav_about %||% "About",
         "login" = lang$login_nav_link$label,
         "organizations" = lang$header$nav_organizations,
         "organizations/details" = lang$organization_details$org_name_placeholder
@@ -213,6 +214,10 @@ app_server <- function(input, output, session) {
 
   output$page_home <- renderUI({
     home_ui(get_lang(lang_code()))
+  })
+
+  output$page_about <- renderUI({
+    about_ui(get_lang(lang_code()))
   })
 
   output$page_login <- renderUI({

@@ -7,6 +7,7 @@ source(file.path("R", "templates", "layout", "main_ui.R"), local = TRUE)
 
 # pages
 source(file.path("R", "templates", "pages", "home_ui.R"), local = TRUE)
+source(file.path("R", "templates", "pages", "about_ui.R"), local = TRUE)
 source(file.path("R", "templates", "pages", "login_ui.R"), local = TRUE)
 source(file.path("R", "templates", "pages", "organizations_ui.R"), local = TRUE)
 source(file.path("R", "templates", "pages", "organization_details_ui.R"), local = TRUE)
@@ -19,6 +20,7 @@ source(file.path("R", "templates", "components", "organizations_list_ui.R"), loc
 
 router <- router_ui(
   route("/", uiOutput("page_home")),
+  route("about", uiOutput("page_about")),
   route("login", uiOutput("page_login")),
   route("organizations", uiOutput("page_organizations")),
   route("organizations/details", uiOutput("page_organization_details"))
