@@ -20,22 +20,18 @@ header_ui <- function(lang = get_lang()) {
           tags$span(class = "navbar-toggler-icon")
         ),
         div(
-          class = "navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3",
+          class = "navbar-brand d-none-navbar-horizontal pe-0 pe-md-3",
           a(
             href = route_link("/"),
             class = "nav-link",
             `aria-label` = app$title,
-            tags$svg(
-              xmlns = "http://www.w3.org/2000/svg",
-              width = "32",
-              height = "32",
-              viewBox = "0 0 68 68",
+            tags$img(
+              src = "/img/changelab-logo.png",
+              alt = "",
               class = "navbar-brand-image me-2",
-              tags$path(
-                d = "M64.6 16.2C63 9.9 58.1 5 51.8 3.4 40 1.5 28 1.5 16.2 3.4 9.9 5 5 9.9 3.4 16.2 1.5 28 1.5 40 3.4 51.8 5 58.1 9.9 63 16.2 64.6c11.8 1.9 23.8 1.9 35.6 0C58.1 63 63 58.1 64.6 51.8c1.9-11.8 1.9-23.8 0-35.6zM33.3 36.3c-2.8 4.4-6.6 8.2-11.1 11-1.5.9-3.3.9-4.8.1s-2.4-2.3-2.5-4c0-1.7.9-3.3 2.4-4.1 2.3-1.4 4.4-3.2 6.1-5.3-1.8-2.1-3.8-3.8-6.1-5.3-2.3-1.3-3-4.2-1.7-6.4s4.3-2.9 6.5-1.6c4.5 2.8 8.2 6.5 11.1 10.9 1 1.4 1 3.3.1 4.7zM49.2 46H37.8c-2.1 0-3.8-1-3.8-3s1.7-3 3.8-3h11.4c2.1 0 3.8 1 3.8 3s-1.7 3-3.8 3z",
-                fill = "#066fd1",
-                style = "fill: var(--tblr-primary, #066fd1)"
-              )
+              # Inline height keeps the logo navbar-sized regardless of Tabler's
+              # stylesheet img rules; width auto preserves the aspect ratio.
+              style = "height: 2rem; width: auto;"
             ),
             app$title
           )
@@ -108,6 +104,38 @@ header_ui <- function(lang = get_lang()) {
                   )
                 ),
                 tags$span(class = "nav-link-title", paste0(" ", header$nav_home, " "))
+              )
+            ),
+            tags$li(
+              class = "nav-item",
+              a(
+                class = "nav-link",
+                href = route_link("/about"),
+                tags$span(
+                  class = "nav-link-icon d-md-none d-lg-inline-block",
+                  tags$svg(
+                    xmlns = "http://www.w3.org/2000/svg",
+                    width = "24",
+                    height = "24",
+                    viewBox = "0 0 24 24",
+                    fill = "none",
+                    stroke = "currentColor",
+                    `stroke-width` = "2",
+                    `stroke-linecap` = "round",
+                    `stroke-linejoin` = "round",
+                    class = "icon icon-1",
+                    tags$path(d = "M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"),
+                    tags$path(d = "M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1"),
+                    tags$path(d = "M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"),
+                    tags$path(d = "M17 10h2a2 2 0 0 1 2 2v1"),
+                    tags$path(d = "M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"),
+                    tags$path(d = "M3 13v-1a2 2 0 0 1 2 -2h2")
+                  )
+                ),
+                tags$span(
+                  class = "nav-link-title",
+                  paste0(" ", header$nav_about %||% "About", " ")
+                )
               )
             ),
             tags$li(
