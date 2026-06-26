@@ -95,7 +95,22 @@
     "age_18_25": "18-25岁",
     "age_26_plus": "26岁以上",
     "card_established_title": "已建立的健康领域",
-    "card_emerging_title": "新兴健康领域"
+    "card_emerging_title": "新兴健康领域",
+    "card_barriers_resources_title": "挑战与资源需求",
+    "col_barriers_title": "障碍",
+    "col_resource_needs_title": "资源需求",
+    "interview_empty": "暂无填报。",
+    "page_subtitle_fallback": "组织详情",
+    "card_gender_title": "性别认同",
+    "gender_women": "认同为女性",
+    "gender_men": "认同为男性",
+    "gender_other": "认同为其他性别身份",
+    "card_other_demographics_title": "其他人口统计信息",
+    "other_disabilities": "有一种或多种残障",
+    "other_spiritual": "认同某种宗教或精神信仰实践",
+    "other_race_eth": "有色人种",
+    "other_us_born": "在美国出生",
+    "other_queer": "认同为 LGBTQIA+"
   },
   "wheel": {
     "default_message": "选择一个区段以了解更多。",

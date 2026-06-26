@@ -95,7 +95,22 @@
     "age_18_25": "18-25 yrs old",
     "age_26_plus": "26+ yrs old",
     "card_established_title": "Established Areas of Wellness",
-    "card_emerging_title": "Emerging Areas of Wellness"
+    "card_emerging_title": "Emerging Areas of Wellness",
+    "card_barriers_resources_title": "Challenges & Resource Needs",
+    "col_barriers_title": "Barriers",
+    "col_resource_needs_title": "Resource Needs",
+    "interview_empty": "None reported.",
+    "page_subtitle_fallback": "Organization details",
+    "card_gender_title": "Gender Identity",
+    "gender_women": "Identifies as women",
+    "gender_men": "Identifies as men",
+    "gender_other": "Identifies as another gender identity",
+    "card_other_demographics_title": "Additional Demographics",
+    "other_disabilities": "With one or more disabilities",
+    "other_spiritual": "Identifies with a religious or spiritual practice",
+    "other_race_eth": "People of color",
+    "other_us_born": "Born in the United States",
+    "other_queer": "Identifies as LGBTQIA+"
   },
   "wheel": {
     "default_message": "Select a segment to learn more.",

@@ -49,7 +49,7 @@
     "mission_title": "我哋嘅使命",
     "mission_body": "透過社區與學術界嘅合作，評估、共同開發同推廣支持青少年同佢哋家庭嘅健康公平科學、計劃同政策。",
     "cpa_title": "咩係 CPA？",
-    "cpa_body": "社區夥伴評估（CPA）係 CHANGE Lab 用嚟識別同聯繫使命同我哋一致嘅社區組織嘅方式。透過接觸同對話形式嘅半結構式訪談，我哋了解每個組織嘅強項、優先事項同需要，以及佢哋對社區青少年健康同福祉嘅睇法。",
+    "cpa_body": "社區夥伴評估（CPA）係 CHANGE Lab 用嚟識別同聯繫使命同我哋一致嘅社區機構嘅方式。透過接觸同對話形式嘅半結構式訪談，我哋了解每個機構嘅強項、優先事項同需要，以及佢哋對社區青少年健康同福祉嘅睇法。",
     "connect_title": "聯絡我哋",
     "connect_body": "有問題或者想同 CHANGE Lab 合作？我哋好樂意聽到你嘅聲音。",
     "connect_email_label": "電郵",
@@ -62,7 +62,7 @@
     "label_organization_id": "機構 ID",
     "placeholder_org_id": "你嘅機構 ID",
     "btn_sign_in": "登入",
-    "error_required": "請選擇一個機構並輸入您嘅機構 ID。",
+    "error_required": "請選擇一個機構並輸入你嘅機構 ID。",
     "error_invalid": "該機構 ID 與所選機構唔相符。"
   },
   "organizations": {
@@ -84,7 +84,7 @@
     "wellness_physical_other": "其他",
     "card_established_areas_label": "已建立健康範疇",
     "card_serving_text": "於大波士頓地區服務青年嘅年數",
-    "search_no_results": "冇機構符合您嘅搜尋。",
+    "search_no_results": "冇機構符合你嘅搜尋。",
     "search_empty_data": "儲存嘅數據入面冇可用嘅機構。"
   },
   "organization_details": {
@@ -95,7 +95,22 @@
     "age_18_25": "18-25 歲",
     "age_26_plus": "26+ 歲",
     "card_established_title": "已建立健康範疇",
-    "card_emerging_title": "新興健康範疇"
+    "card_emerging_title": "新興健康範疇",
+    "card_barriers_resources_title": "挑戰與資源需要",
+    "col_barriers_title": "障礙",
+    "col_resource_needs_title": "資源需要",
+    "interview_empty": "冇申報。",
+    "page_subtitle_fallback": "機構詳情",
+    "card_gender_title": "性別認同",
+    "gender_women": "認同為女性",
+    "gender_men": "認同為男性",
+    "gender_other": "認同為其他性別",
+    "card_other_demographics_title": "其他人口統計",
+    "other_disabilities": "有一項或多項殘疾",
+    "other_spiritual": "認同某種宗教或靈性實踐",
+    "other_race_eth": "有色人種",
+    "other_us_born": "喺美國出世",
+    "other_queer": "認同為 LGBTQIA+"
   },
   "wheel": {
     "default_message": "請選擇一個區塊以了解更多。",
