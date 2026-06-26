@@ -1,3 +1,38 @@
+# The lab's full name. This exact English phrase is embedded in the translated
+# `intro` of every language, so the dashboard highlights the CHANGE acronym by
+# bolding the first letter of each word that spells it (the capitalized content
+# words) while leaving the lowercase connectors ("inequity", "in", "and") plain.
+CHANGE_FULL_NAME <- paste(
+  "Challenging Health inequity in Adolescents and Nurturing Global",
+  "Empowerment"
+)
+CHANGE_ACRONYM_WORDS <- c(
+  "Challenging", "Health", "Adolescents", "Nurturing", "Global", "Empowerment"
+)
+
+# The full name as an HTML string, with each acronym word's first letter wrapped
+# in <strong>. Built as a single string (rather than a tagList) so no whitespace
+# is introduced between the bolded letter and the rest of its word.
+render_change_full_name <- function() {
+  words <- strsplit(CHANGE_FULL_NAME, " ", fixed = TRUE)[[1]]
+  parts <- vapply(words, function(word) {
+    if (word %in% CHANGE_ACRONYM_WORDS) {
+      paste0("<strong>", substr(word, 1, 1), "</strong>", substring(word, 2))
+    } else {
+      word
+    }
+  }, character(1))
+  paste(parts, collapse = " ")
+}
+
+# Render the intro paragraph, bolding the CHANGE acronym within the embedded full
+# name. The surrounding translated text is HTML-escaped; only the known,
+# metacharacter-free full name is swapped for its bolded markup.
+render_intro <- function(text) {
+  escaped <- htmltools::htmlEscape(text)
+  HTML(sub(CHANGE_FULL_NAME, render_change_full_name(), escaped, fixed = TRUE))
+}
+
 # About page: who the CHANGE Lab is, its vision and mission, an explanation of
 # the Community Partners Assessment (CPA), and how to get in touch. Narrative
 # content sourced from changelabboston.com; the dashboard uses a project-specific
@@ -41,7 +76,7 @@ about_ui <- function(lang = get_lang()) {
             ),
             h3(class = "h2 m-0", title)
           ),
-          p(class = "text-secondary m-0", body)
+          p(class = "text-secondary fs-3 lh-base m-0", body)
         )
       )
     )
@@ -57,12 +92,12 @@ about_ui <- function(lang = get_lang()) {
           src = "/img/changelab-logo.png",
           alt = "CHANGE Lab logo",
           class = "mb-4",
-          style = "max-width: 160px; height: auto;",
+          style = "max-width: 200px; height: auto;",
           # Hide gracefully until the logo asset is added to www/img/.
           onerror = "this.style.display='none'"
         ),
         h1(class = "hero-title", ap("page_heading", "About CHANGE Lab")),
-        p(class = "hero-description hero-description-wide", ap(
+        p(class = "hero-description hero-description-wide", render_intro(ap(
           "intro",
           paste(
             "Challenging Health inequity in Adolescents and Nurturing Global",
@@ -70,7 +105,7 @@ about_ui <- function(lang = get_lang()) {
             "Collectively known as butterflies, our lab brings together the",
             "principal investigator, research staff, and undergraduate volunteers."
           )
-        ))
+        )))
       )
     ),
 
@@ -121,9 +156,11 @@ about_ui <- function(lang = get_lang()) {
         class = "container",
         div(
           class = "section-header",
-          h2(class = "section-title", ap("cpa_title", "What is the CPA?"))
+          # Sized to match the hero "About CHANGE Lab" section: hero-title header
+          # and h2-sized (fs-2) body, a step up from the other section copy.
+          h2(class = "hero-title", ap("cpa_title", "What is the CPA?"))
         ),
-        p(class = "text-secondary", ap(
+        p(class = "text-secondary fs-2 lh-base", ap(
           "cpa_body",
           paste(
             "The Community Partners Assessment (CPA) is how the CHANGE Lab",
@@ -146,7 +183,7 @@ about_ui <- function(lang = get_lang()) {
           class = "section-header",
           h2(class = "section-title", ap("connect_title", "Connect with Us"))
         ),
-        p(class = "text-secondary", ap(
+        p(class = "text-secondary fs-3 lh-base", ap(
           "connect_body",
           "Have a question or want to partner with the CHANGE Lab? We'd love to hear from you."
         )),
