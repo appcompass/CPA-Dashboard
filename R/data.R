@@ -785,6 +785,158 @@ get_dimension_categories <- function(orgservices, lang, state_value) {
   out
 }
 
+# ---------------------------------------------------------------------------
+# Interview-coded data (barriers / resource_needs / emerging per dimension),
+# decrypted at runtime and joined to the survey on irb_participant_id. This is
+# OPTIONAL supplemental data: when the encrypted file or the key is absent, the
+# loader returns an empty lookup and the dashboard simply renders no
+# interview-derived content rather than failing.
+# ---------------------------------------------------------------------------
+
+# irb_participant_id -> per-dimension interview list. Decrypted once and cached
+# for the process, mirroring load_app_translations.
+load_interview_data <- local({
+  cached <- NULL
+  function(
+    encrypted_path = file.path("data", "interview_data.json.enc"),
+    passphrase = Sys.getenv("CPA_DATA_KEY"),
+    key_env_var = "CPA_DATA_KEY"
+  ) {
+    if (!is.null(cached)) {
+      return(cached)
+    }
+    lookup <- tryCatch(
+      {
+        if (!file.exists(encrypted_path) || !nzchar(passphrase) ||
+          !requireNamespace("jsonlite", quietly = TRUE)) {
+          list()
+        } else {
+          plain_path <- decrypt_data_file(
+            encrypted_path = encrypted_path,
+            output_path = tempfile(fileext = ".json"),
+            passphrase = passphrase,
+            key_env_var = key_env_var
+          )
+          on.exit(unlink(plain_path), add = TRUE)
+          raw <- jsonlite::fromJSON(plain_path, simplifyVector = FALSE)
+          out <- list()
+          for (iv in raw$interviews %||% list()) {
+            key <- trimws(as.character(iv$irb_participant_id %||% ""))
+            if (nzchar(key)) {
+              out[[key]] <- iv$dimensions
+            }
+          }
+          out
+        }
+      },
+      error = function(e) list()
+    )
+    cached <<- lookup
+    cached
+  }
+})
+
+# The per-dimension interview list for one organization, keyed by its
+# irb_participant_id, or NULL when the org was not interviewed.
+get_interview_dimensions <- function(irb_id, interview_data = load_interview_data()) {
+  irb_id <- trimws(as.character(irb_id %||% ""))
+  if (!nzchar(irb_id)) {
+    return(NULL)
+  }
+  interview_data[[irb_id]]
+}
+
+# Emerging dimension labels for the wheel: a dimension counts as emerging when the
+# survey marked its state "emerging" OR the interview coding records one or more
+# emerging initiatives for it. Looped once over DIMENSION_LABEL_KEYS so the order
+# matches the rest of the wheel and labels stay de-duplicated.
+get_emerging_dimension_categories <- function(orgservices, interview_dims, lang) {
+  organizations <- lang$organizations
+  out <- character(0)
+  for (key in names(DIMENSION_LABEL_KEYS)) {
+    dim <- orgservices[[key]]
+    survey_emerging <- !is.null(dim) && identical(dim$state, "emerging")
+    interview_emerging <- length(interview_dims[[key]]$emerging %||% list()) > 0
+    if (survey_emerging || interview_emerging) {
+      label <- organizations[[DIMENSION_LABEL_KEYS[[key]]]]
+      if (!is.null(label) && nzchar(label)) {
+        out <- c(out, label)
+      }
+    }
+  }
+  out
+}
+
+# Interview content is stored in the encrypted file as opaque keys; the actual
+# text (in every language) lives in the UNENCRYPTED data/interview_translations.json,
+# keyed by those keys. This keeps the sensitive organization<->statement linkage
+# encrypted while the de-associated text + translations travel with the i18n data.
+# Shape: { "<key>": { "en": "...", "es-419": "...", ... }, ... }. Cached.
+load_interview_translations <- local({
+  cached <- NULL
+  function(path = file.path("data", "interview_translations.json")) {
+    if (!is.null(cached)) {
+      return(cached)
+    }
+    cached <<- tryCatch(
+      {
+        if (!file.exists(path) || !requireNamespace("jsonlite", quietly = TRUE)) {
+          list()
+        } else {
+          jsonlite::fromJSON(path, simplifyVector = FALSE)
+        }
+      },
+      error = function(e) list()
+    )
+    cached
+  }
+})
+
+# Resolve one interview-content key to text in lang_code, falling back to English
+# and then to the raw key (so a missing translation degrades visibly but safely).
+translate_interview_item <- function(key, lang_code, content = load_interview_translations()) {
+  entry <- content[[key]]
+  if (is.null(entry)) {
+    return(key)
+  }
+  value <- entry[[lang_code]] %||% entry[["en"]]
+  if (is.null(value) || !nzchar(value)) key else value
+}
+
+# Interview items for one field ("barriers" or "resource_needs"), grouped by
+# dimension and translated into the active language. Returns an ordered list of
+# list(label, items) for the dimensions that have any non-empty entries; dimension
+# order follows DIMENSION_LABEL_KEYS so it lines up with the wheels. Empty when the
+# org was not interviewed.
+get_interview_dimension_items <- function(interview_dims, field, lang) {
+  organizations <- lang$organizations
+  lang_code <- lang$lang_code %||% DEFAULT_LANG_CODE
+  content <- load_interview_translations()
+  out <- list()
+  for (key in names(DIMENSION_LABEL_KEYS)) {
+    keys <- as.character(unlist(interview_dims[[key]][[field]] %||% list()))
+    keys <- keys[nzchar(trimws(keys))]
+    # Drop placeholder entries that indicate the dimension is outside the org's
+    # mission rather than an actual barrier / resource need (matched on the
+    # canonical English text behind each key).
+    keys <- keys[vapply(keys, function(k) {
+      tolower(trimws(translate_interview_item(k, "en", content))) !=
+        "not part of organizational mission"
+    }, logical(1))]
+    if (length(keys)) {
+      items <- vapply(
+        keys, function(k) translate_interview_item(k, lang_code, content), character(1)
+      )
+      label <- organizations[[DIMENSION_LABEL_KEYS[[key]]]]
+      out[[length(out) + 1L]] <- list(
+        label = if (!is.null(label) && nzchar(label)) label else key,
+        items = unname(items)
+      )
+    }
+  }
+  out
+}
+
 # A translation label by key, with a fallback when missing/empty.
 get_organization_details_label <- function(details, key, fallback) {
   value <- details[[key]]
@@ -831,7 +983,17 @@ get_organization_details_context <- function(
 
   orgservices <- parse_orgservices_json(get_named_value(row, "orgservices_json", ""))
   established_categories <- get_dimension_categories(orgservices, lang, "established")
-  emerging_categories <- get_dimension_categories(orgservices, lang, "emerging")
+
+  # Emerging wheel = survey-marked emerging dimensions UNION dimensions with
+  # emerging initiatives recorded in the interview coding (joined on
+  # irb_participant_id). Orgs without an interview keep the survey-only behaviour.
+  interview_dims <- get_interview_dimensions(get_named_value(row, "irb_participant_id", ""))
+  emerging_categories <- get_emerging_dimension_categories(orgservices, interview_dims, lang)
+
+  # Qualitative interview coding, grouped by dimension, for the logged-in-only
+  # barriers / resource-needs card. Empty for orgs without an interview record.
+  barriers <- get_interview_dimension_items(interview_dims, "barriers", lang)
+  resource_needs <- get_interview_dimension_items(interview_dims, "resource_needs", lang)
 
   labels <- list(
     page_subtitle_fallback = get_organization_details_label(details, "page_subtitle_fallback", "Organization details"),
@@ -849,7 +1011,11 @@ get_organization_details_context <- function(
     other_spiritual = get_organization_details_label(details, "other_spiritual", "Identifies with a religious or spiritual practice"),
     other_race_eth = get_organization_details_label(details, "other_race_eth", "People of color"),
     other_us_born = get_organization_details_label(details, "other_us_born", "Born in the United States"),
-    other_queer = get_organization_details_label(details, "other_queer", "Identifies as LGBTQIA+")
+    other_queer = get_organization_details_label(details, "other_queer", "Identifies as LGBTQIA+"),
+    card_barriers_resources_title = get_organization_details_label(details, "card_barriers_resources_title", "Challenges & Resource Needs"),
+    col_barriers_title = get_organization_details_label(details, "col_barriers_title", "Barriers"),
+    col_resource_needs_title = get_organization_details_label(details, "col_resource_needs_title", "Resource Needs"),
+    interview_empty = get_organization_details_label(details, "interview_empty", "None reported.")
   )
 
   list(
@@ -870,6 +1036,8 @@ get_organization_details_context <- function(
     pct_queer = pct_queer,
     established_categories = established_categories,
     emerging_categories = emerging_categories,
+    barriers = barriers,
+    resource_needs = resource_needs,
     has_data = nrow(row) > 0
   )
 }

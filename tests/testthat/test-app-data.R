@@ -288,6 +288,47 @@ test_that("get_dimension_categories maps states to translated dimension labels",
   expect_length(get_dimension_categories(os, lang, "wants"), 0L)
 })
 
+test_that("translate_interview_item resolves keys with language and English fallback", {
+  content <- list(
+    iv_0001 = list(en = "Limited green space", "es-419" = "Espacio verde limitado"),
+    iv_0002 = list(en = "Only English text") # no es-419 translation
+  )
+
+  # Active language hit.
+  expect_equal(
+    translate_interview_item("iv_0001", "es-419", content), "Espacio verde limitado"
+  )
+  # Missing translation for the language falls back to English.
+  expect_equal(translate_interview_item("iv_0002", "es-419", content), "Only English text")
+  # Unknown key degrades to the raw key rather than erroring.
+  expect_equal(translate_interview_item("iv_9999", "es-419", content), "iv_9999")
+})
+
+test_that("get_emerging_dimension_categories unions survey state with interview emerging", {
+  # Physical is survey-emerging; Occupational is survey-established but has an
+  # emerging initiative in the interview coding.
+  cols <- c("PhysicalEorE", "Physical", "OccupationalEorE", "Occupational")
+  vals <- c("Emerging", "Fitness programs", "Established", "Job training")
+  row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  os <- parse_orgservices_json(build_orgservices_json(row))
+  lang <- get_lang("en")
+
+  interview_dims <- list(
+    occupational = list(emerging = list("Career fair in development")),
+    financial = list(emerging = list()) # empty -> not emerging
+  )
+
+  out <- get_emerging_dimension_categories(os, interview_dims, lang)
+  expect_true("Physical wellness" %in% out) # from survey state
+  expect_true("Occupational wellness" %in% out) # from interview emerging
+  expect_false("Financial wellness" %in% out) # empty interview list
+  expect_length(out, 2L) # de-duplicated, no double-count
+
+  # No interview record falls back to survey-only emerging.
+  survey_only <- get_emerging_dimension_categories(os, NULL, lang)
+  expect_equal(survey_only, "Physical wellness")
+})
+
 test_that("get_organization_details_context exposes demographics and wellness categories", {
   cols <- c(
     "Dashboard ID", "Organization", "YearsServed", "Age#1_1",

@@ -89,6 +89,15 @@ for (code in rownames(SUPPORTED_LANGUAGES)) {
   translations[[code]] <- translations[[source_code]]
 }
 
+# Stamp each language list with its own code so downstream code (e.g. the dynamic
+# interview-content lookup) can resolve the active language from the lang object,
+# which otherwise carries only translated strings.
+for (code in rownames(SUPPORTED_LANGUAGES)) {
+  if (!is.null(translations[[code]])) {
+    translations[[code]][["lang_code"]] <- code
+  }
+}
+
 missing_langs <- rownames(SUPPORTED_LANGUAGES)[
   vapply(rownames(SUPPORTED_LANGUAGES), function(code) is.null(translations[[code]]), logical(1))
 ]
