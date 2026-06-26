@@ -72,6 +72,48 @@ test_that("about_ui renders lab info, vision/mission, CPA and contact", {
   expect_match(html, "changelabboston@gmail.com", fixed = TRUE)
 })
 
+test_that("about_ui bolds the CHANGE acronym and not the connector words", {
+  withr::local_dir(project_root)
+
+  html <- render_html(about_ui())
+
+  # Each acronym word's first letter is bolded, with no space splitting it.
+  expect_match(html, "<strong>C</strong>hallenging", fixed = TRUE)
+  expect_match(html, "<strong>H</strong>ealth", fixed = TRUE)
+  expect_match(html, "<strong>A</strong>dolescents", fixed = TRUE)
+  expect_match(html, "<strong>N</strong>urturing", fixed = TRUE)
+  expect_match(html, "<strong>G</strong>lobal", fixed = TRUE)
+  expect_match(html, "<strong>E</strong>mpowerment", fixed = TRUE)
+  # Connector words stay plain (not bolded).
+  expect_false(grepl("<strong>i</strong>nequity", html, fixed = TRUE))
+  expect_false(grepl("<strong>i</strong>n ", html, fixed = TRUE))
+  expect_false(grepl("<strong>a</strong>nd", html, fixed = TRUE))
+})
+
+test_that("about_ui sizes the section descriptions per stakeholder feedback", {
+  withr::local_dir(project_root)
+
+  html <- render_html(about_ui())
+
+  # Patrice's feedback: these descriptions were too small. Vision, mission, and
+  # the Connect body use the home page body size (fs-3 lh-base); the CPA section
+  # is bumped further to match the hero (hero-title header + fs-2 body).
+  vision_mission <- lengths(regmatches(
+    html, gregexpr("text-secondary fs-3 lh-base m-0", html)
+  ))
+  connect_body <- lengths(regmatches(
+    html, gregexpr('text-secondary fs-3 lh-base"', html)
+  ))
+  expect_equal(vision_mission, 2L) # vision + mission card bodies
+  expect_equal(connect_body, 1L) # connect section body only
+
+  # The CPA header now uses hero-title (matching the "About CHANGE Lab" hero),
+  # so the page carries two hero-title headings; the CPA body uses fs-2.
+  hero_titles <- lengths(regmatches(html, gregexpr('"hero-title"', html)))
+  expect_equal(hero_titles, 2L)
+  expect_match(html, "text-secondary fs-2 lh-base", fixed = TRUE)
+})
+
 test_that("login_ui renders login form fields", {
   withr::local_dir(project_root)
 
@@ -127,6 +169,24 @@ test_that("organization_details_ui gates gender and demographics behind login", 
   expect_false(grepl("Additional Demographics", logged_out, fixed = TRUE))
   expect_match(logged_in, "Gender Identity", fixed = TRUE)
   expect_match(logged_in, "Additional Demographics", fixed = TRUE)
+})
+
+test_that("organization_details_ui gates emerging areas and barriers/resource needs behind login", {
+  withr::local_dir(project_root)
+
+  logged_out <- render_html(organization_details_ui(logged_in = FALSE))
+  logged_in <- render_html(organization_details_ui(logged_in = TRUE))
+
+  # Established areas stay public; emerging areas and the interview-sourced
+  # barriers/resource-needs card are private. The default org (first row) has
+  # both interview entries and emerging areas.
+  expect_match(logged_out, "Established Areas of Wellness", fixed = TRUE)
+  expect_false(grepl("Emerging Areas of Wellness", logged_out, fixed = TRUE))
+  expect_false(grepl("Challenges &amp; Resource Needs", logged_out, fixed = TRUE))
+
+  expect_match(logged_in, "Emerging Areas of Wellness", fixed = TRUE)
+  expect_match(logged_in, "Challenges &amp; Resource Needs", fixed = TRUE)
+  expect_match(logged_in, "Resource Needs", fixed = TRUE)
 })
 
 test_that("organization_details_ui renders the first org when no id is supplied", {
