@@ -5,8 +5,9 @@
 #
 # Cumulative model: each run APPENDS the new file's organizations to whatever is
 # already in the encrypted dataset. If an organization already exists (matched on
-# dashboard_id) the newest submission wins; organizations are never removed. To
-# rebuild from scratch instead, delete data/survey_data.csv.enc before running.
+# dashboard_id, falling back to orgname when it is blank) the newest submission
+# wins; organizations are never removed. To rebuild from scratch instead, delete
+# data/survey_data.csv.enc before running.
 #
 # Usage:
 #   Rscript R/scripts/transform_survey.R [path/to/raw_export.csv] [path/to/output.csv.enc]

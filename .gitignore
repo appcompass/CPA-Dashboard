@@ -6,5 +6,6 @@
 data/survey_data.csv
 node_modules/
 data/interview_data.json
+.Rproj.user
 
 .claude/worktrees/

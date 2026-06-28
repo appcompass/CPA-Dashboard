@@ -431,9 +431,20 @@ DIMENSION_WHEEL_ICON_PATHS <- list(
   )
 )
 
-# Sub-categories under each wellness dimension, mirroring the wellness wheel
-# taxonomy (www/js/app.js WHEEL_META). Used both to render the filter sidebar and
-# to match an organization's stored services to a subcategory.
+# Survey service subcategories per dimension, mirroring the wheel taxonomy
+# (js/app.js WHEEL_META). Used to render the filter sidebar and to match an org's
+# stored services to a subcategory. NAMING, three forms live here:
+#   wellness_<dim>_<name>  curated subcategory. Only `physical` is filled in
+#                          (fitness/nutrition/screenings); the others are
+#                          sub_<dim>_<n> placeholders awaiting real labels.
+#   sub_<dim>_<n>          placeholder subcategory, label TBD.
+#   <dim>_other            catch-all for an established service matching no curated
+#                          subcategory; minted in established_subcat_keys() as
+#                          paste0(key, "_other"), e.g. emotional_other. NOT
+#                          wellness-prefixed.
+# "wellness_physical_other" appears in EVERY dimension's vector as a shared
+# SENTINEL for "this dimension has an Other slot". It is stripped via setdiff()
+# in established_subcat_keys() and never emitted as-is. It is not a typo.
 DIMENSION_SUB_KEYS <- list(
   physical = c("wellness_physical_fitness", "wellness_physical_nutrition", "wellness_physical_screenings"),
   emotional = c("sub_emotional_1", "sub_emotional_2", "sub_emotional_3"),
@@ -528,10 +539,17 @@ parse_services <- function(raw, other_text, dim_key) {
   unname(c(extracted, parts))
 }
 
-# Per-org nested object for the 8 dimensions, serialized to a JSON string carried
-# in the orgservices_json column. state is derived from EorE/Gap; services from
-# the multi-select; barriers/resource_needs are empty slots populated from the
-# interview-coded data.
+# Per-org nested object for the 8 dimensions, serialized into the orgservices_json
+# column. Per dimension:
+#   state          <- from the survey's <Dim>EorE / <Dim>Gap:
+#                        EorE "Established"     -> "established"
+#                        EorE "Emerging"        -> "emerging"
+#                        else Gap starts "Yes"  -> "wants"
+#                        else Gap starts "No"   -> "not_interested"
+#                        else                   -> "none"
+#   services       <- the <Dim> multi-select, "Other" swapped for its free text
+#   barriers       <- empty []; filled from interview data (join on irb_participant_id)
+#   resource_needs <- empty []; filled from interview data
 build_orgservices_json <- function(row) {
   out <- list()
   for (d in SURVEY_DIMENSIONS) {
@@ -583,8 +601,29 @@ read_qualtrics_export <- function(path, header_rows = 3L) {
   data
 }
 
-# Raw export data frame -> clean, named per-organization data frame (one row per
-# org). This is the organization/demographic portion of the dashboard schema.
+# Raw export -> clean, named per-organization data frame (one row per org): the
+# demographic / identity half of the dashboard schema.
+#
+# FINAL dashboard variable names (all survey-sourced); the arrow is the raw
+# Qualtrics source column. Each demographic is a cleaned percentage range
+# (clean_pct); years are wording-stripped (clean_lengthserve).
+#   orgname          <- Organization
+#   lengthserve      <- YearsServed
+#   pct_age_12_17    <- Age#1_1       (stakeholder spec writes this id hyphenated: pct_age_12-17)
+#   pct_age_18_25    <- Age#1_2       (spec: pct_age_18-25)
+#   pct_age_over26   <- Age#1_3
+#   pct_women        <- Gender#1_1
+#   pct_men          <- Gender#1_2
+#   pct_gender       <- Gender#1_3    (another gender identity)
+#   pct_disabilities <- OtherDem#1_1
+#   pct_spiritual    <- OtherDem#1_2  (religious or spiritual practice)
+#   pct_race_eth     <- OtherDem#1_3  (people of color)
+#   pct_us_born      <- OtherDem#1_4
+#   pct_queer        <- OtherDem#1_5  (LGBTQIA+)
+# dashboard_id, irb_participant_id are keys (merge upsert / interview join), kept
+# though they are not display variables. emp_pct_* mirror the Qualtrics #2 columns
+# for employees and are youth-spec-out. orgservices_json (the wheel half) is
+# appended after this by build_orgservices_json().
 build_clean_survey <- function(raw) {
   get_col <- function(col) {
     if (col %in% names(raw)) as.character(raw[[col]]) else rep(NA_character_, nrow(raw))
