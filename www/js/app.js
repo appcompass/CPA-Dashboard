@@ -508,13 +508,23 @@ function createWheel(container, size = 340) {
       const singleIconYOffset = scaledPx(18, 9) * 1.5;
       const iconPoint = { x: CX, y: CY - singleIconYOffset };
       const contentPivot = { x: CX, y: CY };
-      const singleLabelY = d.iconDataUri
+      // A single segment fills the whole ring, so its icon + label sit in the
+      // hollow centre over the white page background — not on the coloured band
+      // like multi-segment labels. Render them in the dimension's colour (white
+      // would be invisible here), using a colour-matched icon.
+      const centerIconDataUri = d.icon
+        ? 'data:image/svg+xml;charset=utf-8,' +
+          encodeURIComponent(
+            d.icon.replace(/stroke="currentColor"/g, `stroke="${d.color}"`),
+          )
+        : '';
+      const singleLabelY = centerIconDataUri
         ? iconPoint.y + singleIconSize / 2 + iconTextGap + scaledPx(5, 3)
         : CY;
 
-      if (d.iconDataUri) {
+      if (centerIconDataUri) {
         content
-          .image(d.iconDataUri)
+          .image(centerIconDataUri)
           .size(singleIconSize, singleIconSize)
           .center(iconPoint.x, iconPoint.y);
       }
@@ -527,7 +537,7 @@ function createWheel(container, size = 340) {
           weight: '600',
           anchor: 'middle',
         })
-        .fill('white')
+        .fill(d.color)
         .center(CX, singleLabelY);
 
       segMap[0] = {
