@@ -375,7 +375,7 @@ function createWheel(container, size = 340) {
       .map((s) => {
         const dot = `<span class="dot" style="background:${d.color}"></span>`;
         const cls = 'subcat-name subcat-link';
-        const name = `<a class="${cls}" href="#!/organizations?subcat=${encodeURIComponent(s.filterKey)}">${s.label}</a>`;
+        const name = `<a class="${cls}" style="color:${d.color}" href="#!/organizations?subcat=${encodeURIComponent(s.filterKey)}">${s.label}</a>`;
         return `<li>${dot}${name}</li>`;
       })
       .join('');
