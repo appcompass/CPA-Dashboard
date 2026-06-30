@@ -25,12 +25,34 @@ render_change_full_name <- function() {
   paste(parts, collapse = " ")
 }
 
+# Render inline markdown links — `[text](url)` — into anchor tags that open in a
+# new tab. Operates on already-HTML-escaped text: the link text is escaped (it
+# came from the translated copy), and only the bracket/paren markdown syntax is
+# rewritten into markup. URLs are restricted to http(s) so a translation string
+# can't inject an unexpected scheme.
+render_markdown_links <- function(escaped) {
+  gsub(
+    "\\[([^]]+)\\]\\((https?://[^)\\s]+)\\)",
+    "<a href=\"\\2\" target=\"_blank\" rel=\"noopener noreferrer\">\\1</a>",
+    escaped,
+    perl = TRUE
+  )
+}
+
 # Render the intro paragraph, bolding the CHANGE acronym within the embedded full
-# name. The surrounding translated text is HTML-escaped; only the known,
-# metacharacter-free full name is swapped for its bolded markup.
+# name and turning the markdown "website" link into an anchor. The translated
+# text is HTML-escaped first; only the known, metacharacter-free full name is
+# swapped for its bolded markup and the markdown link syntax for an anchor.
 render_intro <- function(text) {
   escaped <- htmltools::htmlEscape(text)
-  HTML(sub(CHANGE_FULL_NAME, render_change_full_name(), escaped, fixed = TRUE))
+  with_name <- sub(CHANGE_FULL_NAME, render_change_full_name(), escaped, fixed = TRUE)
+  HTML(render_markdown_links(with_name))
+}
+
+# Render a paragraph of translated copy that may contain markdown links, e.g. the
+# CPA body's link to SAMHSA's 8 dimensions of wellness.
+render_rich_text <- function(text) {
+  HTML(render_markdown_links(htmltools::htmlEscape(text)))
 }
 
 # About page: who the CHANGE Lab is, its vision and mission, an explanation of
@@ -103,7 +125,9 @@ about_ui <- function(lang = get_lang()) {
             "Challenging Health inequity in Adolescents and Nurturing Global",
             "Empowerment (CHANGE) Lab is directed by Dr. Idia Thurston.",
             "Collectively known as butterflies, our lab brings together the",
-            "principal investigator, research staff, and undergraduate volunteers."
+            "principal investigator, research staff, and undergraduate",
+            "volunteers. To learn more about our lab, please check out our",
+            "[website](https://www.changelabboston.com/home)!"
           )
         )))
       )
@@ -156,21 +180,35 @@ about_ui <- function(lang = get_lang()) {
         class = "container",
         div(
           class = "section-header",
-          # Sized to match the hero "About CHANGE Lab" section: hero-title header
-          # and h2-sized (fs-2) body, a step up from the other section copy.
-          h2(class = "hero-title", ap("cpa_title", "What is the CPA?"))
+          # CPA logo beside the heading, mirroring how the CHANGE Lab logo is
+          # shown in the hero (PNG from www/img, hidden gracefully if missing).
+          div(
+            class = "d-flex align-items-center gap-3 flex-wrap",
+            tags$img(
+              src = "/img/cpa-logo.png",
+              alt = "CPA logo",
+              style = "max-width: 100px; height: auto;",
+              onerror = "this.style.display='none'"
+            ),
+            # Sized to match the hero "About CHANGE Lab" section: hero-title
+            # header and h2-sized (fs-2) body, a step up from the other sections.
+            h2(class = "hero-title m-0", ap("cpa_title", "What is the CPA?"))
+          )
         ),
-        p(class = "text-secondary fs-2 lh-base", ap(
+        p(class = "text-secondary fs-2 lh-base", render_rich_text(ap(
           "cpa_body",
           paste(
             "The Community Partners Assessment (CPA) is how the CHANGE Lab",
             "identifies and connects with community-based organizations whose",
             "missions align with our own. Through outreach and conversational,",
             "semi-structured interviews, we learn about each organization's",
-            "strengths, priorities, and needs, along with their perspectives on",
-            "the health and wellness of youth across their communities."
+            "strengths, priorities, and needs along",
+            "[SAMHSA's 8 dimensions of wellness](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf):",
+            "physical, emotional, intellectual, occupational, financial, social,",
+            "environmental, and spiritual. We also gain their perspectives on the",
+            "health and wellness of youth across their communities."
           )
-        ))
+        )))
       )
     ),
 
