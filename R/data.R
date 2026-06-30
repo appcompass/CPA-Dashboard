@@ -350,17 +350,18 @@ DIMENSION_LABEL_KEYS <- c(
 
 # Sub-categories under each wellness dimension, mirroring the wellness wheel
 # taxonomy (www/js/app.js WHEEL_META). Used both to render the filter sidebar and
-# to match an organization's stored services to a subcategory. "wellness_physical_
-# other" is the shared "Other" label key.
+# to match an organization's stored services to a subcategory. Each dimension's
+# last key, "wellness_<dimension>_additional", is its "Additional [dimension]
+# areas" catch-all label.
 DIMENSION_SUB_KEYS <- list(
-  physical = c("wellness_physical_fitness", "wellness_physical_nutrition", "wellness_physical_screenings", "wellness_physical_other"),
-  emotional = c("sub_emotional_1", "sub_emotional_2", "sub_emotional_3", "wellness_physical_other"),
-  intellectual = c("sub_intellectual_1", "sub_intellectual_2", "sub_intellectual_3", "wellness_physical_other"),
-  occupational = c("sub_occupational_1", "sub_occupational_2", "sub_occupational_3", "sub_occupational_4", "wellness_physical_other"),
-  financial = c("sub_financial_1", "sub_financial_2", "sub_financial_3", "wellness_physical_other"),
-  social = c("sub_social_1", "sub_social_2", "sub_social_3", "wellness_physical_other"),
-  environmental = c("sub_environmental_1", "sub_environmental_2", "sub_environmental_3", "wellness_physical_other"),
-  spiritual = c("sub_spiritual_1", "sub_spiritual_2", "sub_spiritual_3", "sub_spiritual_4", "wellness_physical_other")
+  physical = c("wellness_physical_fitness", "wellness_physical_nutrition", "wellness_physical_screenings", "wellness_physical_additional"),
+  emotional = c("sub_emotional_1", "sub_emotional_2", "sub_emotional_3", "wellness_emotional_additional"),
+  intellectual = c("sub_intellectual_1", "sub_intellectual_2", "sub_intellectual_3", "wellness_intellectual_additional"),
+  occupational = c("sub_occupational_1", "sub_occupational_2", "sub_occupational_3", "sub_occupational_4", "wellness_occupational_additional"),
+  financial = c("sub_financial_1", "sub_financial_2", "sub_financial_3", "wellness_financial_additional"),
+  social = c("sub_social_1", "sub_social_2", "sub_social_3", "wellness_social_additional"),
+  environmental = c("sub_environmental_1", "sub_environmental_2", "sub_environmental_3", "wellness_environmental_additional"),
+  spiritual = c("sub_spiritual_1", "sub_spiritual_2", "sub_spiritual_3", "sub_spiritual_4", "wellness_spiritual_additional")
 )
 
 # Match a stored survey service string against a subcategory label, tolerant of
@@ -397,7 +398,7 @@ established_subcat_keys <- function(orgservices) {
     services <- services[nzchar(services)]
     if (!length(services)) next
 
-    curated_keys <- setdiff(DIMENSION_SUB_KEYS[[key]], "wellness_physical_other")
+    curated_keys <- grep("_additional$", DIMENSION_SUB_KEYS[[key]], value = TRUE, invert = TRUE)
     curated_labels <- tolower(trimws(vapply(curated_keys, sub_label, character(1))))
     has_other <- FALSE
     for (service in services) {

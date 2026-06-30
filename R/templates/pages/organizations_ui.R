@@ -112,8 +112,9 @@ organizations_ui <- function(lang = get_lang()) {
   render_wellness_groups <- function(group) {
     tagList(lapply(names(DIMENSION_LABEL_KEYS), function(key) {
       children <- lapply(DIMENSION_SUB_KEYS[[key]], function(sub_key) {
-        # "Other" is the dimension-specific catch-all (<dimension>_other).
-        subcat <- if (identical(sub_key, "wellness_physical_other")) {
+        # The "Additional [dimension] areas" sub is the dimension-specific
+        # catch-all (<dimension>_other).
+        subcat <- if (grepl("_additional$", sub_key)) {
           paste0(key, "_other")
         } else {
           sub_key

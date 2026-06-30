@@ -19,7 +19,7 @@ const WHEEL_META = [
       'wellness_physical_fitness',
       'wellness_physical_nutrition',
       'wellness_physical_screenings',
-      'wellness_physical_other',
+      'wellness_physical_additional',
     ],
   },
   {
@@ -33,7 +33,7 @@ const WHEEL_META = [
       'sub_emotional_1',
       'sub_emotional_2',
       'sub_emotional_3',
-      'wellness_physical_other',
+      'wellness_emotional_additional',
     ],
   },
   {
@@ -47,7 +47,7 @@ const WHEEL_META = [
       'sub_intellectual_1',
       'sub_intellectual_2',
       'sub_intellectual_3',
-      'wellness_physical_other',
+      'wellness_intellectual_additional',
     ],
   },
   {
@@ -62,7 +62,7 @@ const WHEEL_META = [
       'sub_occupational_2',
       'sub_occupational_3',
       'sub_occupational_4',
-      'wellness_physical_other',
+      'wellness_occupational_additional',
     ],
   },
   {
@@ -76,7 +76,7 @@ const WHEEL_META = [
       'sub_financial_1',
       'sub_financial_2',
       'sub_financial_3',
-      'wellness_physical_other',
+      'wellness_financial_additional',
     ],
   },
   {
@@ -90,7 +90,7 @@ const WHEEL_META = [
       'sub_social_1',
       'sub_social_2',
       'sub_social_3',
-      'wellness_physical_other',
+      'wellness_social_additional',
     ],
   },
   {
@@ -104,7 +104,7 @@ const WHEEL_META = [
       'sub_environmental_1',
       'sub_environmental_2',
       'sub_environmental_3',
-      'wellness_physical_other',
+      'wellness_environmental_additional',
     ],
   },
   {
@@ -119,7 +119,7 @@ const WHEEL_META = [
       'sub_spiritual_2',
       'sub_spiritual_3',
       'sub_spiritual_4',
-      'wellness_physical_other',
+      'wellness_spiritual_additional',
     ],
   },
 ];
@@ -263,10 +263,11 @@ function buildWheelItems() {
     const panelTitle = organizations[meta.titleKey] || meta.canonicalTitle;
     const wheelTitle = stripWellnessFromTitle(panelTitle, meta.canonicalTitle);
     const subs = meta.subKeys.map(function (key) {
-      // "Other" filters by a dimension-specific catch-all key; the rest by their
-      // own subcategory key. filterKey is what the organizations page matches on.
-      var filterKey =
-        key === 'wellness_physical_other' ? meta.key + '_other' : key;
+      // The "Additional [dimension] areas" sub filters by a dimension-specific
+      // catch-all key; the rest by their own subcategory key. filterKey is what
+      // the organizations page matches on. (Older "_other" keys map the same way.)
+      var isAdditional = /_(additional|other)$/.test(key);
+      var filterKey = isAdditional ? meta.key + '_other' : key;
       return {
         key: key,
         filterKey: filterKey,
