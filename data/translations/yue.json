@@ -19,7 +19,7 @@
   },
   "home": {
     "hero_title": "社區夥伴評估儀表板",
-    "hero_description": "社區夥伴評估（CPA）儀表板係一個互動平台，展示大波士頓地區嘅機構為有色族裔青少年同佢哋嘅家庭提供嘅各種身心健康服務同計劃！我哋根據 [SAMHSA 嘅八個維度](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf) 嚟定義身心健康：身體、情緒、智力、職業、財務、社交、環境同心靈（改編自 Swarbrick, M. (2006). A Wellness Approach. _Psychiatric Rehabilitation Journal, 29_(4), 311–314.）。透過按名稱、地點、身心健康維度等篩選嚟探索各機構！",
+    "hero_description": "社區夥伴評估（CPA）儀表板係一個互動平台，展示大波士頓地區嘅機構為有色族裔青少年同佢哋嘅家庭提供嘅各種身心健康服務同計劃！我哋根據 [SAMHSA 嘅八個維度](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf) 嚟定義身心健康：身體、情緒、智力、職業、財務、社交、環境同心靈（改編自 Swarbrick, M. (2006). A Wellness Approach. _Psychiatric Rehabilitation Journal, 29_(4), 311–314.）。透過按名稱、身心健康維度等篩選嚟探索各機構！",
     "cta_browse": "瀏覽機構",
     "dimensions_title": "健康嘅八個範疇",
     "dimensions_description": "我哋將健康分為八個範疇。",

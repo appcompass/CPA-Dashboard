@@ -19,7 +19,7 @@
   },
   "home": {
     "hero_title": "Community Partners Assessment Dashboard",
-    "hero_description": "The Community Partners Assessment (CPA) Dashboard is an interactive platform that visualizes the different wellness services and programs that organizations across the greater Boston area provide for youth of color and their families! We define wellness along [SAMHSA's eight dimensions](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf): physical, emotional, intellectual, occupational, financial, social, environmental, and spiritual (Adapted from Swarbrick, M. (2006). A Wellness Approach. _Psychiatric Rehabilitation Journal, 29_(4), 311–314.). Explore organizations by filtering for name, location, wellness dimensions, and more!",
+    "hero_description": "The Community Partners Assessment (CPA) Dashboard is an interactive platform that visualizes the different wellness services and programs that organizations across the greater Boston area provide for youth of color and their families! We define wellness along [SAMHSA's eight dimensions](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf): physical, emotional, intellectual, occupational, financial, social, environmental, and spiritual (Adapted from Swarbrick, M. (2006). A Wellness Approach. _Psychiatric Rehabilitation Journal, 29_(4), 311–314.). Explore organizations by filtering for name, wellness dimensions, and more!",
     "cta_browse": "Browse Organizations",
     "dimensions_title": "Eight Dimensions of Wellness",
     "dimensions_description": "We define wellness across eight dimensions.",
