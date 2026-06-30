@@ -246,6 +246,32 @@ test_that("get_organization_details_row matches by orgname", {
   expect_equal(row$lengthserve, "2")
 })
 
+test_that("get_organization_details_row resolves raw and URL-encoded multi-word ids", {
+  data <- data.frame(
+    orgname = c("Apprentice Learning", "Big Brothers Big Sisters"),
+    lengthserve = c("1", "2"),
+    stringsAsFactors = FALSE
+  )
+
+  # Raw multi-word id resolves to the right org (regression guard).
+  raw <- get_organization_details_row("Big Brothers Big Sisters", data)
+  expect_equal(raw$orgname, "Big Brothers Big Sisters")
+
+  # URL-encoded id (as built by the org cards' href) ALSO resolves to that org,
+  # not the first-org fallback. This fails before the encode-robust fix.
+  encoded_id <- utils::URLencode("Big Brothers Big Sisters", reserved = TRUE)
+  encoded <- get_organization_details_row(encoded_id, data)
+  expect_equal(encoded$orgname, "Big Brothers Big Sisters")
+
+  # A genuinely unknown id still falls back to the first non-empty org.
+  unknown <- get_organization_details_row("No Such Org", data)
+  expect_equal(unknown$orgname, "Apprentice Learning")
+
+  # NULL and empty ids still fall back to the first non-empty org.
+  expect_equal(get_organization_details_row(NULL, data)$orgname, "Apprentice Learning")
+  expect_equal(get_organization_details_row("", data)$orgname, "Apprentice Learning")
+})
+
 test_that("get_named_value reads by column name with a fallback", {
   row <- data.frame(orgname = "Org A", pct_women = "26%-60%", stringsAsFactors = FALSE)
   expect_equal(get_named_value(row, "pct_women"), "26%-60%")

@@ -814,8 +814,24 @@ get_organization_details_row <- function(
     }
   }
 
-  selected_row_index <- if (!is.null(selected_org) && selected_org %in% org_names) {
-    match(selected_org, org_names)
+  # Org card links pass the name URL-encoded (e.g. "Big%20Brothers..."). Match
+  # the id as-is first; if it doesn't match, retry against a URL-decoded form so
+  # an encoded id still resolves. tryCatch keeps a malformed `%` sequence from
+  # erroring. Only when neither form matches do we fall back to the first org.
+  matched_index <- NA_integer_
+  if (!is.null(selected_org)) {
+    if (selected_org %in% org_names) {
+      matched_index <- match(selected_org, org_names)
+    } else {
+      decoded_org <- tryCatch(utils::URLdecode(selected_org), error = function(e) NA_character_)
+      if (!is.na(decoded_org) && decoded_org %in% org_names) {
+        matched_index <- match(decoded_org, org_names)
+      }
+    }
+  }
+
+  selected_row_index <- if (!is.na(matched_index)) {
+    matched_index
   } else {
     non_empty_rows <- which(nzchar(org_names))
     if (!length(non_empty_rows)) NA_integer_ else non_empty_rows[[1]]
