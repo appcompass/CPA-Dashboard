@@ -117,6 +117,42 @@ test_that("about_ui bolds the CHANGE acronym and not the connector words", {
   expect_false(grepl("<strong>a</strong>nd", html, fixed = TRUE))
 })
 
+test_that("about_ui links the CHANGE Lab website and shows the CPA logo", {
+  withr::local_dir(project_root)
+
+  html <- render_html(about_ui())
+
+  # The intro's "website" markdown link renders as an anchor to changelabboston.
+  expect_match(
+    html,
+    "<a href=\"https://www.changelabboston.com/home\"",
+    fixed = TRUE
+  )
+  expect_match(html, ">website</a>", fixed = TRUE)
+
+  # The CPA logo sits beside the "What is the CPA?" heading.
+  expect_match(html, "/img/cpa-logo.png", fixed = TRUE)
+})
+
+test_that("about_ui links SAMHSA's 8 dimensions of wellness in the CPA body", {
+  withr::local_dir(project_root)
+
+  html <- render_html(about_ui())
+
+  expect_match(
+    html,
+    "<a href=\"https://library.samhsa.gov/sites/default/files/sma16-4953.pdf\"",
+    fixed = TRUE
+  )
+  expect_match(html, "8 dimensions of wellness</a>", fixed = TRUE)
+  # The eight named dimensions appear in the body.
+  expect_match(
+    html,
+    "physical, emotional, intellectual, occupational, financial, social, environmental, and spiritual",
+    fixed = TRUE
+  )
+})
+
 test_that("about_ui sizes the section descriptions per stakeholder feedback", {
   withr::local_dir(project_root)
 
@@ -135,8 +171,10 @@ test_that("about_ui sizes the section descriptions per stakeholder feedback", {
   expect_equal(connect_body, 1L) # connect section body only
 
   # The CPA header now uses hero-title (matching the "About CHANGE Lab" hero),
-  # so the page carries two hero-title headings; the CPA body uses fs-2.
-  hero_titles <- lengths(regmatches(html, gregexpr('"hero-title"', html)))
+  # so the page carries two hero-title headings; the CPA body uses fs-2. The CPA
+  # heading also carries m-0 (it sits in a flex row beside the CPA logo), so the
+  # class token is matched regardless of any additional classes.
+  hero_titles <- lengths(regmatches(html, gregexpr('class="hero-title', html)))
   expect_equal(hero_titles, 2L)
   expect_match(html, "text-secondary fs-2 lh-base", fixed = TRUE)
 })
