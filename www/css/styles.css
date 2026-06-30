@@ -126,6 +126,21 @@ body.router-ready .page .page-wrapper {
   padding-top: 2rem;
 }
 
+/* Organizations search: wellness-dimension filter rows. The parent label is
+   tinted with the wheel color (set inline per dimension) and carries the
+   dimension icon, so the filter column reads at a glance and matches the wheel. */
+.filter-dimension-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+.filter-dimension-icon {
+  flex-shrink: 0;
+  width: 1.1em;
+  height: 1.1em;
+}
+
 .ww-svg-wrap {
   flex-shrink: 0;
 }
