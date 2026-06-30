@@ -123,7 +123,7 @@ home_ui <- function(lang = get_lang()) {
               "environmental, and spiritual (Adapted from Swarbrick, M. (2006). A",
               "Wellness Approach. _Psychiatric Rehabilitation Journal, 29_(4),",
               "311–314.). Explore organizations by filtering for name,",
-              "location, wellness dimensions, and more!"
+              "wellness dimensions, and more!"
             )
           ))
         ),

@@ -19,7 +19,7 @@
   },
   "home": {
     "hero_title": "社区伙伴评估仪表板",
-    "hero_description": "社区伙伴评估（CPA）仪表板是一个互动平台，展示大波士顿地区的机构为有色族裔青少年及其家庭提供的各种身心健康服务和项目！我们依据 [SAMHSA 的八个维度](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf) 来定义身心健康：身体、情绪、智力、职业、财务、社交、环境和心灵（改编自 Swarbrick, M. (2006). A Wellness Approach. _Psychiatric Rehabilitation Journal, 29_(4), 311–314.）。通过按名称、地点、身心健康维度等进行筛选来探索各机构！",
+    "hero_description": "社区伙伴评估（CPA）仪表板是一个互动平台，展示大波士顿地区的机构为有色族裔青少年及其家庭提供的各种身心健康服务和项目！我们依据 [SAMHSA 的八个维度](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf) 来定义身心健康：身体、情绪、智力、职业、财务、社交、环境和心灵（改编自 Swarbrick, M. (2006). A Wellness Approach. _Psychiatric Rehabilitation Journal, 29_(4), 311–314.）。通过按名称、身心健康维度等进行筛选来探索各机构！",
     "cta_browse": "浏览组织",
     "dimensions_title": "健康的八个维度",
     "dimensions_description": "我们将健康定义为八个维度。",
