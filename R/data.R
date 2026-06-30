@@ -846,18 +846,17 @@ get_interview_dimensions <- function(irb_id, interview_data = load_interview_dat
   interview_data[[irb_id]]
 }
 
-# Emerging dimension labels for the wheel: a dimension counts as emerging when the
-# survey marked its state "emerging" OR the interview coding records one or more
-# emerging initiatives for it. Looped once over DIMENSION_LABEL_KEYS so the order
-# matches the rest of the wheel and labels stay de-duplicated.
-get_emerging_dimension_categories <- function(orgservices, interview_dims, lang) {
+# Emerging dimension labels for the wheel: a dimension counts as emerging only
+# when the survey marked its state "emerging". Looped once over
+# DIMENSION_LABEL_KEYS so the order matches the rest of the wheel and labels stay
+# de-duplicated.
+get_emerging_dimension_categories <- function(orgservices, lang) {
   organizations <- lang$organizations
   out <- character(0)
   for (key in names(DIMENSION_LABEL_KEYS)) {
     dim <- orgservices[[key]]
     survey_emerging <- !is.null(dim) && identical(dim$state, "emerging")
-    interview_emerging <- length(interview_dims[[key]]$emerging %||% list()) > 0
-    if (survey_emerging || interview_emerging) {
+    if (survey_emerging) {
       label <- organizations[[DIMENSION_LABEL_KEYS[[key]]]]
       if (!is.null(label) && nzchar(label)) {
         out <- c(out, label)
@@ -983,12 +982,11 @@ get_organization_details_context <- function(
 
   orgservices <- parse_orgservices_json(get_named_value(row, "orgservices_json", ""))
   established_categories <- get_dimension_categories(orgservices, lang, "established")
+  established_subcats <- established_subcat_keys(orgservices)
 
-  # Emerging wheel = survey-marked emerging dimensions UNION dimensions with
-  # emerging initiatives recorded in the interview coding (joined on
-  # irb_participant_id). Orgs without an interview keep the survey-only behaviour.
+  # Emerging wheel = survey-marked emerging dimensions only.
   interview_dims <- get_interview_dimensions(get_named_value(row, "irb_participant_id", ""))
-  emerging_categories <- get_emerging_dimension_categories(orgservices, interview_dims, lang)
+  emerging_categories <- get_emerging_dimension_categories(orgservices, lang)
 
   # Qualitative interview coding, grouped by dimension, for the logged-in-only
   # barriers / resource-needs card. Empty for orgs without an interview record.
@@ -1035,6 +1033,7 @@ get_organization_details_context <- function(
     pct_us_born = pct_us_born,
     pct_queer = pct_queer,
     established_categories = established_categories,
+    established_subcats = established_subcats,
     emerging_categories = emerging_categories,
     barriers = barriers,
     resource_needs = resource_needs,

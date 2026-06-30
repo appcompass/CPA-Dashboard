@@ -330,6 +330,18 @@ function createWheel(container, size = 340) {
   );
   if (!ENABLED.length) return;
 
+  // When present (the established wheel), restrict each dimension's listed
+  // subcategories to the org's actual established services. Absent on the home
+  // and emerging wheels, where all subs are shown.
+  const subcatAttr = $container.attr('data-active-subcats');
+  const allowedSubcats =
+    subcatAttr == null
+      ? null
+      : subcatAttr
+          .split(',')
+          .map((s) => s.trim().toLowerCase())
+          .filter(Boolean);
+
   // unique id prefix per instance
   const uid = 'ww-' + Math.random().toString(36).slice(2, 7);
 
@@ -361,8 +373,16 @@ function createWheel(container, size = 340) {
   // build panels
   ENABLED.forEach((d, i) => {
     // Every subcategory (including "Other") links to the organizations list,
-    // pre-filtered to orgs that provide it as an established service.
-    const subItems = d.subs
+    // pre-filtered to orgs that provide it as an established service. When
+    // data-active-subcats is set (established wheel), subs are further filtered
+    // to only the org's own established services.
+    const subs =
+      allowedSubcats == null
+        ? d.subs
+        : d.subs.filter((s) =>
+            allowedSubcats.includes(String(s.filterKey).toLowerCase()),
+          );
+    const subItems = subs
       .map((s) => {
         const dot = `<span class="dot" style="background:${d.color}"></span>`;
         const cls = 'subcat-name subcat-link';

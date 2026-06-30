@@ -174,12 +174,35 @@ test_that("organization_details_ui gates gender and demographics behind login", 
 test_that("organization_details_ui gates emerging areas and barriers/resource needs behind login", {
   withr::local_dir(project_root)
 
+  # Pick an org that is survey-marked emerging in at least one dimension AND has
+  # interview-sourced barriers/resource needs, so both private cards render. The
+  # emerging wheel is survey-only, so the default first org may have no emerging
+  # areas; drive the UI to a known-emerging org via the "id" query param.
+  detail_data <- load_organization_details_data()
+  lang <- get_lang("en")
+  emerging_org <- NULL
+  for (i in seq_len(nrow(detail_data))) {
+    os <- parse_orgservices_json(
+      get_named_value(detail_data[i, ], "orgservices_json", "")
+    )
+    if (length(get_emerging_dimension_categories(os, lang))) {
+      emerging_org <- trimws(detail_data[["orgname"]][i])
+      break
+    }
+  }
+  expect_false(is.null(emerging_org))
+  testthat::local_mocked_bindings(
+    get_query_param = function(field = NULL, ...) {
+      if (is.null(field) || identical(field, "id")) emerging_org else NULL
+    },
+    .package = "shiny.router"
+  )
+
   logged_out <- render_html(organization_details_ui(logged_in = FALSE))
   logged_in <- render_html(organization_details_ui(logged_in = TRUE))
 
   # Established areas stay public; emerging areas and the interview-sourced
-  # barriers/resource-needs card are private. The default org (first row) has
-  # both interview entries and emerging areas.
+  # barriers/resource-needs card are private.
   expect_match(logged_out, "Established Areas of Wellness", fixed = TRUE)
   expect_false(grepl("Emerging Areas of Wellness", logged_out, fixed = TRUE))
   expect_false(grepl("Challenges &amp; Resource Needs", logged_out, fixed = TRUE))
