@@ -2,16 +2,24 @@
 #
 # join_data.R
 #
-# Joins interview_data.json.enc (barriers, resource_needs, emerging per dimension)
-# into the clean survey data and exports master_data.xlsx.
+# Joins interview_data.json.enc (barriers, resource_needs, emerging, and
+# other_services per dimension) into the clean survey data and exports
+# master_data.xlsx.
 #
 # The survey data is loaded via load_survey_data() from data.R, which produces
 # a clean named-column data frame with an orgservices_json column per org.
 # The interview data is decrypted at runtime using the same CPA_DATA_KEY.
-# Both sources are joined on orgname.
+# Both sources are joined on irb_participant_id (preferred) with orgname as
+# fallback, as documented in the Data Pipeline Guide (Section 7).
 #
 # Column naming convention in output follows wellness_[dimension]_[subcategory]
-# to match DIMENSION_SUB_KEYS in the R codebase.
+# to match DIMENSION_SUB_KEYS in the R codebase. Output columns per dimension:
+#   [dim]_state          — established / emerging / wants / not_interested / none
+#   [dim]_services       — pipe-separated services from survey orgservices_json
+#   [dim]_barriers       — pipe-separated barriers from interview data
+#   [dim]_resource_needs — pipe-separated resource needs from interview data
+#   [dim]_emerging       — pipe-separated emerging initiatives from interview data
+#   [dim]_other_services — pipe-separated approved new sub-keys from interview data
 #
 # Usage:
 #   export CPA_DATA_KEY=your-key-here
@@ -55,13 +63,17 @@ interview_plain_path <- decrypt_data_file(
 raw_interviews <- jsonlite::fromJSON(interview_plain_path, simplifyVector = FALSE)
 interviews <- raw_interviews$interviews
 
-# Key interview data by orgname for fast lookup during join
-interview_lookup <- list()
+# Key interview data by irb_participant_id (preferred join key per Data Pipeline
+# Guide Section 7), falling back to orgname if irb_participant_id is missing.
+interview_lookup_id   <- list()
+interview_lookup_name <- list()
 for (i in interviews) {
-  key <- trimws(as.character(i$orgname %||% ""))
-  if (nzchar(key)) interview_lookup[[key]] <- i$dimensions
+  pid  <- trimws(as.character(i$irb_participant_id %||% ""))
+  name <- trimws(as.character(i$orgname %||% ""))
+  if (nzchar(pid))  interview_lookup_id[[pid]]   <- i$dimensions
+  if (nzchar(name)) interview_lookup_name[[name]] <- i$dimensions
 }
-message(sprintf("  %d organisations in interview data", length(interview_lookup)))
+message(sprintf("  %d organisations in interview data", length(interview_lookup_id)))
 
 # ── 3. Build master data frame ────────────────────────────────────────────────
 message("Building master data frame...")
@@ -69,21 +81,27 @@ message("Building master data frame...")
 rows <- lapply(seq_len(nrow(survey)), function(i) {
   org_row <- survey[i, , drop = FALSE]
   orgname <- trimws(as.character(org_row[["orgname"]] %||% ""))
+  pid     <- trimws(as.character(org_row[["irb_participant_id"]] %||% ""))
 
-  # Parse orgservices_json column — contains state and services per dimension
+  # Parse orgservices_json — contains state and services per dimension from survey
   svc_json <- as.character(org_row[["orgservices_json"]] %||% "")
   orgservices <- tryCatch(
     jsonlite::fromJSON(svc_json, simplifyVector = FALSE),
     error = function(e) list()
   )
 
-  # Interview dimensions for this org — may be NULL if not yet interviewed
-  interview_dims <- interview_lookup[[orgname]]
+  # Look up interview dimensions — prefer irb_participant_id, fall back to orgname
+  interview_dims <- if (nzchar(pid) && !is.null(interview_lookup_id[[pid]])) {
+    interview_lookup_id[[pid]]
+  } else {
+    interview_lookup_name[[orgname]]
+  }
 
   out <- data.frame(
-    orgname     = orgname,
-    lengthserve = trimws(as.character(org_row[["lengthserve"]] %||% "")),
-    stringsAsFactors = FALSE
+    orgname              = orgname,
+    irb_participant_id   = pid,
+    lengthserve          = trimws(as.character(org_row[["lengthserve"]] %||% "")),
+    stringsAsFactors     = FALSE
   )
 
   for (dim in DIMS) {
@@ -94,10 +112,11 @@ rows <- lapply(seq_len(nrow(survey)), function(i) {
     out[[paste0(dim, "_state")]]    <- as.character(svc$state %||% "none")
     out[[paste0(dim, "_services")]] <- paste(unlist(svc$services %||% list()), collapse = " | ")
 
-    # Barriers, resource_needs, and emerging come from qualitative interview data
+    # Barriers, resource_needs, emerging, and other_services from interview data
     out[[paste0(dim, "_barriers")]]       <- paste(unlist(intv$barriers       %||% list()), collapse = " | ")
     out[[paste0(dim, "_resource_needs")]] <- paste(unlist(intv$resource_needs %||% list()), collapse = " | ")
     out[[paste0(dim, "_emerging")]]       <- paste(unlist(intv$emerging       %||% list()), collapse = " | ")
+    out[[paste0(dim, "_other_services")]] <- paste(unlist(intv$other_services %||% list()), collapse = " | ")
   }
   out
 })
