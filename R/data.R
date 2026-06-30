@@ -348,6 +348,89 @@ DIMENSION_LABEL_KEYS <- c(
   environmental = "wellness_environmental", spiritual = "wellness_spiritual"
 )
 
+# Wellness-dimension colors, mirroring the wellness wheel (www/js/app.js
+# WHEEL_META `color`). Single source of truth on the R side so the
+# server-rendered organizations filter sidebar can color each dimension to match
+# the wheel without duplicating hexes per call site. Keep in sync with the JS
+# WHEEL_META colors if those ever change.
+DIMENSION_WHEEL_COLORS <- c(
+  physical = "#066fd1", emotional = "#4299e1", intellectual = "#ae3ec9",
+  occupational = "#d63939", financial = "#f59f00", social = "#2fb344",
+  environmental = "#0ca678", spiritual = "#17a2b8"
+)
+
+# Tabler outline icon name per wellness dimension, mirroring the wellness wheel
+# (www/js/app.js WHEEL_META `icon`). Stored as the icon-specific path data so the
+# UI can build a consistent <svg> wrapper; keep the path in sync with the JS
+# WHEEL_META icons if those ever change.
+DIMENSION_WHEEL_ICON_PATHS <- list(
+  physical = list(
+    name = "heartbeat",
+    paths = c(
+      "M19.5 13.572l-7.5 7.428l-2.896 -2.868m-6.117 -8.104a5 5 0 0 1 9.013 -3.022a5 5 0 1 1 7.5 6.572",
+      "M3 13h2l2 3l2 -6l1 3h3"
+    )
+  ),
+  emotional = list(
+    name = "user-heart",
+    paths = c(
+      "M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0",
+      "M6 21v-2a4 4 0 0 1 4 -4h.5",
+      "M18 22l3.35 -3.284a2.143 2.143 0 0 0 .005 -3.071a2.242 2.242 0 0 0 -3.129 -.006l-.224 .22l-.223 -.22a2.242 2.242 0 0 0 -3.128 -.006a2.143 2.143 0 0 0 -.006 3.071l3.355 3.296"
+    )
+  ),
+  intellectual = list(
+    name = "school",
+    paths = c(
+      "M22 9l-10 -4l-10 4l10 4l10 -4v6",
+      "M6 10.6v5.4a6 3 0 0 0 12 0v-5.4"
+    )
+  ),
+  occupational = list(
+    name = "briefcase-2",
+    paths = c(
+      "M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9",
+      "M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"
+    )
+  ),
+  financial = list(
+    name = "report-money",
+    paths = c(
+      "M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2",
+      "M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2",
+      "M14 11h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5",
+      "M12 17v1m0 -8v1"
+    )
+  ),
+  social = list(
+    name = "friends",
+    paths = c(
+      "M5 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0",
+      "M5 22v-5l-1 -1v-4a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4l-1 1v5",
+      "M15 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0",
+      "M15 22v-4h-2l2 -6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1l2 6h-2v4"
+    )
+  ),
+  environmental = list(
+    name = "world-map",
+    paths = c(
+      "M20 8h-2a2 2 0 0 0 -2 2a2 2 0 1 1 -4 0v-1a2 2 0 0 0 -2 -2h-1a2 2 0 0 1 -2 -2v-.5",
+      "M3 12h3a2 2 0 0 1 2 2v.5a1.5 1.5 0 0 0 1.5 1.5a1.5 1.5 0 0 1 1.5 1.5v3.25",
+      "M15 20.5v-3.5a2 2 0 0 1 2 -2h3.5",
+      "M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+    )
+  ),
+  spiritual = list(
+    name = "peace",
+    paths = c(
+      "M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0",
+      "M12 3l0 18",
+      "M12 12l6.3 6.3",
+      "M12 12l-6.3 6.3"
+    )
+  )
+)
+
 # Sub-categories under each wellness dimension, mirroring the wellness wheel
 # taxonomy (www/js/app.js WHEEL_META). Used both to render the filter sidebar and
 # to match an organization's stored services to a subcategory. "wellness_physical_

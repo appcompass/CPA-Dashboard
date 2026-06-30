@@ -202,6 +202,22 @@ test_that("organizations_ui renders search page and filter panel", {
   expect_match(html, "organizations-filter", fixed = TRUE)
 })
 
+test_that("organizations_ui colors and icons the wellness dimension filters", {
+  withr::local_dir(project_root)
+
+  html <- render_html(organizations_ui())
+
+  # Each dimension's parent filter label carries the wheel color and an icon.
+  # Color comes from the shared DIMENSION_WHEEL_COLORS source of truth.
+  for (color in unname(DIMENSION_WHEEL_COLORS)) {
+    expect_match(html, color, fixed = TRUE)
+  }
+  # The parent rows use the dimension icon wrapper class.
+  expect_match(html, "filter-dimension-icon", fixed = TRUE)
+  # Sanity: a known Tabler dimension icon is present in the sidebar markup.
+  expect_match(html, "icon-tabler-heartbeat", fixed = TRUE)
+})
+
 test_that("organization_details_ui renders detail cards", {
   withr::local_dir(project_root)
 

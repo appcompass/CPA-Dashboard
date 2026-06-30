@@ -90,11 +90,58 @@ organizations_ui <- function(lang = get_lang()) {
   # (service_matches_label() and established_subcat_keys() now live in data.R so
   # they can be unit-tested; the cards below call established_subcat_keys().)
 
+  # Inline Tabler outline icon for a wellness dimension, built from the shared
+  # DIMENSION_WHEEL_ICON_PATHS source of truth (mirrors the wheel's WHEEL_META
+  # icons). `currentColor` lets the icon inherit the colored label's color.
+  dimension_icon <- function(key) {
+    meta <- DIMENSION_WHEEL_ICON_PATHS[[key]]
+    if (is.null(meta)) {
+      return(NULL)
+    }
+    paths <- lapply(meta$paths, function(d) tags$path(d = d))
+    do.call(
+      tags$svg,
+      c(
+        list(
+          xmlns = "http://www.w3.org/2000/svg",
+          width = "20",
+          height = "20",
+          viewBox = "0 0 24 24",
+          fill = "none",
+          stroke = "currentColor",
+          `stroke-width` = "2",
+          `stroke-linecap` = "round",
+          `stroke-linejoin` = "round",
+          `aria-hidden` = "true",
+          class = paste0(
+            "icon icon-tabler filter-dimension-icon icons-tabler-outline icon-tabler-",
+            meta$name
+          ),
+          tags$path(stroke = "none", d = "M0 0h24v24H0z", fill = "none")
+        ),
+        paths
+      )
+    )
+  }
+
   # A checkbox per wellness dimension with its sub-categories nested underneath.
   # Every box is tagged so the client-side filter can match it against each
   # organization's areas; children inherit their parent's dimension. `group` is
-  # the data-filter-group value (currently only "established").
-  filter_checkbox <- function(group, dimension, role, label, subcat = NULL) {
+  # the data-filter-group value (currently only "established"). Parent rows take
+  # a `dimension_key`: their label and icon are tinted with the wheel color for
+  # that dimension so the sidebar reads at a glance.
+  filter_checkbox <- function(group, dimension, role, label, subcat = NULL,
+                              dimension_key = NULL) {
+    color <- if (!is.null(dimension_key)) DIMENSION_WHEEL_COLORS[[dimension_key]] else NULL
+    label_content <- if (!is.null(dimension_key)) {
+      tagList(dimension_icon(dimension_key), tags$span(label))
+    } else {
+      label
+    }
+    label_class <- "form-check-label"
+    if (!is.null(dimension_key)) {
+      label_class <- paste(label_class, "filter-dimension-label")
+    }
     tags$label(
       class = if (identical(role, "child")) "form-check mt-1" else "form-check",
       tags$input(
@@ -105,7 +152,11 @@ organizations_ui <- function(lang = get_lang()) {
         `data-filter-role` = role,
         `data-filter-subcat` = subcat
       ),
-      tags$span(class = "form-check-label", label)
+      tags$span(
+        class = label_class,
+        style = if (!is.null(color)) sprintf("color: %s;", color) else NULL,
+        label_content
+      )
     )
   }
 
@@ -122,7 +173,10 @@ organizations_ui <- function(lang = get_lang()) {
       })
       div(
         class = "mb-2",
-        filter_checkbox(group, key, "parent", organizations[[DIMENSION_LABEL_KEYS[[key]]]]),
+        filter_checkbox(
+          group, key, "parent", organizations[[DIMENSION_LABEL_KEYS[[key]]]],
+          dimension_key = key
+        ),
         div(class = "ms-4", children)
       )
     }))
