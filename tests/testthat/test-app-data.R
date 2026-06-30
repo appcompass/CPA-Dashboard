@@ -304,6 +304,62 @@ test_that("translate_interview_item resolves keys with language and English fall
   expect_equal(translate_interview_item("iv_9999", "es-419", content), "iv_9999")
 })
 
+test_that("get_interview_dimension_items excludes barriers for not_interested dimensions", {
+  # Unknown interview keys degrade to their raw text, so we can assert on labels.
+  interview_dims <- list(
+    physical = list(barriers = list("Physical barrier"), resource_needs = list()),
+    emotional = list(barriers = list("Emotional barrier"), resource_needs = list())
+  )
+  # Physical marked "No, ..." gap (not an organizational focus) -> not_interested;
+  # Emotional is established and therefore kept.
+  cols <- c("PhysicalGap", "EmotionalEorE", "Emotional")
+  vals <- c("No, this is not a focus for us", "Established", "Counseling")
+  row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  os <- parse_orgservices_json(build_orgservices_json(row))
+  lang <- get_lang("en")
+
+  expect_equal(os$physical$state, "not_interested")
+
+  filtered <- get_interview_dimension_items(interview_dims, "barriers", lang, orgservices = os)
+  labels <- vapply(filtered, function(x) x$label, character(1))
+  expect_false("Physical wellness" %in% labels) # not_interested -> excluded
+  expect_true("Emotional wellness" %in% labels) # established -> kept
+
+  # Without orgservices the legacy behavior is unchanged (no exclusion).
+  unfiltered <- get_interview_dimension_items(interview_dims, "barriers", lang)
+  expect_true("Physical wellness" %in% vapply(unfiltered, function(x) x$label, character(1)))
+})
+
+test_that("get_interview_dimension_items resource needs are not affected by not_interested", {
+  interview_dims <- list(
+    physical = list(barriers = list(), resource_needs = list("Physical resource need"))
+  )
+  cols <- c("PhysicalGap")
+  vals <- c("No, this is not a focus for us")
+  row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  os <- parse_orgservices_json(build_orgservices_json(row))
+  lang <- get_lang("en")
+
+  expect_equal(os$physical$state, "not_interested")
+
+  # Resource needs are built WITHOUT passing orgservices, so they are never filtered.
+  resource_needs <- get_interview_dimension_items(interview_dims, "resource_needs", lang)
+  expect_true("Physical wellness" %in% vapply(resource_needs, function(x) x$label, character(1)))
+})
+
+test_that("col_barriers_title label resolves to 'What to Keep in Mind'", {
+  ctx <- get_organization_details_context(
+    lang = get_lang("en"), org_name = "Nonexistent Org",
+    survey_data = build_clean_survey(
+      as.data.frame(
+        list("Organization" = "Other"), stringsAsFactors = FALSE, check.names = FALSE
+      )
+    )
+  )
+  expect_equal(ctx$labels$col_barriers_title, "What to Keep in Mind")
+  expect_equal(ctx$labels$col_resource_needs_title, "Resource Needs")
+})
+
 test_that("get_emerging_dimension_categories returns survey-marked emerging dimensions only", {
   # Physical is survey-emerging; Occupational is survey-established. Interview
   # coding is no longer consulted, so only the survey-emerging dimension counts.
