@@ -59,6 +59,33 @@ test_that("home_ui renders hero, dimensions, purpose and how-to sections", {
   expect_match(html, "Browse Organizations", fixed = TRUE)
 })
 
+test_that("home_ui hero description renders the SAMHSA link and italic citation", {
+  withr::local_dir(project_root)
+
+  html <- render_html(home_ui())
+
+  # The wellness-dimensions copy links out to SAMHSA's eight-dimensions PDF as a
+  # real anchor (markdown link converted to HTML), not raw markdown brackets.
+  expect_match(
+    html,
+    paste0(
+      "<a href=\"https://library.samhsa.gov/sites/default/files/",
+      "sma16-4953.pdf\""
+    ),
+    fixed = TRUE
+  )
+  expect_match(html, ">SAMHSA's eight dimensions</a>", fixed = TRUE)
+  expect_false(
+    grepl("[SAMHSA's eight dimensions](https", html, fixed = TRUE)
+  )
+  # The Swarbrick citation's journal name + volume render as italics.
+  expect_match(
+    html,
+    "<em>Psychiatric Rehabilitation Journal, 29</em>",
+    fixed = TRUE
+  )
+})
+
 test_that("about_ui renders lab info, vision/mission, CPA and contact", {
   withr::local_dir(project_root)
 

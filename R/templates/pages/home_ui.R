@@ -1,3 +1,23 @@
+# Render the hero description, turning the two pieces of inline markup the copy
+# uses — a single markdown link [text](https://…) and markdown italics _text_ —
+# into HTML. The translated prose is HTML-escaped first; only these known,
+# hand-authored constructs are then converted to <a>/<em>, mirroring about_ui's
+# controlled render_intro() approach. Links are restricted to https:// URLs.
+render_hero_description <- function(text) {
+  escaped <- htmltools::htmlEscape(text)
+  # Convert italics first, while the text is still plain: the markdown link
+  # syntax carries no underscores, so this can't disturb it — whereas doing it
+  # after would let an emitted attribute like target="_blank" capture a stray _.
+  with_italics <- gsub("_([^_]+)_", "<em>\\1</em>", escaped, perl = TRUE)
+  with_links <- gsub(
+    "\\[([^]]+)\\]\\((https://[^)\\s]+)\\)",
+    "<a href=\"\\2\" target=\"_blank\" rel=\"noopener noreferrer\">\\1</a>",
+    with_italics,
+    perl = TRUE
+  )
+  HTML(with_links)
+}
+
 # Landing page: hero intro, the eight wellness dimensions shown as the wellness
 # wheel, the project's purpose, and a "how to use the dashboard" walkthrough.
 home_ui <- function(lang = get_lang()) {
@@ -89,18 +109,24 @@ home_ui <- function(lang = get_lang()) {
           "hero_title",
           "Community Partners Assessment Dashboard"
         )),
-        p(class = "hero-description hero-description-wide", hp(
-          "hero_description",
-          paste(
-            "The Community Partners Assessment (CPA) Dashboard is an interactive",
-            "platform that visualizes the different wellness services and programs",
-            "that organizations across the greater Boston area provide for youth of",
-            "color and their families! We define wellness across eight dimensions:",
-            "physical, emotional, intellectual, occupational, financial, social,",
-            "environmental, and spiritual. Explore organizations by filtering for",
-            "name, location, wellness dimensions, and more!"
-          )
-        )),
+        p(
+          class = "hero-description hero-description-wide",
+          render_hero_description(hp(
+            "hero_description",
+            paste(
+              "The Community Partners Assessment (CPA) Dashboard is an interactive",
+              "platform that visualizes the different wellness services and",
+              "programs that organizations across the greater Boston area provide",
+              "for youth of color and their families! We define wellness along",
+              "[SAMHSA's eight dimensions](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf):",
+              "physical, emotional, intellectual, occupational, financial, social,",
+              "environmental, and spiritual (Adapted from Swarbrick, M. (2006). A",
+              "Wellness Approach. _Psychiatric Rehabilitation Journal, 29_(4),",
+              "311–314.). Explore organizations by filtering for name,",
+              "location, wellness dimensions, and more!"
+            )
+          ))
+        ),
         div(
           class = "mt-4",
           a(
