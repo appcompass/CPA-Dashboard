@@ -304,29 +304,19 @@ test_that("translate_interview_item resolves keys with language and English fall
   expect_equal(translate_interview_item("iv_9999", "es-419", content), "iv_9999")
 })
 
-test_that("get_emerging_dimension_categories unions survey state with interview emerging", {
-  # Physical is survey-emerging; Occupational is survey-established but has an
-  # emerging initiative in the interview coding.
+test_that("get_emerging_dimension_categories returns survey-marked emerging dimensions only", {
+  # Physical is survey-emerging; Occupational is survey-established. Interview
+  # coding is no longer consulted, so only the survey-emerging dimension counts.
   cols <- c("PhysicalEorE", "Physical", "OccupationalEorE", "Occupational")
   vals <- c("Emerging", "Fitness programs", "Established", "Job training")
   row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
   os <- parse_orgservices_json(build_orgservices_json(row))
   lang <- get_lang("en")
 
-  interview_dims <- list(
-    occupational = list(emerging = list("Career fair in development")),
-    financial = list(emerging = list()) # empty -> not emerging
-  )
-
-  out <- get_emerging_dimension_categories(os, interview_dims, lang)
-  expect_true("Physical wellness" %in% out) # from survey state
-  expect_true("Occupational wellness" %in% out) # from interview emerging
-  expect_false("Financial wellness" %in% out) # empty interview list
-  expect_length(out, 2L) # de-duplicated, no double-count
-
-  # No interview record falls back to survey-only emerging.
-  survey_only <- get_emerging_dimension_categories(os, NULL, lang)
-  expect_equal(survey_only, "Physical wellness")
+  out <- get_emerging_dimension_categories(os, lang)
+  expect_true("Physical wellness" %in% out) # survey-marked emerging
+  expect_false("Occupational wellness" %in% out) # survey-established, not emerging
+  expect_equal(out, "Physical wellness") # de-duplicated, survey-only
 })
 
 test_that("get_organization_details_context exposes demographics and wellness categories", {
@@ -352,6 +342,29 @@ test_that("get_organization_details_context exposes demographics and wellness ca
   expect_true("Emotional wellness" %in% ctx$established_categories)
   expect_true("Physical wellness" %in% ctx$emerging_categories)
   expect_false("Physical wellness" %in% ctx$established_categories)
+})
+
+test_that("get_organization_details_context exposes established_subcats matching the org's services", {
+  cols <- c(
+    "Dashboard ID", "Organization",
+    "IntellectualEorE", "Intellectual",
+    "SocialEorE", "Social"
+  )
+  vals <- c(
+    "Org01", "Test Org",
+    "Established", "Tutoring,Some bespoke offering",
+    "Established", "Mentoring"
+  )
+  raw <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  clean <- build_clean_survey(raw)
+
+  ctx <- get_organization_details_context(
+    lang = get_lang("en"), org_name = "Test Org", survey_data = clean
+  )
+
+  orgservices <- parse_orgservices_json(build_orgservices_json(raw))
+  expect_type(ctx$established_subcats, "character")
+  expect_equal(ctx$established_subcats, established_subcat_keys(orgservices))
 })
 
 # ---- service -> subcategory matching ----

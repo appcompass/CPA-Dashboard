@@ -180,7 +180,10 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
               ),
               div(
                 class = "card-body",
-                div(`data-active-categories` = paste(details_context$established_categories, collapse = ", "))
+                div(
+                  `data-active-categories` = paste(details_context$established_categories, collapse = ", "),
+                  `data-active-subcats` = paste(details_context$established_subcats, collapse = ",")
+                )
               )
             )
           ),
