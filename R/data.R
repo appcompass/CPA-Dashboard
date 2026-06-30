@@ -982,12 +982,17 @@ translate_interview_item <- function(key, lang_code, content = load_interview_tr
 # list(label, items) for the dimensions that have any non-empty entries; dimension
 # order follows DIMENSION_LABEL_KEYS so it lines up with the wheels. Empty when the
 # org was not interviewed.
-get_interview_dimension_items <- function(interview_dims, field, lang) {
+get_interview_dimension_items <- function(interview_dims, field, lang, orgservices = NULL) {
   organizations <- lang$organizations
   lang_code <- lang$lang_code %||% DEFAULT_LANG_CODE
   content <- load_interview_translations()
   out <- list()
   for (key in names(DIMENSION_LABEL_KEYS)) {
+    # When orgservices is supplied, drop dimensions the org marked as not an
+    # organizational focus ("not_interested") so their items are excluded.
+    if (!is.null(orgservices) && identical(orgservices[[key]]$state, "not_interested")) {
+      next
+    }
     keys <- as.character(unlist(interview_dims[[key]][[field]] %||% list()))
     keys <- keys[nzchar(trimws(keys))]
     # Drop placeholder entries that indicate the dimension is outside the org's
@@ -1065,7 +1070,9 @@ get_organization_details_context <- function(
 
   # Qualitative interview coding, grouped by dimension, for the logged-in-only
   # barriers / resource-needs card. Empty for orgs without an interview record.
-  barriers <- get_interview_dimension_items(interview_dims, "barriers", lang)
+  # Barriers exclude any dimension the org marked as not an organizational focus
+  # ("not_interested"); resource needs are intentionally left unfiltered.
+  barriers <- get_interview_dimension_items(interview_dims, "barriers", lang, orgservices = orgservices)
   resource_needs <- get_interview_dimension_items(interview_dims, "resource_needs", lang)
 
   labels <- list(
@@ -1086,7 +1093,7 @@ get_organization_details_context <- function(
     other_us_born = get_organization_details_label(details, "other_us_born", "Born in the United States"),
     other_queer = get_organization_details_label(details, "other_queer", "Identifies as LGBTQIA+"),
     card_barriers_resources_title = get_organization_details_label(details, "card_barriers_resources_title", "Challenges & Resource Needs"),
-    col_barriers_title = get_organization_details_label(details, "col_barriers_title", "Barriers"),
+    col_barriers_title = get_organization_details_label(details, "col_barriers_title", "What to Keep in Mind"),
     col_resource_needs_title = get_organization_details_label(details, "col_resource_needs_title", "Resource Needs"),
     interview_empty = get_organization_details_label(details, "interview_empty", "None reported.")
   )
