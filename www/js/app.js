@@ -19,7 +19,6 @@ const WHEEL_META = [
       'wellness_physical_fitness',
       'wellness_physical_nutrition',
       'wellness_physical_screenings',
-      'wellness_physical_other',
     ],
   },
   {
@@ -33,7 +32,6 @@ const WHEEL_META = [
       'sub_emotional_1',
       'sub_emotional_2',
       'sub_emotional_3',
-      'wellness_physical_other',
     ],
   },
   {
@@ -47,7 +45,6 @@ const WHEEL_META = [
       'sub_intellectual_1',
       'sub_intellectual_2',
       'sub_intellectual_3',
-      'wellness_physical_other',
     ],
   },
   {
@@ -62,7 +59,6 @@ const WHEEL_META = [
       'sub_occupational_2',
       'sub_occupational_3',
       'sub_occupational_4',
-      'wellness_physical_other',
     ],
   },
   {
@@ -76,7 +72,6 @@ const WHEEL_META = [
       'sub_financial_1',
       'sub_financial_2',
       'sub_financial_3',
-      'wellness_physical_other',
     ],
   },
   {
@@ -90,7 +85,6 @@ const WHEEL_META = [
       'sub_social_1',
       'sub_social_2',
       'sub_social_3',
-      'wellness_physical_other',
     ],
   },
   {
@@ -104,7 +98,6 @@ const WHEEL_META = [
       'sub_environmental_1',
       'sub_environmental_2',
       'sub_environmental_3',
-      'wellness_physical_other',
     ],
   },
   {
@@ -119,7 +112,6 @@ const WHEEL_META = [
       'sub_spiritual_2',
       'sub_spiritual_3',
       'sub_spiritual_4',
-      'wellness_physical_other',
     ],
   },
 ];
@@ -263,13 +255,10 @@ function buildWheelItems() {
     const panelTitle = organizations[meta.titleKey] || meta.canonicalTitle;
     const wheelTitle = stripWellnessFromTitle(panelTitle, meta.canonicalTitle);
     const subs = meta.subKeys.map(function (key) {
-      // "Other" filters by a dimension-specific catch-all key; the rest by their
-      // own subcategory key. filterKey is what the organizations page matches on.
-      var filterKey =
-        key === 'wellness_physical_other' ? meta.key + '_other' : key;
+      // filterKey is the subcategory key the organizations page matches on.
       return {
         key: key,
-        filterKey: filterKey,
+        filterKey: key,
         label: organizations[key] || wheel[key] || key,
       };
     });
@@ -372,8 +361,8 @@ function createWheel(container, size = 340) {
 
   // build panels
   ENABLED.forEach((d, i) => {
-    // Every subcategory (including "Other") links to the organizations list,
-    // pre-filtered to orgs that provide it as an established service. When
+    // Every subcategory links to the organizations list, pre-filtered to orgs
+    // that provide it as an established service. When
     // data-active-subcats is set (established wheel), subs are further filtered
     // to only the org's own established services.
     const subs =

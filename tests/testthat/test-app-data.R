@@ -397,7 +397,9 @@ test_that("established_subcat_keys maps established services to subcategory keys
 
   keys <- established_subcat_keys(os)
   expect_true("sub_intellectual_3" %in% keys) # Tutoring
-  expect_true("intellectual_other" %in% keys) # the bespoke free-text service
+  # The bespoke free-text service matches no curated subcategory, so it emits
+  # nothing (the "Other" catch-all has been removed).
+  expect_false("intellectual_other" %in% keys)
   expect_true("sub_social_1" %in% keys) # Mentoring
   # Physical is only emerging here, so no physical keys are emitted.
   expect_false("wellness_physical_fitness" %in% keys)

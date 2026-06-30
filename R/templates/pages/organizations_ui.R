@@ -163,13 +163,7 @@ organizations_ui <- function(lang = get_lang()) {
   render_wellness_groups <- function(group) {
     tagList(lapply(names(DIMENSION_LABEL_KEYS), function(key) {
       children <- lapply(DIMENSION_SUB_KEYS[[key]], function(sub_key) {
-        # "Other" is the dimension-specific catch-all (<dimension>_other).
-        subcat <- if (identical(sub_key, "wellness_physical_other")) {
-          paste0(key, "_other")
-        } else {
-          sub_key
-        }
-        filter_checkbox(group, key, "child", sub_label(sub_key), subcat = subcat)
+        filter_checkbox(group, key, "child", sub_label(sub_key), subcat = sub_key)
       })
       div(
         class = "mb-2",
