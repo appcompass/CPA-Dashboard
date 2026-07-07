@@ -6,3 +6,5 @@
 data/survey_data.csv
 node_modules/
 data/interview_data.json
+
+.claude/worktrees/
