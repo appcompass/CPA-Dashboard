@@ -356,10 +356,12 @@ test_that("get_interview_dimension_items excludes barriers for not_interested di
   expect_true("Physical wellness" %in% vapply(unfiltered, function(x) x$label, character(1)))
 })
 
-test_that("get_interview_dimension_items resource needs are not affected by not_interested", {
+test_that("get_organization_details_context excludes resource needs for not_interested dimensions", {
+  # Unknown interview keys degrade to their raw text, so we can assert on labels.
   interview_dims <- list(
     physical = list(barriers = list(), resource_needs = list("Physical resource need"))
   )
+  # Physical marked "No, ..." gap (not an organizational focus) -> not_interested.
   cols <- c("PhysicalGap")
   vals <- c("No, this is not a focus for us")
   row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
@@ -368,9 +370,32 @@ test_that("get_interview_dimension_items resource needs are not affected by not_
 
   expect_equal(os$physical$state, "not_interested")
 
-  # Resource needs are built WITHOUT passing orgservices, so they are never filtered.
-  resource_needs <- get_interview_dimension_items(interview_dims, "resource_needs", lang)
-  expect_true("Physical wellness" %in% vapply(resource_needs, function(x) x$label, character(1)))
+  filtered <- get_interview_dimension_items(interview_dims, "resource_needs", lang, orgservices = os)
+  labels <- vapply(filtered, function(x) x$label, character(1))
+  expect_false("Physical wellness" %in% labels) # not_interested -> excluded
+
+  original_get_interview_dimensions <- get_interview_dimensions
+  assign("get_interview_dimensions", function(...) interview_dims, envir = globalenv())
+  on.exit(
+    assign("get_interview_dimensions", original_get_interview_dimensions, envir = globalenv()),
+    add = TRUE
+  )
+  survey_data <- build_clean_survey(
+    as.data.frame(
+      list(
+        "Organization" = "Test Org",
+        "IRB Participant ID" = "P01",
+        "PhysicalGap" = "No, this is not a focus for us"
+      ),
+      stringsAsFactors = FALSE, check.names = FALSE
+    )
+  )
+  ctx <- get_organization_details_context(lang, "Test Org", survey_data)
+  expect_false("Physical wellness" %in% vapply(ctx$resource_needs, function(x) x$label, character(1)))
+
+  # Without orgservices the legacy behavior is unchanged (no exclusion).
+  unfiltered <- get_interview_dimension_items(interview_dims, "resource_needs", lang)
+  expect_true("Physical wellness" %in% vapply(unfiltered, function(x) x$label, character(1)))
 })
 
 test_that("col_barriers_title label resolves to 'What to Keep in Mind'", {

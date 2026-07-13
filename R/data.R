@@ -1086,10 +1086,10 @@ get_organization_details_context <- function(
 
   # Qualitative interview coding, grouped by dimension, for the logged-in-only
   # barriers / resource-needs card. Empty for orgs without an interview record.
-  # Barriers exclude any dimension the org marked as not an organizational focus
-  # ("not_interested"); resource needs are intentionally left unfiltered.
+  # Barriers and resource needs exclude any dimension the org marked as not an
+  # organizational focus ("not_interested").
   barriers <- get_interview_dimension_items(interview_dims, "barriers", lang, orgservices = orgservices)
-  resource_needs <- get_interview_dimension_items(interview_dims, "resource_needs", lang)
+  resource_needs <- get_interview_dimension_items(interview_dims, "resource_needs", lang, orgservices = orgservices)
 
   labels <- list(
     page_subtitle_fallback = get_organization_details_label(details, "page_subtitle_fallback", "Organization details"),
