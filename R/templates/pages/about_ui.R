@@ -228,20 +228,8 @@ about_ui <- function(lang = get_lang()) {
         tags$ul(
           class = "list-unstyled fs-3 m-0",
           tags$li(
-            class = "mb-2",
             tags$strong(ap("connect_email_label", "Email")), ": ",
             a(href = "mailto:changelabboston@gmail.com", "changelabboston@gmail.com")
-          ),
-          tags$li(
-            tags$strong(ap("connect_address_label", "Visit")), ": ",
-            ap(
-              "connect_address",
-              paste(
-                "1165 Tremont St, Boston, MA 02120 — 3rd floor of",
-                "International Village at Northeastern University (enter through",
-                "the doors next to Juicy Greens)."
-              )
-            )
           )
         )
       )

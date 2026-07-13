@@ -52,9 +52,7 @@
     "cpa_body": "社区伙伴评估（CPA）是 CHANGE Lab 识别并联系与我们使命一致的社区组织的方式。通过接触和对话式的半结构化访谈，我们按照 [SAMHSA 的 8 个健康维度](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf)了解每个组织的优势、重点和需求：身体、情绪、智力、职业、财务、社交、环境和心灵。我们还会了解他们对社区青少年健康与福祉的看法。",
     "connect_title": "联系我们",
     "connect_body": "有疑问或想与 CHANGE Lab 合作？我们很乐意听到您的声音。",
-    "connect_email_label": "电子邮件",
-    "connect_address_label": "前来参观",
-    "connect_address": "1165 Tremont St, Boston, MA 02120 — Northeastern University International Village 3 楼（从 Juicy Greens 旁边的门进入）。"
+    "connect_email_label": "电子邮件"
   },
   "login": {
     "heading": "登录您的账户",
