@@ -274,6 +274,49 @@ clean_lengthserve <- function(x) {
   trimws(x)
 }
 
+# Map a cleaned demographic percentage string to a qualitative band. The survey
+# collects these as prefixed ranges ("A lot (61%-100%)"); clean_pct keeps the
+# range, and this collapses the range's upper bound back to the band the
+# dashboard displays. "Don't know" (the em dash) and blank / N/A become
+# "not_reported". Buckets mirror the survey instrument:
+#   0%        -> none
+#   1%-25%    -> a_little
+#   26%-60%   -> some
+#   61%-100%  -> a_lot
+pct_band <- function(value) {
+  v <- trimws(as.character(value %||% ""))
+  if (!nzchar(v) || v %in% c("NA", "N/A") || v %in% c("\u2014", "\u2013", "-")) {
+    return("not_reported")
+  }
+  nums <- suppressWarnings(as.integer(regmatches(v, gregexpr("[0-9]+", v))[[1]]))
+  nums <- nums[!is.na(nums)]
+  if (!length(nums)) {
+    return("not_reported")
+  }
+  upper <- max(nums)
+  if (upper <= 0) {
+    "none"
+  } else if (upper <= 25) {
+    "a_little"
+  } else if (upper <= 60) {
+    "some"
+  } else {
+    "a_lot"
+  }
+}
+
+# Number of filled figures (out of a fixed six) for each band's meter. A band of
+# "not_reported" renders no meter, so it is intentionally absent here.
+band_filled_count <- function(band) {
+  switch(band,
+    none = 0L,
+    a_little = 1L,
+    some = 3L,
+    a_lot = 6L,
+    0L
+  )
+}
+
 # Escape regex metacharacters so a string can be matched literally in a pattern.
 escape_regex <- function(s) gsub("([][{}()*+?.\\^$|])", "\\\\\\1", s)
 
@@ -1150,7 +1193,14 @@ get_organization_details_context <- function(
     card_barriers_resources_title = get_organization_details_label(details, "card_barriers_resources_title", "Challenges & Resource Needs"),
     col_barriers_title = get_organization_details_label(details, "col_barriers_title", "What to Keep in Mind"),
     col_resource_needs_title = get_organization_details_label(details, "col_resource_needs_title", "Resource Needs"),
-    interview_empty = get_organization_details_label(details, "interview_empty", "None reported.")
+    interview_empty = get_organization_details_label(details, "interview_empty", "None reported."),
+    band_none = get_organization_details_label(details, "band_none", "None"),
+    band_a_little = get_organization_details_label(details, "band_a_little", "A little"),
+    band_some = get_organization_details_label(details, "band_some", "Some"),
+    band_a_lot = get_organization_details_label(details, "band_a_lot", "A lot"),
+    band_not_reported = get_organization_details_label(details, "band_not_reported", "Not reported"),
+    key_title = get_organization_details_label(details, "key_card_title", "Key"),
+    key_not_reported_note = get_organization_details_label(details, "key_not_reported_note", "no data provided")
   )
 
   list(
