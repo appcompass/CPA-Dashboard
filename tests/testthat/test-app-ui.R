@@ -336,3 +336,28 @@ test_that("organizations_list_ui renders empty select for empty input", {
   expect_match(html, "form-select", fixed = TRUE)
   expect_false(grepl("<option", html, fixed = TRUE))
 })
+
+test_that("demographic_meter_html renders a six-slot meter, none for not_reported", {
+  count_occurrences <- function(x, pat) {
+    m <- gregexpr(pat, x, fixed = TRUE)[[1]]
+    if (length(m) == 1 && m[[1]] == -1L) 0L else length(m)
+  }
+  expect_equal(count_occurrences(demographic_meter_html("none"), "<svg"), 6L)
+  expect_equal(count_occurrences(demographic_meter_html("a_lot"), "<svg"), 6L)
+  # filled figures carry a solid fill; A lot fills all six, A little only one
+  expect_equal(count_occurrences(demographic_meter_html("a_lot"), "fill:#066fd1"), 6L)
+  expect_equal(count_occurrences(demographic_meter_html("a_little"), "fill:#066fd1"), 1L)
+  expect_identical(demographic_meter_html("not_reported"), "")
+})
+
+test_that("organization_details_ui shows the demographic key card whether logged in or out", {
+  withr::local_dir(project_root)
+  for (state in c(FALSE, TRUE)) {
+    html <- render_html(organization_details_ui(logged_in = state))
+    expect_match(html, "Key", fixed = TRUE)
+    expect_match(html, "A little", fixed = TRUE)
+    expect_match(html, "A lot", fixed = TRUE)
+    expect_match(html, "61%-100%", fixed = TRUE)
+    expect_match(html, "<svg", fixed = TRUE)
+  }
+})

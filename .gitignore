@@ -9,3 +9,6 @@ data/interview_data.json
 .Rproj.user
 
 .claude/worktrees/
+
+.Rhistory
+.RData

@@ -398,7 +398,7 @@ test_that("get_organization_details_context excludes resource needs for not_inte
   expect_true("Physical wellness" %in% vapply(unfiltered, function(x) x$label, character(1)))
 })
 
-test_that("col_barriers_title label resolves to 'What to Keep in Mind'", {
+test_that("col_barriers_title label resolves to 'What to Keep in Mind - Important things to consider when establishing resources for the following dimensions'", {
   ctx <- get_organization_details_context(
     lang = get_lang("en"), org_name = "Nonexistent Org",
     survey_data = build_clean_survey(
@@ -407,7 +407,7 @@ test_that("col_barriers_title label resolves to 'What to Keep in Mind'", {
       )
     )
   )
-  expect_equal(ctx$labels$col_barriers_title, "What to Keep in Mind")
+  expect_equal(ctx$labels$col_barriers_title, "What to Keep in Mind - Important things to consider when establishing resources for the following dimensions")
   expect_equal(ctx$labels$col_resource_needs_title, "Resource Needs")
 })
 
@@ -582,4 +582,26 @@ test_that("assert_survey_data_startup_ready fails for encrypted file without key
     assert_survey_data_startup_ready(encrypted_path = enc, passphrase = "", key_env_var = "CPA_DATA_KEY"),
     "CPA_DATA_KEY is not set"
   )
+})
+
+test_that("pct_band maps cleaned percentage ranges to the survey bands", {
+  expect_equal(pct_band("0%"), "none")
+  expect_equal(pct_band("1%-25%"), "a_little")
+  expect_equal(pct_band("26%-60%"), "some")
+  expect_equal(pct_band("61%-100%"), "a_lot")
+  expect_equal(pct_band("100%"), "a_lot")
+})
+
+test_that("pct_band treats the don't-know dash and blanks as not reported", {
+  expect_equal(pct_band("\u2014"), "not_reported")
+  expect_equal(pct_band("N/A"), "not_reported")
+  expect_equal(pct_band(""), "not_reported")
+  expect_equal(pct_band(NA), "not_reported")
+})
+
+test_that("band_filled_count fills 0/1/3/6 of the six meter slots", {
+  expect_equal(band_filled_count("none"), 0L)
+  expect_equal(band_filled_count("a_little"), 1L)
+  expect_equal(band_filled_count("some"), 3L)
+  expect_equal(band_filled_count("a_lot"), 6L)
 })
