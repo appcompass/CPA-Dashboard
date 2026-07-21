@@ -2,23 +2,31 @@
 #
 # join_data.R
 #
-# Joins interview_data.json.enc (barriers, resource_needs, emerging per dimension)
-# into the clean survey data and exports master_data.xlsx.
+# Joins interview_data.json.enc (barriers, resource_needs, emerging, and
+# other_services per dimension) into the clean survey data and exports
+# master_data.xlsx.
 #
 # The survey data is loaded via load_survey_data() from data.R, which produces
 # a clean named-column data frame with an orgservices_json column per org.
 # The interview data is decrypted at runtime using the same CPA_DATA_KEY.
-# Both sources are joined on irb_participant_id (the survey carries it and the
-# dashboard joins on it too). orgname is NOT used as the key: it is free text
-# entered separately on each side and a one-character difference silently drops
-# an org. See DECISIONS.
+# Both sources are joined on irb_participant_id (preferred) with orgname as
+# fallback, as documented in the Data Pipeline Guide (Section 7).
 #
-# Output layout: orgname, irb_participant_id, lengthserve, then five fields per
-# wellness dimension as <dimension>_<field>, where <field> is one of state,
-# services (from the survey's orgservices_json) and barriers, resource_needs,
-# emerging (from the interview data). Dimensions are DIMS below. NB this is the
-# xlsx column layout only; it is NOT the survey service-subcategory taxonomy
-# (DIMENSION_SUB_KEYS) and does not use the wellness_<dim>_<sub> keys.
+# Interview values are stored as opaque iv_* keys rather than as text. The
+# dashboard depends on that: interview_translations.json maps each key into all
+# 14 supported languages, so inlining English into the encrypted file would make
+# every non-English locale silently render English. This script therefore
+# resolves keys into readable text HERE, at export time, which keeps the
+# spreadsheet human-readable without breaking translation in the app.
+#
+# Column naming convention in output follows wellness_[dimension]_[subcategory]
+# to match DIMENSION_SUB_KEYS in the R codebase. Output columns per dimension:
+#   [dim]_state          — established / emerging / wants / not_interested / none
+#   [dim]_services       — pipe-separated services from survey orgservices_json
+#   [dim]_barriers       — pipe-separated barriers from interview data
+#   [dim]_resource_needs — pipe-separated resource needs from interview data
+#   [dim]_emerging       — pipe-separated emerging initiatives from interview data
+#   [dim]_other_services — pipe-separated approved new sub-keys from interview data
 #
 # Usage:
 #   export CPA_DATA_KEY=your-key-here
@@ -39,6 +47,10 @@ if (!requireNamespace("writexl",  quietly = TRUE)) stop("Run: install.packages('
 # 8 wellness dimensions — must match keys in orgservices_json and interview data
 DIMS <- c("physical", "emotional", "social", "intellectual",
           "environmental", "occupational", "financial", "spiritual")
+
+# Language the spreadsheet is written in. The lab reads these in English; set it
+# to any supported code to export a translated master sheet instead.
+EXPORT_LANG <- "en"
 
 # ── 1. Load survey data ───────────────────────────────────────────────────────
 message("Loading survey data...")
@@ -62,42 +74,46 @@ interview_plain_path <- decrypt_data_file(
 raw_interviews <- jsonlite::fromJSON(interview_plain_path, simplifyVector = FALSE)
 interviews <- raw_interviews$interviews
 
-# Key interview data by irb_participant_id for the join. This is the controlled
-# study code (YSP01, ...) that both the survey and the dashboard key on, so the
-# match is exact. orgname is kept only as a human-readable label in the output.
-survey_irb_ids <- trimws(as.character(survey[["irb_participant_id"]]))
-interview_lookup <- list()
-unmatched <- character(0)
+# Key interview data by irb_participant_id (preferred join key per Data Pipeline
+# Guide Section 7), falling back to orgname if irb_participant_id is missing.
+interview_lookup_id   <- list()
+interview_lookup_name <- list()
 for (i in interviews) {
-  irb   <- trimws(as.character(i$irb_participant_id %||% ""))
-  name  <- trimws(as.character(i$orgname %||% ""))
-  label <- if (nzchar(name)) name else "<unnamed>"
-
-  if (!nzchar(irb)) {
-    # No key at all: this record cannot be joined under any scheme.
-    unmatched <- c(unmatched, sprintf("%s (no irb_participant_id)", label))
-    next
-  }
-  if (!(irb %in% survey_irb_ids)) {
-    # Has a key, but no survey row carries it.
-    unmatched <- c(unmatched, sprintf("%s (irb %s, no matching survey org)", label, irb))
-  }
-  interview_lookup[[irb]] <- i$dimensions
+  pid  <- trimws(as.character(i$irb_participant_id %||% ""))
+  name <- trimws(as.character(i$orgname %||% ""))
+  if (nzchar(pid))  interview_lookup_id[[pid]]   <- i$dimensions
+  if (nzchar(name)) interview_lookup_name[[name]] <- i$dimensions
 }
-message(sprintf("  %d interview record(s) keyed by irb_participant_id", length(interview_lookup)))
+message(sprintf("  %d organisations in interview data", length(interview_lookup_id)))
 
-# Loud on drops. Any interview record that cannot reach a survey row (blank irb,
-# or an irb no survey row carries) is reported here instead of vanishing into an
-# empty column that looks identical to "nothing coded".
-if (length(unmatched) > 0) {
-  warning(
-    sprintf(
-      "%d interview record(s) will NOT appear in master_data.xlsx:\n    %s",
-      length(unmatched),
-      paste(unmatched, collapse = "\n    ")
+# ── 2b. Key resolution ────────────────────────────────────────────────────────
+# translate_interview_item returns the key unchanged when it has no entry, so
+# anything unresolved appears verbatim rather than silently blanking. That is
+# what surfaces the other_services sub-keys still awaiting labels.
+interview_content <- load_interview_translations()
+
+resolve_items <- function(values, lang = EXPORT_LANG) {
+  flat <- unlist(values %||% list())
+  if (!length(flat)) {
+    return("")
+  }
+  paste(
+    vapply(
+      as.character(flat),
+      function(k) translate_interview_item(k, lang, content = interview_content),
+      character(1)
     ),
-    call. = FALSE
+    collapse = " | "
   )
+}
+
+unresolved <- new.env(parent = emptyenv())
+note_unresolved <- function(values) {
+  for (k in as.character(unlist(values %||% list()))) {
+    if (identical(translate_interview_item(k, EXPORT_LANG, interview_content), k)) {
+      assign(k, TRUE, envir = unresolved)
+    }
+  }
 }
 
 # ── 3. Build master data frame ────────────────────────────────────────────────
@@ -106,38 +122,42 @@ message("Building master data frame...")
 rows <- lapply(seq_len(nrow(survey)), function(i) {
   org_row <- survey[i, , drop = FALSE]
   orgname <- trimws(as.character(org_row[["orgname"]] %||% ""))
-  irb_id  <- trimws(as.character(org_row[["irb_participant_id"]] %||% ""))
+  pid     <- trimws(as.character(org_row[["irb_participant_id"]] %||% ""))
 
-  # Parse orgservices_json column — contains state and services per dimension
+  # Parse orgservices_json — contains state and services per dimension from survey
   svc_json <- as.character(org_row[["orgservices_json"]] %||% "")
   orgservices <- tryCatch(
     jsonlite::fromJSON(svc_json, simplifyVector = FALSE),
     error = function(e) list()
   )
 
-  # Interview dimensions for this org, keyed by irb_participant_id.
-  # NULL when the org has no interview, or carries no irb to match on.
-  interview_dims <- if (nzchar(irb_id)) interview_lookup[[irb_id]] else NULL
+  # Look up interview dimensions — prefer irb_participant_id, fall back to orgname
+  interview_dims <- if (nzchar(pid) && !is.null(interview_lookup_id[[pid]])) {
+    interview_lookup_id[[pid]]
+  } else {
+    interview_lookup_name[[orgname]]
+  }
 
   out <- data.frame(
-    orgname            = orgname,
-    irb_participant_id = irb_id,
-    lengthserve        = trimws(as.character(org_row[["lengthserve"]] %||% "")),
-    stringsAsFactors = FALSE
+    orgname              = orgname,
+    irb_participant_id   = pid,
+    lengthserve          = trimws(as.character(org_row[["lengthserve"]] %||% "")),
+    stringsAsFactors     = FALSE
   )
 
   for (dim in DIMS) {
     svc  <- orgservices[[dim]]
     intv <- if (!is.null(interview_dims)) interview_dims[[dim]] else NULL
 
-    # State and services come from quantitative survey (orgservices_json)
+    # State and services come from the quantitative survey (orgservices_json)
     out[[paste0(dim, "_state")]]    <- as.character(svc$state %||% "none")
     out[[paste0(dim, "_services")]] <- paste(unlist(svc$services %||% list()), collapse = " | ")
 
-    # Barriers, resource_needs, and emerging come from qualitative interview data
-    out[[paste0(dim, "_barriers")]]       <- paste(unlist(intv$barriers       %||% list()), collapse = " | ")
-    out[[paste0(dim, "_resource_needs")]] <- paste(unlist(intv$resource_needs %||% list()), collapse = " | ")
-    out[[paste0(dim, "_emerging")]]       <- paste(unlist(intv$emerging       %||% list()), collapse = " | ")
+    # Interview-derived fields, resolved from stored keys into readable text.
+    for (field in c("barriers", "resource_needs", "emerging", "other_services")) {
+      note_unresolved(intv[[field]])
+      out[[paste0(dim, "_", field)]] <- resolve_items(intv[[field]])
+    }
   }
   out
 })
@@ -145,6 +165,15 @@ rows <- lapply(seq_len(nrow(survey)), function(i) {
 master <- do.call(rbind, rows)
 master <- master[nzchar(master$orgname), ]
 message(sprintf("  %d organisations | %d columns", nrow(master), ncol(master)))
+
+missing_labels <- sort(ls(unresolved))
+if (length(missing_labels)) {
+  message(sprintf(
+    "  NOTE: %d key(s) have no entry in interview_translations.json and were written verbatim:",
+    length(missing_labels)
+  ))
+  message("        ", paste(utils::head(missing_labels, 20), collapse = ", "))
+}
 
 # ── 4. Write Excel ────────────────────────────────────────────────────────────
 out_path <- file.path("data", "master_data.xlsx")
