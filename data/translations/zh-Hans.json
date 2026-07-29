@@ -141,7 +141,21 @@
     "sub_spiritual_1": "正念或冥想工作坊",
     "sub_spiritual_2": "宗教支持小组 / 咨询",
     "sub_spiritual_3": "宗教实践空间",
-    "sub_spiritual_4": "宗教或精神主题活动"
+    "sub_spiritual_4": "宗教或精神主题活动",
+    "wellness_emotional_check_ins": "定期关怀谈话",
+    "wellness_emotional_trauma_informed": "创伤知情照护",
+    "wellness_emotional_clinical_referral": "临床转介",
+    "wellness_physical_meals": "每日餐食",
+    "wellness_physical_movement": "身体律动项目",
+    "wellness_social_youth_council": "青年领导委员会",
+    "wellness_social_peer_mentoring": "同伴导师辅导",
+    "wellness_intellectual_creative_arts": "创意艺术",
+    "wellness_intellectual_social_justice": "社会正义课程",
+    "wellness_occupational_stipend": "青年带薪工作",
+    "wellness_occupational_mock_interviews": "模拟面试",
+    "wellness_financial_emergency_fund": "紧急财务援助",
+    "wellness_financial_stipend_empowerment": "津贴",
+    "wellness_spiritual_mindfulness_embedded": "贯穿各项活动的正念"
   },
   "theme_settings": {
     "title": "主题设置",
