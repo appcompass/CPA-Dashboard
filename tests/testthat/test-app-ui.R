@@ -293,6 +293,39 @@ test_that("organization_details_ui gates emerging areas and barriers/resource ne
   expect_match(logged_in, "Resource Needs", fixed = TRUE)
 })
 
+test_that("organization_details_ui links the org name to its website, or renders plain text", {
+  withr::local_dir(project_root)
+
+  original_ctx <- get_organization_details_context
+  on.exit(
+    assign("get_organization_details_context", original_ctx, envir = globalenv()),
+    add = TRUE
+  )
+
+  # With a website: the org name is wrapped in an external anchor.
+  assign("get_organization_details_context", function(...) {
+    ctx <- original_ctx(...)
+    ctx$orgname <- "Linked Org"
+    ctx$website <- "https://example.org/"
+    ctx
+  }, envir = globalenv())
+  linked <- render_html(organization_details_ui(logged_in = TRUE))
+  expect_match(linked, 'href="https://example.org/"', fixed = TRUE)
+  expect_match(linked, ">Linked Org</a>", fixed = TRUE)
+  expect_match(linked, 'rel="noopener noreferrer"', fixed = TRUE)
+
+  # Without a website: the name renders as plain text, not a link.
+  assign("get_organization_details_context", function(...) {
+    ctx <- original_ctx(...)
+    ctx$orgname <- "Plain Org"
+    ctx$website <- ""
+    ctx
+  }, envir = globalenv())
+  plain <- render_html(organization_details_ui(logged_in = TRUE))
+  expect_match(plain, "Plain Org", fixed = TRUE)
+  expect_false(grepl(">Plain Org</a>", plain, fixed = TRUE))
+})
+
 test_that("organization_details_ui renders the first org when no id is supplied", {
   withr::local_dir(project_root)
 

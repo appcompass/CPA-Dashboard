@@ -677,6 +677,7 @@ build_clean_survey <- function(raw) {
     dashboard_id = trimws(get_col("Dashboard ID")),
     irb_participant_id = trimws(get_col("IRB Participant ID")),
     orgname = trimws(get_col("Organization")),
+    website = trimws(get_col("Website Url")),
     lengthserve = unname(vapply(get_col("YearsServed"), clean_lengthserve, character(1))),
 
     # Youth served (rendered today).
@@ -878,6 +879,17 @@ get_named_value <- function(row, col, fallback = "N/A") {
   }
   value <- trimws(as.character(row[[col]][[1]]))
   if (!nzchar(value) || identical(value, "NA")) fallback else value
+}
+
+# Return a survey-provided website only when it is a navigable http(s) URL,
+# else "". Guards against blanks, the "N/A" placeholder some orgs give, and any
+# non-http scheme (e.g. javascript:) that should never become a live link.
+sanitize_org_website <- function(url) {
+  url <- trimws(as.character(url %||% ""))
+  if (!nzchar(url) || toupper(url) %in% c("NA", "N/A")) {
+    return("")
+  }
+  if (grepl("^https?://", url, ignore.case = TRUE)) url else ""
 }
 
 # The single data row for `org_name`, or the first non-empty org when unmatched.
@@ -1172,6 +1184,11 @@ get_organization_details_context <- function(
 
   org_name_value <- get_named_value(row, "orgname", fallback = fallback_org_name)
   years_served <- get_named_value(row, "lengthserve")
+  # Only surface a website when it is a real http(s) URL. Survey free-text can be
+  # blank or "N/A" (get_named_value already maps missing/blank/"NA" to ""), and
+  # requiring an http/https scheme keeps anything non-navigable (or a javascript:
+  # URL) out of the rendered link.
+  website <- sanitize_org_website(get_named_value(row, "website", fallback = ""))
 
   # Demographics are already cleaned by the transform; read them by name.
   pct_age_12_17 <- get_named_value(row, "pct_age_12_17")
@@ -1235,6 +1252,7 @@ get_organization_details_context <- function(
     details = details,
     labels = labels,
     orgname = org_name_value,
+    website = website,
     lengthserve = years_served,
     pct_age_12_17 = pct_age_12_17,
     pct_age_18_25 = pct_age_18_25,
