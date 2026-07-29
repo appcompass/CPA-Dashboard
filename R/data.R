@@ -1080,6 +1080,35 @@ translate_interview_item <- function(key, lang_code, content = load_interview_tr
 # list(label, items) for the dimensions that have any non-empty entries; dimension
 # order follows DIMENSION_LABEL_KEYS so it lines up with the wheels. Empty when the
 # org was not interviewed.
+# Canonical English phrasings that mark a dimension as "not a focus / not our
+# mission" rather than describing a real barrier or resource need. These are
+# de-emphasis placeholders, not challenges, so they are dropped from the
+# Challenges & Resource Needs card for every organization and dimension.
+#
+# Matching is on the clause BEFORE any em-dash, lowercased and trimmed, so a
+# trailing "— <explanation>" tail (e.g. "... — embedded informally only") does
+# not defeat the match. Matching is deliberately an exact set of canonical
+# clauses (not a fuzzy pattern) so a real barrier that merely mentions "focus"
+# or begins with "Not" — e.g. "Not enough staff power ...", "Bandwidth —
+# financial literacy is not core mission ..." — is never dropped. Resolution is
+# always via the English text so the decision is independent of display
+# language. Add a new clause here if a future import introduces another wording.
+INTERVIEW_NOT_A_FOCUS_PLACEHOLDERS <- c(
+  "not a core programmatic focus",
+  "not the organization's stated focus",
+  "not an organizational focus",
+  "not a core organizational offering",
+  "not part of organizational mission",
+  "not a central focus"
+)
+
+# TRUE when an interview key's English text is a "not a focus" placeholder.
+is_not_a_focus_placeholder <- function(key, content = load_interview_translations()) {
+  text <- translate_interview_item(key, "en", content)
+  head <- tolower(trimws(strsplit(text, "\u2014", fixed = TRUE)[[1]][[1]]))
+  head %in% INTERVIEW_NOT_A_FOCUS_PLACEHOLDERS
+}
+
 get_interview_dimension_items <- function(interview_dims, field, lang, orgservices = NULL) {
   organizations <- lang$organizations
   lang_code <- lang$lang_code %||% DEFAULT_LANG_CODE
@@ -1093,12 +1122,11 @@ get_interview_dimension_items <- function(interview_dims, field, lang, orgservic
     }
     keys <- as.character(unlist(interview_dims[[key]][[field]] %||% list()))
     keys <- keys[nzchar(trimws(keys))]
-    # Drop placeholder entries that indicate the dimension is outside the org's
-    # mission rather than an actual barrier / resource need (matched on the
-    # canonical English text behind each key).
+    # Drop "not a focus / not our mission" placeholder entries; they describe the
+    # absence of a focus rather than an actual barrier or resource need. See
+    # INTERVIEW_NOT_A_FOCUS_PLACEHOLDERS.
     keys <- keys[vapply(keys, function(k) {
-      tolower(trimws(translate_interview_item(k, "en", content))) !=
-        "not part of organizational mission"
+      !is_not_a_focus_placeholder(k, content)
     }, logical(1))]
     if (length(keys)) {
       items <- vapply(

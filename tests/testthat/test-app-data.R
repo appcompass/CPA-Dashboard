@@ -398,6 +398,66 @@ test_that("get_organization_details_context excludes resource needs for not_inte
   expect_true("Physical wellness" %in% vapply(unfiltered, function(x) x$label, character(1)))
 })
 
+test_that("is_not_a_focus_placeholder matches the placeholder family but not real barriers", {
+  content <- list(
+    p1 = list(en = "Not a core programmatic focus \u2014 embedded informally only"),
+    p2 = list(en = "Not the organization's stated focus"),
+    p3 = list(en = "Not an organizational focus"),
+    p4 = list(en = "Not an organizational focus \u2014 referrals made to other orgs"),
+    p5 = list(en = "Not a core organizational offering"),
+    p6 = list(en = "Not part of organizational mission"),
+    p7 = list(en = "Not part of organizational mission \u2014 previous attempts were unsustainable"),
+    p8 = list(en = "Not a central focus \u2014 shows up informally but not programmatically"),
+    r1 = list(en = "Not enough staff power for structured physical programming"),
+    r2 = list(en = "Bandwidth \u2014 financial literacy is not core mission, relies heavily on partners"),
+    r3 = list(en = "Organizational focus is job-readiness, not emotional support"),
+    r4 = list(en = "Quiet space for youth who need calm environment to focus")
+  )
+
+  for (k in paste0("p", 1:8)) {
+    expect_true(is_not_a_focus_placeholder(k, content), info = k)
+  }
+  for (k in paste0("r", 1:4)) {
+    expect_false(is_not_a_focus_placeholder(k, content), info = k)
+  }
+})
+
+test_that("get_interview_dimension_items drops not-a-focus placeholders, keeps real items", {
+  content <- list(
+    ph_only = list(en = "Not an organizational focus"),
+    real_1 = list(en = "Staff turnover disrupts programming"),
+    real_2 = list(en = "Language access gaps"),
+    ph_mixed = list(en = "Not a central focus \u2014 shows up informally")
+  )
+  original_loader <- load_interview_translations
+  assign("load_interview_translations", function(...) content, envir = globalenv())
+  on.exit(
+    assign("load_interview_translations", original_loader, envir = globalenv()),
+    add = TRUE
+  )
+
+  # physical: only a placeholder -> the whole dimension drops out.
+  # emotional: a placeholder + two real barriers -> dimension kept, placeholder gone.
+  interview_dims <- list(
+    physical = list(barriers = list("ph_only"), resource_needs = list()),
+    emotional = list(
+      barriers = list("ph_mixed", "real_1", "real_2"),
+      resource_needs = list()
+    )
+  )
+  lang <- get_lang("en")
+
+  out <- get_interview_dimension_items(interview_dims, "barriers", lang)
+  labels <- vapply(out, function(x) x$label, character(1))
+
+  expect_false("Physical wellness" %in% labels) # placeholder-only dimension removed
+  expect_true("Emotional wellness" %in% labels)
+
+  emotional_items <- out[[which(labels == "Emotional wellness")]]$items
+  expect_setequal(emotional_items, c("Staff turnover disrupts programming", "Language access gaps"))
+  expect_false(any(grepl("central focus", emotional_items)))
+})
+
 test_that("col_barriers_title label resolves to 'What to Keep in Mind - Important things to consider when establishing resources for the following dimensions'", {
   ctx <- get_organization_details_context(
     lang = get_lang("en"), org_name = "Nonexistent Org",
