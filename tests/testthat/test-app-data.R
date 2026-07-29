@@ -118,6 +118,43 @@ test_that("build_clean_survey emits the named schema including orgservices_json"
   expect_equal(parsed$emotional$state, "none")
 })
 
+test_that("build_clean_survey extracts the Website Url column into 'website'", {
+  vals <- c("Org Web", "https://example.org/")
+  cols <- c("Organization", "Website Url")
+  raw <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  clean <- build_clean_survey(raw)
+  expect_true("website" %in% names(clean))
+  expect_equal(clean$website, "https://example.org/")
+})
+
+test_that("sanitize_org_website keeps http(s) URLs and rejects everything else", {
+  expect_equal(sanitize_org_website("https://example.org/"), "https://example.org/")
+  expect_equal(sanitize_org_website("http://example.org"), "http://example.org")
+  expect_equal(sanitize_org_website("  https://example.org/  "), "https://example.org/")
+  # Blanks and the survey's "N/A" placeholder -> no link.
+  expect_equal(sanitize_org_website(""), "")
+  expect_equal(sanitize_org_website("N/A"), "")
+  expect_equal(sanitize_org_website("n/a"), "")
+  expect_equal(sanitize_org_website(NA), "")
+  # Non-navigable / unsafe schemes -> no link.
+  expect_equal(sanitize_org_website("javascript:alert(1)"), "")
+  expect_equal(sanitize_org_website("ftp://example.org"), "")
+  expect_equal(sanitize_org_website("example.org"), "")
+})
+
+test_that("get_organization_details_context exposes a sanitized website", {
+  make_ctx <- function(url) {
+    raw <- as.data.frame(
+      as.list(setNames(c("Web Org", url), c("Organization", "Website Url"))),
+      stringsAsFactors = FALSE, check.names = FALSE
+    )
+    get_organization_details_context(get_lang("en"), "Web Org", build_clean_survey(raw))
+  }
+  expect_equal(make_ctx("https://example.org/")$website, "https://example.org/")
+  expect_equal(make_ctx("N/A")$website, "")
+  expect_equal(make_ctx("javascript:alert(1)")$website, "")
+})
+
 # ---- per-dimension services + state (orgservices) ----
 
 test_that("parse_services splits canonical comma-joined selections", {

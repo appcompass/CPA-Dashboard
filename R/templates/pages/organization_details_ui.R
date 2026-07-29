@@ -135,7 +135,22 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
           class = "row g-2 align-items-center",
           div(
             class = "col",
-            h2(class = "page-title", details_context$orgname),
+            h2(
+              class = "page-title",
+              # Link the org name to its website when the survey provides a valid
+              # one; otherwise render the name as plain text. External link, so
+              # open in a new tab with noopener/noreferrer.
+              if (nzchar(details_context$website %||% "")) {
+                a(
+                  href = details_context$website,
+                  target = "_blank",
+                  rel = "noopener noreferrer",
+                  details_context$orgname
+                )
+              } else {
+                details_context$orgname
+              }
+            ),
             div(
               class = "page-pretitle",
               if (!details_context$has_data || identical(details_context$lengthserve, "N/A")) {
