@@ -141,7 +141,21 @@
     "sub_spiritual_1": "Ateliers de pleine conscience ou de méditation",
     "sub_spiritual_2": "Groupes de soutien religieux / counseling",
     "sub_spiritual_3": "Espace physique pour les pratiques religieuses",
-    "sub_spiritual_4": "Événements à thème religieux ou spirituel"
+    "sub_spiritual_4": "Événements à thème religieux ou spirituel",
+    "wellness_emotional_check_ins": "Suivi du bien-être",
+    "wellness_emotional_trauma_informed": "Approche sensible aux traumatismes",
+    "wellness_emotional_clinical_referral": "Orientations cliniques",
+    "wellness_physical_meals": "Repas quotidiens",
+    "wellness_physical_movement": "Programmes de mouvement",
+    "wellness_social_youth_council": "Conseils de leadership des jeunes",
+    "wellness_social_peer_mentoring": "Mentorat par les pairs",
+    "wellness_intellectual_creative_arts": "Arts créatifs",
+    "wellness_intellectual_social_justice": "Programme de justice sociale",
+    "wellness_occupational_stipend": "Emploi rémunéré des jeunes",
+    "wellness_occupational_mock_interviews": "Entretiens simulés",
+    "wellness_financial_emergency_fund": "Aide financière d'urgence",
+    "wellness_financial_stipend_empowerment": "Allocations",
+    "wellness_spiritual_mindfulness_embedded": "Pleine conscience dans les activités"
   },
   "theme_settings": {
     "title": "Paramètres du thème",

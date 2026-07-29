@@ -141,7 +141,21 @@
     "sub_spiritual_1": "Mindfulness or meditation workshops",
     "sub_spiritual_2": "Religious support groups / counseling",
     "sub_spiritual_3": "Physical space for religious practices",
-    "sub_spiritual_4": "Religious or spiritual themed events"
+    "sub_spiritual_4": "Religious or spiritual themed events",
+    "wellness_emotional_check_ins": "Wellness check-ins",
+    "wellness_emotional_trauma_informed": "Trauma-informed care",
+    "wellness_emotional_clinical_referral": "Clinical referrals",
+    "wellness_physical_meals": "Daily meals",
+    "wellness_physical_movement": "Movement programs",
+    "wellness_social_youth_council": "Youth leadership councils",
+    "wellness_social_peer_mentoring": "Peer mentoring",
+    "wellness_intellectual_creative_arts": "Creative arts",
+    "wellness_intellectual_social_justice": "Social justice curriculum",
+    "wellness_occupational_stipend": "Paid youth employment",
+    "wellness_occupational_mock_interviews": "Mock interviews",
+    "wellness_financial_emergency_fund": "Emergency financial assistance",
+    "wellness_financial_stipend_empowerment": "Stipends",
+    "wellness_spiritual_mindfulness_embedded": "Mindfulness throughout programming"
   },
   "theme_settings": {
     "title": "Theme Settings",

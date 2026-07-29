@@ -141,7 +141,21 @@
     "sub_spiritual_1": "Мастерские по осознанности или медитации",
     "sub_spiritual_2": "Религиозные группы поддержки / консультирование",
     "sub_spiritual_3": "Физическое пространство для религиозных практик",
-    "sub_spiritual_4": "Мероприятия с религиозной или духовной тематикой"
+    "sub_spiritual_4": "Мероприятия с религиозной или духовной тематикой",
+    "wellness_emotional_check_ins": "Беседы о самочувствии",
+    "wellness_emotional_trauma_informed": "Помощь с учётом травмы",
+    "wellness_emotional_clinical_referral": "Направления к специалистам",
+    "wellness_physical_meals": "Ежедневное питание",
+    "wellness_physical_movement": "Двигательные программы",
+    "wellness_social_youth_council": "Молодёжные советы",
+    "wellness_social_peer_mentoring": "Наставничество сверстников",
+    "wellness_intellectual_creative_arts": "Творческие искусства",
+    "wellness_intellectual_social_justice": "Программа социальной справедливости",
+    "wellness_occupational_stipend": "Оплачиваемая работа для молодёжи",
+    "wellness_occupational_mock_interviews": "Пробные собеседования",
+    "wellness_financial_emergency_fund": "Экстренная финансовая помощь",
+    "wellness_financial_stipend_empowerment": "Стипендии",
+    "wellness_spiritual_mindfulness_embedded": "Осознанность во всех занятиях"
   },
   "theme_settings": {
     "title": "Настройки темы",

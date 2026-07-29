@@ -141,7 +141,21 @@
     "sub_spiritual_1": "Talleres de atención plena o meditación",
     "sub_spiritual_2": "Grupos de apoyo religioso / consejería",
     "sub_spiritual_3": "Espacio físico para prácticas religiosas",
-    "sub_spiritual_4": "Eventos de temática religiosa o espiritual"
+    "sub_spiritual_4": "Eventos de temática religiosa o espiritual",
+    "wellness_emotional_check_ins": "Chequeos de bienestar",
+    "wellness_emotional_trauma_informed": "Atención sensible al trauma",
+    "wellness_emotional_clinical_referral": "Derivaciones clínicas",
+    "wellness_physical_meals": "Comidas diarias",
+    "wellness_physical_movement": "Programas de movimiento",
+    "wellness_social_youth_council": "Consejos de liderazgo juvenil",
+    "wellness_social_peer_mentoring": "Mentoría entre pares",
+    "wellness_intellectual_creative_arts": "Artes creativas",
+    "wellness_intellectual_social_justice": "Currículo de justicia social",
+    "wellness_occupational_stipend": "Empleo juvenil remunerado",
+    "wellness_occupational_mock_interviews": "Entrevistas simuladas",
+    "wellness_financial_emergency_fund": "Asistencia financiera de emergencia",
+    "wellness_financial_stipend_empowerment": "Estipendios",
+    "wellness_spiritual_mindfulness_embedded": "Atención plena en toda la programación"
   },
   "theme_settings": {
     "title": "Configuración de tema",

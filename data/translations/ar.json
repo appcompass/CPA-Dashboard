@@ -141,7 +141,21 @@
     "sub_spiritual_1": "ورش عمل اليقظة الذهنية أو التأمل",
     "sub_spiritual_2": "مجموعات الدعم الديني / الإرشاد",
     "sub_spiritual_3": "مساحة مادية للممارسات الدينية",
-    "sub_spiritual_4": "فعاليات ذات طابع ديني أو روحي"
+    "sub_spiritual_4": "فعاليات ذات طابع ديني أو روحي",
+    "wellness_emotional_check_ins": "لقاءات الاطمئنان",
+    "wellness_emotional_trauma_informed": "رعاية مراعية للصدمات",
+    "wellness_emotional_clinical_referral": "الإحالات العلاجية",
+    "wellness_physical_meals": "وجبات يومية",
+    "wellness_physical_movement": "برامج الحركة",
+    "wellness_social_youth_council": "مجالس قيادة الشباب",
+    "wellness_social_peer_mentoring": "الإرشاد بين الأقران",
+    "wellness_intellectual_creative_arts": "الفنون الإبداعية",
+    "wellness_intellectual_social_justice": "منهج العدالة الاجتماعية",
+    "wellness_occupational_stipend": "توظيف الشباب المدفوع",
+    "wellness_occupational_mock_interviews": "مقابلات تجريبية",
+    "wellness_financial_emergency_fund": "المساعدة المالية الطارئة",
+    "wellness_financial_stipend_empowerment": "المكافآت المالية",
+    "wellness_spiritual_mindfulness_embedded": "اليقظة الذهنية في جميع الأنشطة"
   },
   "theme_settings": {
     "title": "إعدادات المظهر",

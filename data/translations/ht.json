@@ -141,7 +141,21 @@
     "sub_spiritual_1": "Atelye atensyon konsyan oswa meditasyon",
     "sub_spiritual_2": "Gwoup sipò relijye / konsèy",
     "sub_spiritual_3": "Espas fizik pou pratik relijye",
-    "sub_spiritual_4": "Evènman ak tèm relijye oswa espirityèl"
+    "sub_spiritual_4": "Evènman ak tèm relijye oswa espirityèl",
+    "wellness_emotional_check_ins": "Swivi byennèt",
+    "wellness_emotional_trauma_informed": "Swen ki adapte ak twoma",
+    "wellness_emotional_clinical_referral": "Referans klinik",
+    "wellness_physical_meals": "Manje chak jou",
+    "wellness_physical_movement": "Pwogram mouvman",
+    "wellness_social_youth_council": "Konsèy lidèchip jèn",
+    "wellness_social_peer_mentoring": "Mantora ant parèy",
+    "wellness_intellectual_creative_arts": "Atizay kreyatif",
+    "wellness_intellectual_social_justice": "Pwogram jistis sosyal",
+    "wellness_occupational_stipend": "Travay peye pou jèn",
+    "wellness_occupational_mock_interviews": "Entèvyou pratik",
+    "wellness_financial_emergency_fund": "Asistans finansyè ijans",
+    "wellness_financial_stipend_empowerment": "Alokasyon",
+    "wellness_spiritual_mindfulness_embedded": "Atensyon konsyan nan tout aktivite"
   },
   "theme_settings": {
     "title": "Anviwonman tèm",

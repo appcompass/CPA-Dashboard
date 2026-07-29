@@ -141,7 +141,21 @@
     "sub_spiritual_1": "正念或冥想工作坊",
     "sub_spiritual_2": "宗教支援小組 / 輔導",
     "sub_spiritual_3": "宗教實踐空間",
-    "sub_spiritual_4": "宗教或靈性主題活動"
+    "sub_spiritual_4": "宗教或靈性主題活動",
+    "wellness_emotional_check_ins": "定期關懷傾談",
+    "wellness_emotional_trauma_informed": "創傷知情照護",
+    "wellness_emotional_clinical_referral": "臨床轉介",
+    "wellness_physical_meals": "每日膳食",
+    "wellness_physical_movement": "身體律動計劃",
+    "wellness_social_youth_council": "青年領袖議會",
+    "wellness_social_peer_mentoring": "朋輩師友計劃",
+    "wellness_intellectual_creative_arts": "創意藝術",
+    "wellness_intellectual_social_justice": "社會公義課程",
+    "wellness_occupational_stipend": "青年有薪工作",
+    "wellness_occupational_mock_interviews": "模擬面試",
+    "wellness_financial_emergency_fund": "緊急經濟援助",
+    "wellness_financial_stipend_empowerment": "津貼",
+    "wellness_spiritual_mindfulness_embedded": "貫穿各項活動的正念"
   },
   "theme_settings": {
     "title": "主題設定",
