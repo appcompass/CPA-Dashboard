@@ -12,7 +12,9 @@ CPA-Dashboard is a Shiny application built with `shiny.router` and Tabler UI tem
 ## Project structure
 
 - `app.R` boots the app.
-- `R/data.R` decrypts survey data and extracts data used by the app.
+- `R/data.R` loads the data layer from single-concern modules in `R/data/`
+  (encryption, dimension metadata, survey transform pipeline, data access,
+  interview data, translations).
 - `R/lang.R` loads the translations and language settings.
 - `R/ui.R` wires the router and top-level UI.
 - `R/server.R` handles route-specific rendering.
