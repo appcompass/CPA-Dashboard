@@ -1,9 +1,19 @@
-# Verifies the 14 new interview-derived sub-key labels do not accidentally
-# capture real survey service strings via service_matches_label(), which is
-# prefix-tolerant and matches word-by-word.
+# SUPERSEDED as a pre-ship gate, kept as a regression guard.
 #
-# This could not be checked offline: survey_data.csv is encrypted, so the actual
-# stored service strings were unavailable. Run this once with CPA_DATA_KEY set.
+# This script existed because the 14 interview-derived sub-keys were expected to
+# join DIMENSION_SUB_KEYS, where established_subcat_keys() would text-match their
+# labels against survey service strings -- and service_matches_label() is
+# prefix-tolerant, so free text like "Mindfulness" or "Daily meals for teens"
+# would have silently tagged an organization with a service no coder assigned it.
+#
+# They now live in a separate DIMENSION_INTERVIEW_SUB_KEYS and reach an org only
+# as an explicit key in other_services, so established_subcat_keys() can no longer
+# return any of them and this script cannot fail by construction. The guarantee is
+# covered by "survey free text never mints an interview-coded subcategory key" in
+# tests/testthat/test-app-data.R.
+#
+# Still worth running if anyone adds a key to the SURVEY vocabulary, where text
+# matching does apply. Run with CPA_DATA_KEY set.
 #
 #   Sys.setenv(CPA_DATA_KEY = "...")
 #   source("check_label_collisions.R")
