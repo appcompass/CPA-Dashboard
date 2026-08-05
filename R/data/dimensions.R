@@ -159,20 +159,40 @@ DIMENSION_WHEEL_ICON_PATHS <- list(
   )
 )
 
-# Survey service subcategories per dimension, mirroring the wheel taxonomy
-# (js/app.js WHEEL_META). Used to render the filter sidebar and to match an org's
-# stored services to a subcategory. NAMING, three forms live here:
-#   wellness_<dim>_<name>  curated subcategory. Only `physical` is filled in
-#                          (fitness/nutrition/screenings); the others are
-#                          sub_<dim>_<n> placeholders awaiting real labels.
-#   sub_<dim>_<n>          placeholder subcategory, label TBD.
-#   <dim>_other            catch-all for an established service matching no curated
-#                          subcategory; minted in established_subcat_keys() as
-#                          paste0(key, "_other"), e.g. emotional_other. NOT
-#                          wellness-prefixed.
-# "wellness_physical_other" appears in EVERY dimension's vector as a shared
-# SENTINEL for "this dimension has an Other slot". It is stripped via setdiff()
-# in established_subcat_keys() and never emitted as-is. It is not a typo.
+# Service subcategories per dimension. TWO VOCABULARIES, deliberately kept apart
+# because only one of them is safe to text-match:
+#
+#   DIMENSION_SUB_KEYS           SURVEY vocabulary. These are the Qualtrics
+#                                multi-select options, so established_subcat_keys()
+#                                matches their English labels against an org's
+#                                stored service strings. `physical` uses
+#                                wellness_physical_* names (labels under
+#                                `organizations`); the other seven still use
+#                                sub_<dim>_<n> names with real labels under `wheel`.
+#                                Those names are LEGACY, NOT placeholders --
+#                                sub_occupational_4 is "Job training". Renaming them
+#                                is a separate migration; dropping one breaks service
+#                                matching for its whole dimension.
+#
+#   DIMENSION_INTERVIEW_SUB_KEYS INTERVIEW vocabulary. Services the survey never
+#                                asked about, coded from transcripts into
+#                                interview_data.json.enc under `other_services`.
+#                                These are NEVER text-matched. service_matches_label()
+#                                is prefix-tolerant, so free-text survey answers would
+#                                capture them -- "Mindfulness" matches
+#                                wellness_spiritual_mindfulness_embedded, "Daily meals
+#                                for teens" matches wellness_physical_meals -- tagging
+#                                an org with a service no coder ever assigned it. They
+#                                reach an org only as an explicit key in
+#                                other_services. Keeping the two lists apart is what
+#                                makes that a structural guarantee instead of a
+#                                convention (see check_label_collisions.R).
+#
+#   DIMENSION_ALL_SUB_KEYS       The union, survey keys first. This is the display
+#                                and filter taxonomy: sub-label order in the wheel and
+#                                the checkbox rows in the organizations sidebar.
+#                                Mirrors js/app.js WHEEL_META `subKeys` -- kept honest
+#                                by test-app-data.R, which parses app.js and compares.
 DIMENSION_SUB_KEYS <- list(
   physical = c("wellness_physical_fitness", "wellness_physical_nutrition", "wellness_physical_screenings"),
   emotional = c("sub_emotional_1", "sub_emotional_2", "sub_emotional_3"),
@@ -182,6 +202,28 @@ DIMENSION_SUB_KEYS <- list(
   social = c("sub_social_1", "sub_social_2", "sub_social_3"),
   environmental = c("sub_environmental_1", "sub_environmental_2", "sub_environmental_3"),
   spiritual = c("sub_spiritual_1", "sub_spiritual_2", "sub_spiritual_3", "sub_spiritual_4")
+)
+
+DIMENSION_INTERVIEW_SUB_KEYS <- list(
+  physical = c("wellness_physical_meals", "wellness_physical_movement"),
+  emotional = c("wellness_emotional_check_ins", "wellness_emotional_trauma_informed", "wellness_emotional_clinical_referral"),
+  intellectual = c("wellness_intellectual_creative_arts", "wellness_intellectual_social_justice"),
+  occupational = c("wellness_occupational_stipend", "wellness_occupational_mock_interviews"),
+  financial = c("wellness_financial_emergency_fund", "wellness_financial_stipend_empowerment"),
+  social = c("wellness_social_youth_council", "wellness_social_peer_mentoring"),
+  # No environmental sub-keys exist yet; the interview taxonomy has none, so this
+  # dimension can only ever show its survey services.
+  environmental = character(0),
+  spiritual = c("wellness_spiritual_mindfulness_embedded")
+)
+
+# Display/filter taxonomy: survey subcategories first, then interview-coded ones.
+# Derived so the two vocabularies above stay the only places a key is declared.
+DIMENSION_ALL_SUB_KEYS <- setNames(
+  lapply(names(DIMENSION_LABEL_KEYS), function(key) {
+    unique(c(DIMENSION_SUB_KEYS[[key]], DIMENSION_INTERVIEW_SUB_KEYS[[key]]))
+  }),
+  names(DIMENSION_LABEL_KEYS)
 )
 
 # Multi-selects are comma-joined, but some option labels themselves contain commas
