@@ -309,6 +309,19 @@ const R_OUT = 220,
   CX = 250,
   CY = 250;
 
+// Panel markup is assembled as an HTML string, so any value that did not come
+// from the translation files has to be escaped. Detail text is hand-authored
+// prose, where an apostrophe is harmless but a stray < or & would corrupt the
+// panel.
+function escapeHtml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function createWheel(container, size = 340) {
   const $container = $(container);
   if (!$container.length || $container.hasClass('ww-wheel-instance')) {
@@ -351,6 +364,19 @@ function createWheel(container, size = 340) {
           .split(',')
           .map((s) => s.trim().toLowerCase())
           .filter(Boolean);
+
+  // Optional per-organization detail text, sub_key -> sentence, attached only on
+  // the details page. Absent or malformed leaves it empty, and an empty map means
+  // every label renders exactly as it did before this existed.
+  let subcatDetails = {};
+  const detailsAttr = $container.attr('data-subcat-details');
+  if (detailsAttr) {
+    try {
+      subcatDetails = JSON.parse(detailsAttr) || {};
+    } catch (err) {
+      subcatDetails = {};
+    }
+  }
 
   // unique id prefix per instance
   const uid = 'ww-' + Math.random().toString(36).slice(2, 7);
@@ -397,7 +423,14 @@ function createWheel(container, size = 340) {
         const dot = `<span class="dot" style="background:${d.color}"></span>`;
         const cls = 'subcat-name subcat-link';
         const name = `<a class="${cls}" style="color:${d.color}" href="#!/organizations?subcat=${encodeURIComponent(s.filterKey)}">${s.label}</a>`;
-        return `<li>${dot}${name}</li>`;
+        // The detail box sits UNDER the label. Since `.subcats li` is a flex row
+        // (dot | body), the label and its box share a flex-column body element;
+        // appending the box as a third child of the li would place it alongside.
+        const detail = subcatDetails[s.filterKey];
+        const box = detail
+          ? `<div class="subcat-detail">${escapeHtml(detail)}</div>`
+          : '';
+        return `<li>${dot}<div class="subcat-body">${name}${box}</div></li>`;
       })
       .join('');
     const $panel = $('<div>')

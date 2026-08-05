@@ -116,6 +116,34 @@ body.router-ready .page .page-wrapper {
 .subcat-name {
   font-weight: 500;
 }
+
+/* Per-organization service detail. `.subcats li` is a flex row, so the label and
+   its detail box are stacked inside this body element rather than being siblings
+   of the dot. min-width:0 lets long words wrap instead of widening the panel. */
+.subcats li .subcat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+/* Fixed height (about four lines at this size) with internal scrolling, so panel
+   height stays stable as you click between wheel segments -- `.panel` has no
+   height cap and `.ww-wrap` only sets min-height, so an uncapped box would make
+   the whole row jump. Colours derive from the Tabler secondary token so this
+   follows the light/dark theme toggle. */
+.subcat-detail {
+  font-size: 11.5px;
+  line-height: 1.45;
+  max-height: 5.8em;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-weight: 400;
+  background: rgba(var(--tblr-secondary-rgb), 0.08);
+  color: rgba(var(--tblr-secondary-rgb), 1);
+}
 .other {
   color: var(--color-text-secondary);
   font-style: italic;

@@ -1,0 +1,56 @@
+{
+  "_readme": [
+    "Per-service detail text, shown in a small box under a subcategory label in an",
+    "organization's established wellness wheel. Plain text, English only, authored by",
+    "hand: there is no generator and nothing here is encrypted.",
+    "",
+    "Shape:  service_details -> <irb_participant_id> -> <dimension> -> <sub_key> -> text",
+    "",
+    "  <irb_participant_id>  matches the survey column, e.g. YSP01",
+    "  <dimension>           physical, emotional, intellectual, occupational,",
+    "                        financial, social, environmental, spiritual",
+    "  <sub_key>             any key in DIMENSION_ALL_SUB_KEYS (R/data/dimensions.R).",
+    "                        BOTH vocabularies are allowed: survey keys such as",
+    "                        sub_occupational_4 (Job training) and interview keys such",
+    "                        as wellness_occupational_stipend (Paid youth employment).",
+    "",
+    "A key renders only if that organization already shows the service in its wheel,",
+    "and blank text renders nothing at all. Partial coverage is expected: an unwritten",
+    "service looks exactly as it does today, with no empty box.",
+    "",
+    "Keep entries to roughly 25 words. The box is about four lines tall and scrolls",
+    "past that.",
+    "",
+    "_example is inert because the loader only reads service_details. Copy an entry up",
+    "into service_details to make it live."
+  ],
+  "_example": {
+    "YSP99": {
+      "occupational": {
+        "sub_occupational_4": "Blue-collar tracks in construction, HVAC and culinary, with tools and certification fees covered.",
+        "wellness_occupational_stipend": "Paid 12-week placements at $15/hour, capped at 20 hours weekly during term time."
+      }
+    }
+  },
+  "service_details": {
+    "YSP04": {
+      "intellectual": {
+        "sub_intellectual_2": "A post-secondary team works with Bunker Hill, UMass Boston and Roxbury Community College, running Community Connect hubs on campus and monitoring grades with consent."
+      },
+      "occupational": {
+        "sub_occupational_1": "Summer internships posted on Future Boss; the PIC funds community-based roles and handles onboarding and payroll so employers can focus on training.",
+        "sub_occupational_2": "A career specialist sits in every Boston public high school, and coaching continues after placement, including mediating misunderstandings with new managers.",
+        "sub_occupational_3": "Career specialists in each Boston public high school help students build a first resume and understand what city employers look for.",
+        "sub_occupational_4": "Career-readiness programs at ABCD Boston and MassHire Downtown covering soft skills and personality assessments, plus ESL classes and tracks for youth with disabilities."
+      },
+      "financial": {
+        "sub_financial_1": "Career coaches are trained in budgeting, taxes and monthly expenses, and refer young adults to the Roxbury Financial Empowerment Center for hands-on plans.",
+        "sub_financial_2": "Support completing the FAFSA correctly and finding scholarships, with the goal of graduating with as little debt as possible.",
+        "sub_financial_3": "Workshops for parents on saving for a home or college tuition, plus Financially Lit with The Possible Zone, aimed at young fathers."
+      },
+      "social": {
+        "sub_social_1": "Community Connect pairs students with a mentor in the same major, matched by an interests survey, which raises on-time graduation rates."
+      }
+    }
+  }
+}

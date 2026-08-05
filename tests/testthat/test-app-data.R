@@ -859,3 +859,125 @@ test_that("get_organization_details_context exposes the union in established_sub
     ctx$established_subcats %in% unlist(DIMENSION_ALL_SUB_KEYS, use.names = FALSE)
   ))
 })
+# ---------------------------------------------------------------------------
+# Per-service detail text (data/service_details.json).
+# ---------------------------------------------------------------------------
+
+# Fixture standing in for the parsed service_details block.
+service_details_fixture <- function() {
+  list(
+    YSP01 = list(
+      occupational = list(
+        sub_occupational_4 = "Blue-collar tracks in construction and HVAC.",
+        wellness_occupational_stipend = "Paid 12-week placements at $15/hour.",
+        sub_occupational_2 = "   "
+      ),
+      physical = list(
+        wellness_physical_meals = "Hot dinner every weekday evening."
+      )
+    )
+  )
+}
+
+test_that("get_service_details returns text keyed by sub-key", {
+  out <- get_service_details(
+    "YSP01",
+    c("sub_occupational_4", "wellness_occupational_stipend", "wellness_physical_meals"),
+    details = service_details_fixture()
+  )
+  expect_type(out, "list")
+  expect_equal(out$sub_occupational_4, "Blue-collar tracks in construction and HVAC.")
+  expect_equal(out$wellness_occupational_stipend, "Paid 12-week placements at $15/hour.")
+  expect_equal(out$wellness_physical_meals, "Hot dinner every weekday evening.")
+})
+
+test_that("get_service_details drops text for services the org does not show", {
+  # wellness_physical_meals has authored text but is not in the rendered set, so it
+  # must not reach the DOM. Stale text can then sit in the file harmlessly.
+  out <- get_service_details(
+    "YSP01",
+    c("sub_occupational_4"),
+    details = service_details_fixture()
+  )
+  expect_named(out, "sub_occupational_4")
+  expect_false("wellness_physical_meals" %in% names(out))
+})
+
+test_that("get_service_details drops blank and whitespace-only text", {
+  # This is what makes an unwritten service render no box at all.
+  out <- get_service_details(
+    "YSP01",
+    c("sub_occupational_2", "sub_occupational_4"),
+    details = service_details_fixture()
+  )
+  expect_false("sub_occupational_2" %in% names(out))
+  expect_true("sub_occupational_4" %in% names(out))
+})
+
+test_that("get_service_details returns an empty list for unknown or blank ids", {
+  keys <- c("sub_occupational_4")
+  fixture <- service_details_fixture()
+  expect_length(get_service_details("YSP99", keys, details = fixture), 0L)
+  expect_length(get_service_details("", keys, details = fixture), 0L)
+  expect_length(get_service_details(NULL, keys, details = fixture), 0L)
+  # No rendered subcategories means nothing to attach text to.
+  expect_length(get_service_details("YSP01", character(0), details = fixture), 0L)
+  expect_length(get_service_details("YSP01", keys, details = list()), 0L)
+})
+
+test_that("subcat_details_attr serializes to JSON or NULL when empty", {
+  expect_null(subcat_details_attr(list()))
+  expect_null(subcat_details_attr(NULL))
+
+  json <- subcat_details_attr(list(sub_occupational_4 = "Blue-collar tracks."))
+  expect_type(json, "character")
+  expect_length(json, 1L)
+  # auto_unbox keeps values as strings rather than 1-element arrays, so the
+  # browser's JSON.parse yields sub_key -> string.
+  parsed <- jsonlite::fromJSON(json, simplifyVector = FALSE)
+  expect_equal(parsed$sub_occupational_4, "Blue-collar tracks.")
+})
+
+test_that("load_service_details degrades to an empty list for a missing file", {
+  expect_length(load_service_details(path = tempfile(fileext = ".json")), 0L)
+})
+
+test_that("data/service_details.json parses and its live block is well formed", {
+  withr::local_dir(project_root)
+  path <- file.path("data", "service_details.json")
+  expect_true(file.exists(path))
+
+  raw <- jsonlite::fromJSON(path, simplifyVector = FALSE)
+  expect_true("service_details" %in% names(raw))
+
+  # Every authored key must be a real subcategory and every dimension a real
+  # dimension, otherwise the text silently never renders.
+  valid_keys <- unlist(DIMENSION_ALL_SUB_KEYS, use.names = FALSE)
+  for (irb_id in names(raw$service_details)) {
+    record <- raw$service_details[[irb_id]]
+    expect_true(all(names(record) %in% names(DIMENSION_LABEL_KEYS)), info = irb_id)
+    for (dim_key in names(record)) {
+      for (sub_key in names(record[[dim_key]])) {
+        expect_true(sub_key %in% valid_keys, info = paste(irb_id, dim_key, sub_key))
+        expect_true(
+          sub_key %in% DIMENSION_ALL_SUB_KEYS[[dim_key]],
+          info = paste(sub_key, "listed under", dim_key)
+        )
+      }
+    }
+  }
+})
+
+test_that("get_organization_details_context exposes subcat_details scoped to the wheel", {
+  withr::local_dir(project_root)
+  survey <- load_survey_data()
+  skip_if(nrow(survey) == 0L, "No survey rows available.")
+
+  org <- get_org_names(survey)[[1]]
+  ctx <- get_organization_details_context(
+    lang = get_lang("en"), org_name = org, survey_data = survey
+  )
+  expect_type(ctx$subcat_details, "list")
+  # Detail text can only ever describe a service the wheel actually renders.
+  expect_true(all(names(ctx$subcat_details) %in% ctx$established_subcats))
+})
