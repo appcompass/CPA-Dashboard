@@ -9,6 +9,9 @@ build_manifest_app_files <- function() {
     "README.md",
     # Sourced by app.R, in order.
     "R/data.R",
+    # R/data.R is only a loader: it sources every module in R/data/ at boot, so
+    # omitting these makes the deployed app fail before it serves a page.
+    list.files("R/data", recursive = TRUE, full.names = TRUE),
     "R/lang.R",
     "R/ui.R",
     "R/server.R",
@@ -16,7 +19,13 @@ build_manifest_app_files <- function() {
     list.files("www/css", recursive = TRUE, full.names = TRUE),
     list.files("www/js", recursive = TRUE, full.names = TRUE),
     list.files("data/translations", recursive = TRUE, full.names = TRUE),
-    file.path("data", "survey_data.csv.enc")
+    file.path("data", "survey_data.csv.enc"),
+    # Optional runtime data. All three degrade to "render nothing" when absent, so
+    # leaving them out of the bundle fails silently: the site looks fine but loses
+    # interview barriers, resource needs, and per-service detail text.
+    file.path("data", "interview_data.json.enc"),
+    file.path("data", "interview_translations.json"),
+    file.path("data", "service_details.json")
   )
 
   unique(app_files[file.exists(app_files)])
