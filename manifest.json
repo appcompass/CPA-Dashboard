@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "locale": "en_US",
+  "locale": "en_IN",
   "platform": "4.5.2",
   "metadata": {
     "appmode": "shiny",
@@ -12,7 +12,7 @@
   "packages": {
     "R6": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "R6",
         "Title": "Encapsulated Classes with Reference Semantics",
@@ -34,18 +34,23 @@
         "Maintainer": "Winston Chang <winston@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2025-02-15 00:50:02 UTC",
-        "Built": "R 4.5.2; ; 2026-01-09 17:30:18 UTC; unix"
+        "Built": "R 4.6.0; ; 2026-05-30 00:57:19 UTC; windows",
+        "RemoteType": "standard",
+        "RemotePkgRef": "R6",
+        "RemoteRef": "R6",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "2.6.1"
       }
     },
     "Rcpp": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "Rcpp",
         "Title": "Seamless R and C++ Integration",
         "Version": "1.1.1-1.1",
         "Date": "2026-04-19",
-        "Authors@R": "c(person(\"Dirk\", \"Eddelbuettel\", role = c(\"aut\", \"cre\"), email = \"edd@debian.org\",\n                    comment = c(ORCID = \"0000-0001-6419-907X\")),\n             person(\"Romain\", \"Francois\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0002-2444-4226\")),\n             person(\"JJ\", \"Allaire\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0003-0174-9868\")),\n             person(\"Kevin\", \"Ushey\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0003-2880-7407\")),\n             person(\"Qiang\", \"Kou\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0001-6786-5453\")),\n             person(\"Nathan\", \"Russell\", role = \"aut\"),\n             person(\"I\u00f1aki\", \"Ucar\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0001-6403-5550\")),\n             person(\"Doug\", \"Bates\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0001-8316-9503\")),\n             person(\"John\", \"Chambers\", role = \"aut\"))",
+        "Authors@R": "c(person(\"Dirk\", \"Eddelbuettel\", role = c(\"aut\", \"cre\"), email = \"edd@debian.org\",\n                    comment = c(ORCID = \"0000-0001-6419-907X\")),\n             person(\"Romain\", \"Francois\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0002-2444-4226\")),\n             person(\"JJ\", \"Allaire\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0003-0174-9868\")),\n             person(\"Kevin\", \"Ushey\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0003-2880-7407\")),\n             person(\"Qiang\", \"Kou\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0001-6786-5453\")),\n             person(\"Nathan\", \"Russell\", role = \"aut\"),\n             person(\"Iñaki\", \"Ucar\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0001-6403-5550\")),\n             person(\"Doug\", \"Bates\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0001-8316-9503\")),\n             person(\"John\", \"Chambers\", role = \"aut\"))",
         "Description": "The 'Rcpp' package provides R functions as well as C++ classes which\n offer a seamless integration of R and C++. Many R data types and objects can be\n mapped back and forth to C++ equivalents which facilitates both writing of new\n code as well as easier integration of third-party libraries. Documentation\n about 'Rcpp' is provided by several vignettes included in this package, via the\n 'Rcpp Gallery' site at <https://gallery.rcpp.org>, the paper by Eddelbuettel and\n Francois (2011, <doi:10.18637/jss.v040.i08>), the book by Eddelbuettel (2013,\n <doi:10.1007/978-1-4614-6868-4>) and the paper by Eddelbuettel and Balamuta (2018,\n <doi:10.1080/00031305.2017.1375990>); see 'citation(\"Rcpp\")' for details.",
         "Depends": "R (>= 3.5.0)",
         "Imports": "methods, utils",
@@ -59,16 +64,22 @@
         "VignetteBuilder": "Rcpp",
         "NeedsCompilation": "yes",
         "Packaged": "2026-04-23 14:12:31 UTC; edd",
-        "Author": "Dirk Eddelbuettel [aut, cre] (ORCID:\n    <https://orcid.org/0000-0001-6419-907X>),\n  Romain Francois [aut] (ORCID: <https://orcid.org/0000-0002-2444-4226>),\n  JJ Allaire [aut] (ORCID: <https://orcid.org/0000-0003-0174-9868>),\n  Kevin Ushey [aut] (ORCID: <https://orcid.org/0000-0003-2880-7407>),\n  Qiang Kou [aut] (ORCID: <https://orcid.org/0000-0001-6786-5453>),\n  Nathan Russell [aut],\n  I\u00f1aki Ucar [aut] (ORCID: <https://orcid.org/0000-0001-6403-5550>),\n  Doug Bates [aut] (ORCID: <https://orcid.org/0000-0001-8316-9503>),\n  John Chambers [aut]",
+        "Author": "Dirk Eddelbuettel [aut, cre] (ORCID:\n    <https://orcid.org/0000-0001-6419-907X>),\n  Romain Francois [aut] (ORCID: <https://orcid.org/0000-0002-2444-4226>),\n  JJ Allaire [aut] (ORCID: <https://orcid.org/0000-0003-0174-9868>),\n  Kevin Ushey [aut] (ORCID: <https://orcid.org/0000-0003-2880-7407>),\n  Qiang Kou [aut] (ORCID: <https://orcid.org/0000-0001-6786-5453>),\n  Nathan Russell [aut],\n  Iñaki Ucar [aut] (ORCID: <https://orcid.org/0000-0001-6403-5550>),\n  Doug Bates [aut] (ORCID: <https://orcid.org/0000-0001-8316-9503>),\n  John Chambers [aut]",
         "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
         "Repository": "CRAN",
         "Date/Publication": "2026-04-24 05:30:02 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-10 16:47:20 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 00:57:20 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "Rcpp",
+        "RemoteRef": "Rcpp",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "1.1.1-1.1"
       }
     },
     "askpass": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "askpass",
         "Type": "Package",
@@ -90,12 +101,18 @@
         "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
         "Repository": "CRAN",
         "Date/Publication": "2024-10-04 07:20:03 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-01-15 02:14:32 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 02:00:55 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "askpass",
+        "RemoteRef": "askpass",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "1.2.1"
       }
     },
     "base64enc": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "base64enc",
         "Version": "0.1-6",
@@ -113,12 +130,18 @@
         "Packaged": "2026-02-02 01:51:07 UTC; rforge",
         "Repository": "CRAN",
         "Date/Publication": "2026-02-02 06:31:10 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-10 16:47:41 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-04-21 00:40:54 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "base64enc",
+        "RemoteRef": "base64enc",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "0.1-6"
       }
     },
     "bslib": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "bslib",
         "Title": "Custom 'Bootstrap' 'Sass' Themes for 'shiny' and 'rmarkdown'",
@@ -146,12 +169,17 @@
         "Maintainer": "Carson Sievert <carson@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2026-05-16 08:10:07 UTC",
-        "Built": "R 4.5.2; ; 2026-06-10 16:48:15 UTC; unix"
+        "Built": "R 4.6.0; ; 2026-05-30 02:34:01 UTC; windows",
+        "RemoteType": "standard",
+        "RemotePkgRef": "bslib",
+        "RemoteRef": "bslib",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "0.11.0"
       }
     },
     "cachem": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "cachem",
         "Version": "1.1.0",
@@ -173,17 +201,23 @@
         "Maintainer": "Winston Chang <winston@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2024-05-16 09:50:11 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-01-14 17:47:43 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 02:00:55 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "cachem",
+        "RemoteRef": "cachem",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "1.1.0"
       }
     },
     "cli": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "cli",
         "Title": "Helpers for Developing Command Line Interfaces",
         "Version": "3.6.6",
-        "Authors@R": "c(\n    person(\"G\u00e1bor\", \"Cs\u00e1rdi\", , \"gabor@posit.co\", role = c(\"aut\", \"cre\")),\n    person(\"Hadley\", \"Wickham\", role = \"ctb\"),\n    person(\"Kirill\", \"M\u00fcller\", role = \"ctb\"),\n    person(\"Salim\", \"Br\u00fcggemann\", , \"salim-b@pm.me\", role = \"ctb\",\n           comment = c(ORCID = \"0000-0002-5329-5987\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"),\n           comment = c(ROR = \"03wc8by49\"))\n  )",
+        "Authors@R": "c(\n    person(\"Gábor\", \"Csárdi\", , \"gabor@posit.co\", role = c(\"aut\", \"cre\")),\n    person(\"Hadley\", \"Wickham\", role = \"ctb\"),\n    person(\"Kirill\", \"Müller\", role = \"ctb\"),\n    person(\"Salim\", \"Brüggemann\", , \"salim-b@pm.me\", role = \"ctb\",\n           comment = c(ORCID = \"0000-0002-5329-5987\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"),\n           comment = c(ROR = \"03wc8by49\"))\n  )",
         "Description": "A suite of tools to build attractive command line interfaces\n    ('CLIs'), from semantic elements: headings, lists, alerts, paragraphs,\n    etc. Supports custom themes via a 'CSS'-like language. It also\n    contains a number of lower level 'CLI' elements: rules, boxes, trees,\n    and 'Unicode' symbols with 'ASCII' alternatives. It support ANSI\n    colors and text styles as well.",
         "License": "MIT + file LICENSE",
         "URL": "https://cli.r-lib.org, https://github.com/r-lib/cli",
@@ -198,16 +232,22 @@
         "RoxygenNote": "7.3.2.9000",
         "NeedsCompilation": "yes",
         "Packaged": "2026-04-08 18:14:45 UTC; gaborcsardi",
-        "Author": "G\u00e1bor Cs\u00e1rdi [aut, cre],\n  Hadley Wickham [ctb],\n  Kirill M\u00fcller [ctb],\n  Salim Br\u00fcggemann [ctb] (ORCID: <https://orcid.org/0000-0002-5329-5987>),\n  Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
-        "Maintainer": "G\u00e1bor Cs\u00e1rdi <gabor@posit.co>",
+        "Author": "Gábor Csárdi [aut, cre],\n  Hadley Wickham [ctb],\n  Kirill Müller [ctb],\n  Salim Brüggemann [ctb] (ORCID: <https://orcid.org/0000-0002-5329-5987>),\n  Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
+        "Maintainer": "Gábor Csárdi <gabor@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2026-04-09 09:50:18 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-10 16:40:31 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 00:57:20 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "cli",
+        "RemoteRef": "cli",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "3.6.6"
       }
     },
     "commonmark": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "commonmark",
         "Type": "Package",
@@ -228,15 +268,21 @@
         "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
         "Repository": "CRAN",
         "Date/Publication": "2025-07-07 13:40:02 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-01-09 17:28:53 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 00:58:07 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "commonmark",
+        "RemoteRef": "commonmark",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "2.0.0"
       }
     },
     "digest": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "digest",
-        "Authors@R": "c(person(\"Dirk\", \"Eddelbuettel\", role = c(\"aut\", \"cre\"), email = \"edd@debian.org\",\n                    comment = c(ORCID = \"0000-0001-6419-907X\")),\n             person(\"Antoine\", \"Lucas\", role=\"ctb\", comment = c(ORCID = \"0000-0002-8059-9767\")),\n             person(\"Jarek\", \"Tuszynski\", role=\"ctb\"),\n             person(\"Henrik\", \"Bengtsson\", role=\"ctb\", comment = c(ORCID = \"0000-0002-7579-5165\")),\n             person(\"Simon\", \"Urbanek\", role=\"ctb\", comment = c(ORCID = \"0000-0003-2297-1732\")),\n             person(\"Mario\", \"Frasca\", role=\"ctb\"),\n             person(\"Bryan\", \"Lewis\", role=\"ctb\"),\n             person(\"Murray\", \"Stokely\", role=\"ctb\"),\n             person(\"Hannes\", \"Muehleisen\", role=\"ctb\", comment = c(ORCID = \"0000-0001-8552-0029\")),\n             person(\"Duncan\", \"Murdoch\", role=\"ctb\"),\n             person(\"Jim\", \"Hester\", role=\"ctb\", comment = c(ORCID = \"0000-0002-2739-7082\")),\n             person(\"Wush\", \"Wu\", role=\"ctb\", comment = c(ORCID = \"0000-0001-5180-0567\")),\n             person(\"Qiang\", \"Kou\", role=\"ctb\", comment = c(ORCID = \"0000-0001-6786-5453\")),\n             person(\"Thierry\", \"Onkelinx\", role=\"ctb\", comment = c(ORCID = \"0000-0001-8804-4216\")),\n             person(\"Michel\", \"Lang\", role=\"ctb\", comment = c(ORCID = \"0000-0001-9754-0393\")),\n             person(\"Viliam\", \"Simko\", role=\"ctb\"),\n             person(\"Kurt\", \"Hornik\", role=\"ctb\", comment = c(ORCID = \"0000-0003-4198-9911\")),\n             person(\"Radford\", \"Neal\", role=\"ctb\", comment = c(ORCID = \"0000-0002-2473-3407\")),\n             person(\"Kendon\", \"Bell\", role=\"ctb\", comment = c(ORCID = \"0000-0002-9093-8312\")),\n             person(\"Matthew\", \"de Queljoe\", role=\"ctb\"),\n             person(\"Dmitry\", \"Selivanov\", role=\"ctb\", comment = c(ORCID = \"0000-0003-0492-6647\")),\n             person(\"Ion\", \"Suruceanu\", role=\"ctb\", comment = c(ORCID = \"0009-0005-6446-4909\")),\n             person(\"Bill\", \"Denney\", role=\"ctb\", comment = c(ORCID = \"0000-0002-5759-428X\")),\n             person(\"Dirk\", \"Schumacher\", role=\"ctb\"),\n             person(\"Andr\u00e1s\", \"Svraka\", role=\"ctb\", comment = c(ORCID = \"0009-0008-8480-1329\")),\n             person(\"Sergey\", \"Fedorov\", role=\"ctb\", comment = c(ORCID = \"0000-0002-5970-7233\")),\n             person(\"Will\", \"Landau\", role=\"ctb\", comment = c(ORCID = \"0000-0003-1878-3253\")),\n             person(\"Floris\", \"Vanderhaeghe\", role=\"ctb\", comment = c(ORCID = \"0000-0002-6378-6229\")),\n             person(\"Kevin\", \"Tappe\", role=\"ctb\"),\n             person(\"Harris\", \"McGehee\", role=\"ctb\"),\n             person(\"Tim\", \"Mastny\", role=\"ctb\"),\n             person(\"Aaron\", \"Peikert\", role=\"ctb\", comment = c(ORCID = \"0000-0001-7813-818X\")),\n             person(\"Mark\", \"van der Loo\", role=\"ctb\", comment = c(ORCID = \"0000-0002-9807-4686\")),\n             person(\"Chris\", \"Muir\", role=\"ctb\", comment = c(ORCID = \"0000-0003-2555-3878\")),\n             person(\"Moritz\", \"Beller\", role=\"ctb\", comment = c(ORCID = \"0000-0003-4852-0526\")),\n             person(\"Sebastian\", \"Campbell\", role=\"ctb\", comment = c(ORCID = \"0009-0000-5948-4503\")),\n             person(\"Winston\", \"Chang\", role=\"ctb\", comment = c(ORCID = \"0000-0002-1576-2126\")),\n             person(\"Dean\", \"Attali\", role=\"ctb\", comment = c(ORCID = \"0000-0002-5645-3493\")),\n             person(\"Michael\", \"Chirico\", role=\"ctb\", comment = c(ORCID = \"0000-0003-0787-087X\")),\n             person(\"Kevin\", \"Ushey\", role=\"ctb\", comment = c(ORCID = \"0000-0003-2880-7407\")),\n             person(\"Carl\", \"Pearson\", role=\"ctb\", comment = c(ORCID = \"0000-0003-0701-7860\")))",
+        "Authors@R": "c(person(\"Dirk\", \"Eddelbuettel\", role = c(\"aut\", \"cre\"), email = \"edd@debian.org\",\n                    comment = c(ORCID = \"0000-0001-6419-907X\")),\n             person(\"Antoine\", \"Lucas\", role=\"ctb\", comment = c(ORCID = \"0000-0002-8059-9767\")),\n             person(\"Jarek\", \"Tuszynski\", role=\"ctb\"),\n             person(\"Henrik\", \"Bengtsson\", role=\"ctb\", comment = c(ORCID = \"0000-0002-7579-5165\")),\n             person(\"Simon\", \"Urbanek\", role=\"ctb\", comment = c(ORCID = \"0000-0003-2297-1732\")),\n             person(\"Mario\", \"Frasca\", role=\"ctb\"),\n             person(\"Bryan\", \"Lewis\", role=\"ctb\"),\n             person(\"Murray\", \"Stokely\", role=\"ctb\"),\n             person(\"Hannes\", \"Muehleisen\", role=\"ctb\", comment = c(ORCID = \"0000-0001-8552-0029\")),\n             person(\"Duncan\", \"Murdoch\", role=\"ctb\"),\n             person(\"Jim\", \"Hester\", role=\"ctb\", comment = c(ORCID = \"0000-0002-2739-7082\")),\n             person(\"Wush\", \"Wu\", role=\"ctb\", comment = c(ORCID = \"0000-0001-5180-0567\")),\n             person(\"Qiang\", \"Kou\", role=\"ctb\", comment = c(ORCID = \"0000-0001-6786-5453\")),\n             person(\"Thierry\", \"Onkelinx\", role=\"ctb\", comment = c(ORCID = \"0000-0001-8804-4216\")),\n             person(\"Michel\", \"Lang\", role=\"ctb\", comment = c(ORCID = \"0000-0001-9754-0393\")),\n             person(\"Viliam\", \"Simko\", role=\"ctb\"),\n             person(\"Kurt\", \"Hornik\", role=\"ctb\", comment = c(ORCID = \"0000-0003-4198-9911\")),\n             person(\"Radford\", \"Neal\", role=\"ctb\", comment = c(ORCID = \"0000-0002-2473-3407\")),\n             person(\"Kendon\", \"Bell\", role=\"ctb\", comment = c(ORCID = \"0000-0002-9093-8312\")),\n             person(\"Matthew\", \"de Queljoe\", role=\"ctb\"),\n             person(\"Dmitry\", \"Selivanov\", role=\"ctb\", comment = c(ORCID = \"0000-0003-0492-6647\")),\n             person(\"Ion\", \"Suruceanu\", role=\"ctb\", comment = c(ORCID = \"0009-0005-6446-4909\")),\n             person(\"Bill\", \"Denney\", role=\"ctb\", comment = c(ORCID = \"0000-0002-5759-428X\")),\n             person(\"Dirk\", \"Schumacher\", role=\"ctb\"),\n             person(\"András\", \"Svraka\", role=\"ctb\", comment = c(ORCID = \"0009-0008-8480-1329\")),\n             person(\"Sergey\", \"Fedorov\", role=\"ctb\", comment = c(ORCID = \"0000-0002-5970-7233\")),\n             person(\"Will\", \"Landau\", role=\"ctb\", comment = c(ORCID = \"0000-0003-1878-3253\")),\n             person(\"Floris\", \"Vanderhaeghe\", role=\"ctb\", comment = c(ORCID = \"0000-0002-6378-6229\")),\n             person(\"Kevin\", \"Tappe\", role=\"ctb\"),\n             person(\"Harris\", \"McGehee\", role=\"ctb\"),\n             person(\"Tim\", \"Mastny\", role=\"ctb\"),\n             person(\"Aaron\", \"Peikert\", role=\"ctb\", comment = c(ORCID = \"0000-0001-7813-818X\")),\n             person(\"Mark\", \"van der Loo\", role=\"ctb\", comment = c(ORCID = \"0000-0002-9807-4686\")),\n             person(\"Chris\", \"Muir\", role=\"ctb\", comment = c(ORCID = \"0000-0003-2555-3878\")),\n             person(\"Moritz\", \"Beller\", role=\"ctb\", comment = c(ORCID = \"0000-0003-4852-0526\")),\n             person(\"Sebastian\", \"Campbell\", role=\"ctb\", comment = c(ORCID = \"0009-0000-5948-4503\")),\n             person(\"Winston\", \"Chang\", role=\"ctb\", comment = c(ORCID = \"0000-0002-1576-2126\")),\n             person(\"Dean\", \"Attali\", role=\"ctb\", comment = c(ORCID = \"0000-0002-5645-3493\")),\n             person(\"Michael\", \"Chirico\", role=\"ctb\", comment = c(ORCID = \"0000-0003-0787-087X\")),\n             person(\"Kevin\", \"Ushey\", role=\"ctb\", comment = c(ORCID = \"0000-0003-2880-7407\")),\n             person(\"Carl\", \"Pearson\", role=\"ctb\", comment = c(ORCID = \"0000-0003-0701-7860\")))",
         "Version": "0.6.39",
         "Date": "2025-11-19",
         "Title": "Create Compact Hash Digests of R Objects",
@@ -251,16 +297,22 @@
         "Encoding": "UTF-8",
         "NeedsCompilation": "yes",
         "Packaged": "2025-11-19 11:55:09 UTC; edd",
-        "Author": "Dirk Eddelbuettel [aut, cre] (ORCID:\n    <https://orcid.org/0000-0001-6419-907X>),\n  Antoine Lucas [ctb] (ORCID: <https://orcid.org/0000-0002-8059-9767>),\n  Jarek Tuszynski [ctb],\n  Henrik Bengtsson [ctb] (ORCID: <https://orcid.org/0000-0002-7579-5165>),\n  Simon Urbanek [ctb] (ORCID: <https://orcid.org/0000-0003-2297-1732>),\n  Mario Frasca [ctb],\n  Bryan Lewis [ctb],\n  Murray Stokely [ctb],\n  Hannes Muehleisen [ctb] (ORCID:\n    <https://orcid.org/0000-0001-8552-0029>),\n  Duncan Murdoch [ctb],\n  Jim Hester [ctb] (ORCID: <https://orcid.org/0000-0002-2739-7082>),\n  Wush Wu [ctb] (ORCID: <https://orcid.org/0000-0001-5180-0567>),\n  Qiang Kou [ctb] (ORCID: <https://orcid.org/0000-0001-6786-5453>),\n  Thierry Onkelinx [ctb] (ORCID: <https://orcid.org/0000-0001-8804-4216>),\n  Michel Lang [ctb] (ORCID: <https://orcid.org/0000-0001-9754-0393>),\n  Viliam Simko [ctb],\n  Kurt Hornik [ctb] (ORCID: <https://orcid.org/0000-0003-4198-9911>),\n  Radford Neal [ctb] (ORCID: <https://orcid.org/0000-0002-2473-3407>),\n  Kendon Bell [ctb] (ORCID: <https://orcid.org/0000-0002-9093-8312>),\n  Matthew de Queljoe [ctb],\n  Dmitry Selivanov [ctb] (ORCID: <https://orcid.org/0000-0003-0492-6647>),\n  Ion Suruceanu [ctb] (ORCID: <https://orcid.org/0009-0005-6446-4909>),\n  Bill Denney [ctb] (ORCID: <https://orcid.org/0000-0002-5759-428X>),\n  Dirk Schumacher [ctb],\n  Andr\u00e1s Svraka [ctb] (ORCID: <https://orcid.org/0009-0008-8480-1329>),\n  Sergey Fedorov [ctb] (ORCID: <https://orcid.org/0000-0002-5970-7233>),\n  Will Landau [ctb] (ORCID: <https://orcid.org/0000-0003-1878-3253>),\n  Floris Vanderhaeghe [ctb] (ORCID:\n    <https://orcid.org/0000-0002-6378-6229>),\n  Kevin Tappe [ctb],\n  Harris McGehee [ctb],\n  Tim Mastny [ctb],\n  Aaron Peikert [ctb] (ORCID: <https://orcid.org/0000-0001-7813-818X>),\n  Mark van der Loo [ctb] (ORCID: <https://orcid.org/0000-0002-9807-4686>),\n  Chris Muir [ctb] (ORCID: <https://orcid.org/0000-0003-2555-3878>),\n  Moritz Beller [ctb] (ORCID: <https://orcid.org/0000-0003-4852-0526>),\n  Sebastian Campbell [ctb] (ORCID:\n    <https://orcid.org/0009-0000-5948-4503>),\n  Winston Chang [ctb] (ORCID: <https://orcid.org/0000-0002-1576-2126>),\n  Dean Attali [ctb] (ORCID: <https://orcid.org/0000-0002-5645-3493>),\n  Michael Chirico [ctb] (ORCID: <https://orcid.org/0000-0003-0787-087X>),\n  Kevin Ushey [ctb] (ORCID: <https://orcid.org/0000-0003-2880-7407>),\n  Carl Pearson [ctb] (ORCID: <https://orcid.org/0000-0003-0701-7860>)",
+        "Author": "Dirk Eddelbuettel [aut, cre] (ORCID:\n    <https://orcid.org/0000-0001-6419-907X>),\n  Antoine Lucas [ctb] (ORCID: <https://orcid.org/0000-0002-8059-9767>),\n  Jarek Tuszynski [ctb],\n  Henrik Bengtsson [ctb] (ORCID: <https://orcid.org/0000-0002-7579-5165>),\n  Simon Urbanek [ctb] (ORCID: <https://orcid.org/0000-0003-2297-1732>),\n  Mario Frasca [ctb],\n  Bryan Lewis [ctb],\n  Murray Stokely [ctb],\n  Hannes Muehleisen [ctb] (ORCID:\n    <https://orcid.org/0000-0001-8552-0029>),\n  Duncan Murdoch [ctb],\n  Jim Hester [ctb] (ORCID: <https://orcid.org/0000-0002-2739-7082>),\n  Wush Wu [ctb] (ORCID: <https://orcid.org/0000-0001-5180-0567>),\n  Qiang Kou [ctb] (ORCID: <https://orcid.org/0000-0001-6786-5453>),\n  Thierry Onkelinx [ctb] (ORCID: <https://orcid.org/0000-0001-8804-4216>),\n  Michel Lang [ctb] (ORCID: <https://orcid.org/0000-0001-9754-0393>),\n  Viliam Simko [ctb],\n  Kurt Hornik [ctb] (ORCID: <https://orcid.org/0000-0003-4198-9911>),\n  Radford Neal [ctb] (ORCID: <https://orcid.org/0000-0002-2473-3407>),\n  Kendon Bell [ctb] (ORCID: <https://orcid.org/0000-0002-9093-8312>),\n  Matthew de Queljoe [ctb],\n  Dmitry Selivanov [ctb] (ORCID: <https://orcid.org/0000-0003-0492-6647>),\n  Ion Suruceanu [ctb] (ORCID: <https://orcid.org/0009-0005-6446-4909>),\n  Bill Denney [ctb] (ORCID: <https://orcid.org/0000-0002-5759-428X>),\n  Dirk Schumacher [ctb],\n  András Svraka [ctb] (ORCID: <https://orcid.org/0009-0008-8480-1329>),\n  Sergey Fedorov [ctb] (ORCID: <https://orcid.org/0000-0002-5970-7233>),\n  Will Landau [ctb] (ORCID: <https://orcid.org/0000-0003-1878-3253>),\n  Floris Vanderhaeghe [ctb] (ORCID:\n    <https://orcid.org/0000-0002-6378-6229>),\n  Kevin Tappe [ctb],\n  Harris McGehee [ctb],\n  Tim Mastny [ctb],\n  Aaron Peikert [ctb] (ORCID: <https://orcid.org/0000-0001-7813-818X>),\n  Mark van der Loo [ctb] (ORCID: <https://orcid.org/0000-0002-9807-4686>),\n  Chris Muir [ctb] (ORCID: <https://orcid.org/0000-0003-2555-3878>),\n  Moritz Beller [ctb] (ORCID: <https://orcid.org/0000-0003-4852-0526>),\n  Sebastian Campbell [ctb] (ORCID:\n    <https://orcid.org/0009-0000-5948-4503>),\n  Winston Chang [ctb] (ORCID: <https://orcid.org/0000-0002-1576-2126>),\n  Dean Attali [ctb] (ORCID: <https://orcid.org/0000-0002-5645-3493>),\n  Michael Chirico [ctb] (ORCID: <https://orcid.org/0000-0003-0787-087X>),\n  Kevin Ushey [ctb] (ORCID: <https://orcid.org/0000-0003-2880-7407>),\n  Carl Pearson [ctb] (ORCID: <https://orcid.org/0000-0003-0701-7860>)",
         "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
         "Repository": "CRAN",
         "Date/Publication": "2025-11-19 13:20:08 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-18 20:58:17 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-06-09 01:06:04 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "digest",
+        "RemoteRef": "digest",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "0.6.39"
       }
     },
     "fastmap": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "fastmap",
         "Title": "Fast Data Structures",
@@ -279,12 +331,18 @@
         "Maintainer": "Winston Chang <winston@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2024-05-15 09:00:07 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-01-14 17:47:28 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 00:57:22 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "fastmap",
+        "RemoteRef": "fastmap",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "1.2.0"
       }
     },
     "fontawesome": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Type": "Package",
         "Package": "fontawesome",
@@ -308,17 +366,22 @@
         "Maintainer": "Richard Iannone <rich@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2024-11-16 17:30:02 UTC",
-        "Built": "R 4.5.2; ; 2026-01-14 17:50:07 UTC; unix"
+        "Built": "R 4.6.0; ; 2026-05-30 02:11:36 UTC; windows",
+        "RemoteType": "standard",
+        "RemotePkgRef": "fontawesome",
+        "RemoteRef": "fontawesome",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "0.5.3"
       }
     },
     "fs": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "fs",
         "Title": "Cross-Platform File System Operations Based on 'libuv'",
         "Version": "2.1.0",
-        "Authors@R": "c(\n    person(\"Jim\", \"Hester\", role = \"aut\"),\n    person(\"Hadley\", \"Wickham\", role = \"aut\"),\n    person(\"G\u00e1bor\", \"Cs\u00e1rdi\", role = \"aut\"),\n    person(\"Jeroen\", \"Ooms\", , \"jeroenooms@gmail.com\", role = \"cre\"),\n    person(\"libuv project contributors\", role = \"cph\",\n           comment = \"libuv library\"),\n    person(\"Joyent, Inc. and other Node contributors\", role = \"cph\",\n           comment = \"libuv library\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"),\n           comment = c(ROR = \"03wc8by49\"))\n  )",
+        "Authors@R": "c(\n    person(\"Jim\", \"Hester\", role = \"aut\"),\n    person(\"Hadley\", \"Wickham\", role = \"aut\"),\n    person(\"Gábor\", \"Csárdi\", role = \"aut\"),\n    person(\"Jeroen\", \"Ooms\", , \"jeroenooms@gmail.com\", role = \"cre\"),\n    person(\"libuv project contributors\", role = \"cph\",\n           comment = \"libuv library\"),\n    person(\"Joyent, Inc. and other Node contributors\", role = \"cph\",\n           comment = \"libuv library\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"),\n           comment = c(ROR = \"03wc8by49\"))\n  )",
         "Description": "A cross-platform interface to file system operations, built\n    on top of the 'libuv' C library.",
         "License": "MIT + file LICENSE",
         "URL": "https://fs.r-lib.org, https://github.com/r-lib/fs",
@@ -337,16 +400,22 @@
         "RoxygenNote": "7.3.3",
         "NeedsCompilation": "yes",
         "Packaged": "2026-04-18 13:56:26 UTC; jeroen",
-        "Author": "Jim Hester [aut],\n  Hadley Wickham [aut],\n  G\u00e1bor Cs\u00e1rdi [aut],\n  Jeroen Ooms [cre],\n  libuv project contributors [cph] (libuv library),\n  Joyent, Inc. and other Node contributors [cph] (libuv library),\n  Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
+        "Author": "Jim Hester [aut],\n  Hadley Wickham [aut],\n  Gábor Csárdi [aut],\n  Jeroen Ooms [cre],\n  libuv project contributors [cph] (libuv library),\n  Joyent, Inc. and other Node contributors [cph] (libuv library),\n  Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
         "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
         "Repository": "CRAN",
         "Date/Publication": "2026-04-18 15:10:02 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-10 16:40:45 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 00:57:23 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "fs",
+        "RemoteRef": "fs",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "2.1.0"
       }
     },
     "glue": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "glue",
         "Title": "Interpreted String Literals",
@@ -372,12 +441,18 @@
         "Maintainer": "Jennifer Bryan <jenny@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2026-04-17 05:11:01 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-10 16:47:53 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 00:57:20 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "glue",
+        "RemoteRef": "glue",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "1.8.1"
       }
     },
     "htmltools": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Type": "Package",
         "Package": "htmltools",
@@ -403,17 +478,18 @@
         "Maintainer": "Carson Sievert <carson@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2025-12-04 11:50:09 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-01-15 03:48:49 UTC; unix",
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 02:00:54 UTC; windows",
+        "Archs": "x64",
         "RemoteType": "standard",
         "RemotePkgRef": "htmltools",
         "RemoteRef": "htmltools",
         "RemoteRepos": "https://cran.rstudio.com",
-        "RemoteSha": "0.5.9"
+        "RemoteSha.Version": "0.5.9"
       }
     },
     "httpuv": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Type": "Package",
         "Package": "httpuv",
@@ -441,12 +517,18 @@
         "Maintainer": "Winston Chang <winston@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2026-03-18 06:12:59 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-10 16:48:22 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 02:34:03 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "httpuv",
+        "RemoteRef": "httpuv",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "1.6.17"
       }
     },
     "jquerylib": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "jquerylib",
         "Title": "Obtain 'jQuery' as an HTML Dependency Object",
@@ -465,12 +547,17 @@
         "Maintainer": "Carson Sievert <carson@rstudio.com>",
         "Repository": "CRAN",
         "Date/Publication": "2021-04-26 17:10:02 UTC",
-        "Built": "R 4.5.2; ; 2026-01-14 17:48:10 UTC; unix"
+        "Built": "R 4.6.0; ; 2026-05-30 02:11:36 UTC; windows",
+        "RemoteType": "standard",
+        "RemotePkgRef": "jquerylib",
+        "RemoteRef": "jquerylib",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "0.1.4"
       }
     },
     "jsonlite": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "jsonlite",
         "Version": "2.0.0",
@@ -491,12 +578,18 @@
         "Author": "Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>),\n  Duncan Temple Lang [ctb],\n  Lloyd Hilaiel [cph] (author of bundled libyajl)",
         "Repository": "CRAN",
         "Date/Publication": "2025-03-27 06:40:02 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-18 20:58:26 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-06-09 01:06:06 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "jsonlite",
+        "RemoteRef": "jsonlite",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "2.0.0"
       }
     },
     "later": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Type": "Package",
         "Package": "later",
@@ -524,12 +617,18 @@
         "Maintainer": "Charlie Gao <charlie.gao@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2026-03-05 07:50:02 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-10 16:47:58 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 02:01:00 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "later",
+        "RemoteRef": "later",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "1.4.8"
       }
     },
     "lifecycle": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "lifecycle",
         "Title": "Manage the Life Cycle of your Package Functions",
@@ -553,12 +652,17 @@
         "Maintainer": "Lionel Henry <lionel@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2026-01-08 08:00:02 UTC",
-        "Built": "R 4.5.2; ; 2026-01-09 17:36:43 UTC; unix"
+        "Built": "R 4.6.0; ; 2026-05-30 02:00:55 UTC; windows",
+        "RemoteType": "standard",
+        "RemotePkgRef": "lifecycle",
+        "RemoteRef": "lifecycle",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "1.0.5"
       }
     },
     "magrittr": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Type": "Package",
         "Package": "magrittr",
@@ -582,17 +686,23 @@
         "Maintainer": "Lionel Henry <lionel@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2026-04-04 08:00:02 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-10 16:47:39 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 00:57:18 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "magrittr",
+        "RemoteRef": "magrittr",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "2.0.5"
       }
     },
     "memoise": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "memoise",
         "Title": "'Memoisation' of Functions",
         "Version": "2.0.1",
-        "Authors@R": "\n    c(person(given = \"Hadley\",\n             family = \"Wickham\",\n             role = \"aut\",\n             email = \"hadley@rstudio.com\"),\n      person(given = \"Jim\",\n             family = \"Hester\",\n             role = \"aut\"),\n      person(given = \"Winston\",\n             family = \"Chang\",\n             role = c(\"aut\", \"cre\"),\n             email = \"winston@rstudio.com\"),\n      person(given = \"Kirill\",\n             family = \"M\u00fcller\",\n             role = \"aut\",\n             email = \"krlmlr+r@mailbox.org\"),\n      person(given = \"Daniel\",\n             family = \"Cook\",\n             role = \"aut\",\n             email = \"danielecook@gmail.com\"),\n      person(given = \"Mark\",\n             family = \"Edmondson\",\n             role = \"ctb\",\n             email = \"r@sunholo.com\"))",
+        "Authors@R": "\n    c(person(given = \"Hadley\",\n             family = \"Wickham\",\n             role = \"aut\",\n             email = \"hadley@rstudio.com\"),\n      person(given = \"Jim\",\n             family = \"Hester\",\n             role = \"aut\"),\n      person(given = \"Winston\",\n             family = \"Chang\",\n             role = c(\"aut\", \"cre\"),\n             email = \"winston@rstudio.com\"),\n      person(given = \"Kirill\",\n             family = \"Müller\",\n             role = \"aut\",\n             email = \"krlmlr+r@mailbox.org\"),\n      person(given = \"Daniel\",\n             family = \"Cook\",\n             role = \"aut\",\n             email = \"danielecook@gmail.com\"),\n      person(given = \"Mark\",\n             family = \"Edmondson\",\n             role = \"ctb\",\n             email = \"r@sunholo.com\"))",
         "Description": "Cache the results of a function so that when you\n    call it again with the same arguments it returns the previously computed\n    value.",
         "License": "MIT + file LICENSE",
         "URL": "https://memoise.r-lib.org, https://github.com/r-lib/memoise",
@@ -603,16 +713,21 @@
         "RoxygenNote": "7.1.2",
         "NeedsCompilation": "no",
         "Packaged": "2021-11-24 21:24:50 UTC; jhester",
-        "Author": "Hadley Wickham [aut],\n  Jim Hester [aut],\n  Winston Chang [aut, cre],\n  Kirill M\u00fcller [aut],\n  Daniel Cook [aut],\n  Mark Edmondson [ctb]",
+        "Author": "Hadley Wickham [aut],\n  Jim Hester [aut],\n  Winston Chang [aut, cre],\n  Kirill Müller [aut],\n  Daniel Cook [aut],\n  Mark Edmondson [ctb]",
         "Maintainer": "Winston Chang <winston@rstudio.com>",
         "Repository": "CRAN",
         "Date/Publication": "2021-11-26 16:11:10 UTC",
-        "Built": "R 4.5.2; ; 2026-01-14 17:48:11 UTC; unix"
+        "Built": "R 4.6.0; ; 2026-05-30 02:11:36 UTC; windows",
+        "RemoteType": "standard",
+        "RemotePkgRef": "memoise",
+        "RemoteRef": "memoise",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "2.0.1"
       }
     },
     "mime": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "mime",
         "Type": "Package",
@@ -632,12 +747,18 @@
         "Maintainer": "Yihui Xie <xie@yihui.name>",
         "Repository": "CRAN",
         "Date/Publication": "2025-03-17 20:20:02 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-01-14 17:47:32 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-04-21 00:40:54 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "mime",
+        "RemoteRef": "mime",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "0.13"
       }
     },
     "openssl": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "openssl",
         "Type": "Package",
@@ -660,17 +781,23 @@
         "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
         "Repository": "CRAN",
         "Date/Publication": "2026-06-09 13:30:02 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-18 20:58:09 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-06-12 23:51:44 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "openssl",
+        "RemoteRef": "openssl",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "2.4.2"
       }
     },
     "otel": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "otel",
         "Title": "OpenTelemetry R API",
         "Version": "0.2.0",
-        "Authors@R": "\n    person(\"G\u00e1bor\", \"Cs\u00e1rdi\", , \"csardi.gabor@gmail.com\", role = c(\"aut\", \"cre\"))",
+        "Authors@R": "\n    person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = c(\"aut\", \"cre\"))",
         "Description": "High-quality, ubiquitous, and portable telemetry to enable\n    effective observability. OpenTelemetry is a collection of tools,\n    APIs, and SDKs used to instrument, generate, collect, and export\n    telemetry data (metrics, logs, and traces) for analysis in order to\n    understand your software's performance and behavior.\n    This package implements the OpenTelemetry API:\n    <https://opentelemetry.io/docs/specs/otel/>.\n    Use this package as a dependency if you want to instrument your R\n    package for OpenTelemetry.",
         "License": "MIT + file LICENSE",
         "Encoding": "UTF-8",
@@ -684,16 +811,21 @@
         "BugReports": "https://github.com/r-lib/otel/issues",
         "NeedsCompilation": "no",
         "Packaged": "2025-08-29 12:46:28 UTC; gaborcsardi",
-        "Author": "G\u00e1bor Cs\u00e1rdi [aut, cre]",
-        "Maintainer": "G\u00e1bor Cs\u00e1rdi <csardi.gabor@gmail.com>",
+        "Author": "Gábor Csárdi [aut, cre]",
+        "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
         "Repository": "CRAN",
         "Date/Publication": "2025-08-29 13:30:07 UTC",
-        "Built": "R 4.5.2; ; 2026-01-14 17:47:35 UTC; unix"
+        "Built": "R 4.6.0; ; 2026-05-30 00:58:07 UTC; windows",
+        "RemoteType": "standard",
+        "RemotePkgRef": "otel",
+        "RemoteRef": "otel",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "0.2.0"
       }
     },
     "promises": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Type": "Package",
         "Package": "promises",
@@ -720,12 +852,17 @@
         "Maintainer": "Barret Schloerke <barret@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2025-11-01 06:30:02 UTC",
-        "Built": "R 4.5.2; ; 2026-01-14 17:50:10 UTC; unix"
+        "Built": "R 4.6.0; ; 2026-05-30 02:11:52 UTC; windows",
+        "RemoteType": "standard",
+        "RemotePkgRef": "promises",
+        "RemoteRef": "promises",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "1.5.0"
       }
     },
     "rappdirs": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Type": "Package",
         "Package": "rappdirs",
@@ -750,12 +887,18 @@
         "Maintainer": "Hadley Wickham <hadley@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2026-01-17 08:40:02 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-10 16:47:44 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 00:57:21 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "rappdirs",
+        "RemoteRef": "rappdirs",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "0.3.4"
       }
     },
     "rlang": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "rlang",
         "Version": "1.2.0",
@@ -782,12 +925,18 @@
         "Maintainer": "Lionel Henry <lionel@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2026-04-06 10:40:02 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-10 16:43:19 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 00:57:17 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "rlang",
+        "RemoteRef": "rlang",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "1.2.0"
       }
     },
     "sass": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Type": "Package",
         "Package": "sass",
@@ -811,12 +960,18 @@
         "Maintainer": "Carson Sievert <carson@rstudio.com>",
         "Repository": "CRAN",
         "Date/Publication": "2025-04-11 19:50:02 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-01-14 17:48:14 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 02:11:38 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "sass",
+        "RemoteRef": "sass",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "0.4.10"
       }
     },
     "shiny": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Type": "Package",
         "Package": "shiny",
@@ -841,18 +996,23 @@
         "Maintainer": "Carson Sievert <carson@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2026-02-20 09:00:03 UTC",
-        "Built": "R 4.5.2; ; 2026-06-18 20:58:35 UTC; unix"
+        "Built": "R 4.6.0; ; 2026-06-09 02:56:50 UTC; windows",
+        "RemoteType": "standard",
+        "RemotePkgRef": "shiny",
+        "RemoteRef": "shiny",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "1.13.0"
       }
     },
     "shiny.router": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "shiny.router",
         "Type": "Package",
         "Title": "Basic Routing for Shiny Web Applications",
         "Version": "0.3.1",
-        "Authors@R": "\n  c(\n    person(\"Ryszard\", \"Szyma\u0144ski\", email = \"opensource+ryszard@appsilon.com\", role = c(\"cre\", \"aut\")),\n    person(\"Jakub\", \"Nowicki\", email = \"kuba@appsilon.com\", role = c(\"aut\")),\n    person(\"Filip\", \"Stachura\", email = \"filip@appsilon.com\", role = c(\"aut\")),\n    person(\"Dominik\", \"Krzemi\u0144ski\", email = \"raymon92@gmail.com\", role = c(\"aut\")),\n    person(\"Krystian\", \"Igras\", email = \"krystian8207@gmail.com\", role = c(\"aut\")),\n    person(\"Servet Ahmet\", \"\u00c7izmeli\", email = \"ahmet.cizmeli@contractors.appsilon.com\", role = c(\"ctb\")),\n    person(\"Appsilon Sp. z o.o.\", role = \"cph\", email = \"opensource@appsilon.com\")\n  )",
+        "Authors@R": "\n  c(\n    person(\"Ryszard\", \"Szymański\", email = \"opensource+ryszard@appsilon.com\", role = c(\"cre\", \"aut\")),\n    person(\"Jakub\", \"Nowicki\", email = \"kuba@appsilon.com\", role = c(\"aut\")),\n    person(\"Filip\", \"Stachura\", email = \"filip@appsilon.com\", role = c(\"aut\")),\n    person(\"Dominik\", \"Krzemiński\", email = \"raymon92@gmail.com\", role = c(\"aut\")),\n    person(\"Krystian\", \"Igras\", email = \"krystian8207@gmail.com\", role = c(\"aut\")),\n    person(\"Servet Ahmet\", \"Çizmeli\", email = \"ahmet.cizmeli@contractors.appsilon.com\", role = c(\"ctb\")),\n    person(\"Appsilon Sp. z o.o.\", role = \"cph\", email = \"opensource@appsilon.com\")\n  )",
         "Description": "It is a simple router for your Shiny apps.\n    The router allows you to create dynamic web applications with real-time\n    User Interface and easily share url to pages within your Shiny apps.",
         "URL": "https://appsilon.github.io/shiny.router/,\nhttps://github.com/Appsilon/shiny.router",
         "BugReports": "https://github.com/Appsilon/shiny.router/issues",
@@ -863,16 +1023,21 @@
         "Suggests": "covr, lintr, rcmdcheck, spelling, testthat",
         "NeedsCompilation": "no",
         "Packaged": "2023-04-18 07:43:57 UTC; kuba",
-        "Author": "Ryszard Szyma\u0144ski [cre, aut],\n  Jakub Nowicki [aut],\n  Filip Stachura [aut],\n  Dominik Krzemi\u0144ski [aut],\n  Krystian Igras [aut],\n  Servet Ahmet \u00c7izmeli [ctb],\n  Appsilon Sp. z o.o. [cph]",
-        "Maintainer": "Ryszard Szyma\u0144ski <opensource+ryszard@appsilon.com>",
+        "Author": "Ryszard Szymański [cre, aut],\n  Jakub Nowicki [aut],\n  Filip Stachura [aut],\n  Dominik Krzemiński [aut],\n  Krystian Igras [aut],\n  Servet Ahmet Çizmeli [ctb],\n  Appsilon Sp. z o.o. [cph]",
+        "Maintainer": "Ryszard Szymański <opensource+ryszard@appsilon.com>",
         "Repository": "CRAN",
         "Date/Publication": "2023-04-18 08:00:02 UTC",
-        "Built": "R 4.5.2; ; 2026-06-18 20:59:34 UTC; unix"
+        "Built": "R 4.6.0; ; 2026-06-09 03:12:55 UTC; windows",
+        "RemoteType": "standard",
+        "RemotePkgRef": "shiny.router",
+        "RemoteRef": "shiny.router",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "0.3.1"
       }
     },
     "sourcetools": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "sourcetools",
         "Type": "Package",
@@ -892,18 +1057,24 @@
         "Author": "Kevin Ushey [aut, cre]",
         "Repository": "CRAN",
         "Date/Publication": "2026-03-28 06:10:35 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-06-10 16:47:48 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 00:58:07 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "sourcetools",
+        "RemoteRef": "sourcetools",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "0.1.7-2"
       }
     },
     "sys": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "sys",
         "Type": "Package",
         "Title": "Powerful and Reliable Tools for Running System Commands in R",
         "Version": "3.4.3",
-        "Authors@R": "c(person(\"Jeroen\", \"Ooms\", role = c(\"aut\", \"cre\"), \n      email = \"jeroenooms@gmail.com\", comment = c(ORCID = \"0000-0002-4035-0289\")),\n    person(\"G\u00e1bor\", \"Cs\u00e1rdi\", , \"csardi.gabor@gmail.com\", role = \"ctb\"))",
+        "Authors@R": "c(person(\"Jeroen\", \"Ooms\", role = c(\"aut\", \"cre\"), \n      email = \"jeroenooms@gmail.com\", comment = c(ORCID = \"0000-0002-4035-0289\")),\n    person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = \"ctb\"))",
         "Description": "Drop-in replacements for the base system2() function with fine control\n    and consistent behavior across platforms. Supports clean interruption, timeout, \n    background tasks, and streaming STDIN / STDOUT / STDERR over binary or text \n    connections. Arguments on Windows automatically get encoded and quoted to work \n    on different locales.",
         "License": "MIT + file LICENSE",
         "URL": "https://jeroen.r-universe.dev/sys",
@@ -914,21 +1085,27 @@
         "Language": "en-US",
         "NeedsCompilation": "yes",
         "Packaged": "2024-10-03 14:13:17 UTC; jeroen",
-        "Author": "Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>),\n  G\u00e1bor Cs\u00e1rdi [ctb]",
+        "Author": "Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>),\n  Gábor Csárdi [ctb]",
         "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
         "Repository": "CRAN",
         "Date/Publication": "2024-10-04 09:40:02 UTC",
-        "Built": "R 4.5.2; x86_64-apple-darwin23.6.0; 2026-01-15 02:10:12 UTC; unix"
+        "Built": "R 4.6.0; x86_64-w64-mingw32; 2026-05-30 00:57:50 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "sys",
+        "RemoteRef": "sys",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "3.4.3"
       }
     },
     "withr": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "withr",
         "Title": "Run Code 'With' Temporarily Modified Global State",
         "Version": "3.0.2",
-        "Authors@R": "c(\n    person(\"Jim\", \"Hester\", role = \"aut\"),\n    person(\"Lionel\", \"Henry\", , \"lionel@posit.co\", role = c(\"aut\", \"cre\")),\n    person(\"Kirill\", \"M\u00fcller\", , \"krlmlr+r@mailbox.org\", role = \"aut\"),\n    person(\"Kevin\", \"Ushey\", , \"kevinushey@gmail.com\", role = \"aut\"),\n    person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\"),\n    person(\"Winston\", \"Chang\", role = \"aut\"),\n    person(\"Jennifer\", \"Bryan\", role = \"ctb\"),\n    person(\"Richard\", \"Cotton\", role = \"ctb\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
+        "Authors@R": "c(\n    person(\"Jim\", \"Hester\", role = \"aut\"),\n    person(\"Lionel\", \"Henry\", , \"lionel@posit.co\", role = c(\"aut\", \"cre\")),\n    person(\"Kirill\", \"Müller\", , \"krlmlr+r@mailbox.org\", role = \"aut\"),\n    person(\"Kevin\", \"Ushey\", , \"kevinushey@gmail.com\", role = \"aut\"),\n    person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\"),\n    person(\"Winston\", \"Chang\", role = \"aut\"),\n    person(\"Jennifer\", \"Bryan\", role = \"ctb\"),\n    person(\"Richard\", \"Cotton\", role = \"ctb\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
         "Description": "A set of functions to run code 'with' safely and temporarily\n    modified global state. Many of these functions were originally a part\n    of the 'devtools' package, this provides a simple package with limited\n    dependencies to provide access to these functions.",
         "License": "MIT + file LICENSE",
         "URL": "https://withr.r-lib.org, https://github.com/r-lib/withr#readme",
@@ -944,16 +1121,21 @@
         "Collate": "'aaa.R' 'collate.R' 'connection.R' 'db.R' 'defer-exit.R'\n'standalone-defer.R' 'defer.R' 'devices.R' 'local_.R' 'with_.R'\n'dir.R' 'env.R' 'file.R' 'language.R' 'libpaths.R' 'locale.R'\n'makevars.R' 'namespace.R' 'options.R' 'par.R' 'path.R' 'rng.R'\n'seed.R' 'wrap.R' 'sink.R' 'tempfile.R' 'timezone.R'\n'torture.R' 'utils.R' 'with.R'",
         "NeedsCompilation": "no",
         "Packaged": "2024-10-28 10:58:18 UTC; lionel",
-        "Author": "Jim Hester [aut],\n  Lionel Henry [aut, cre],\n  Kirill M\u00fcller [aut],\n  Kevin Ushey [aut],\n  Hadley Wickham [aut],\n  Winston Chang [aut],\n  Jennifer Bryan [ctb],\n  Richard Cotton [ctb],\n  Posit Software, PBC [cph, fnd]",
+        "Author": "Jim Hester [aut],\n  Lionel Henry [aut, cre],\n  Kirill Müller [aut],\n  Kevin Ushey [aut],\n  Hadley Wickham [aut],\n  Winston Chang [aut],\n  Jennifer Bryan [ctb],\n  Richard Cotton [ctb],\n  Posit Software, PBC [cph, fnd]",
         "Maintainer": "Lionel Henry <lionel@posit.co>",
         "Repository": "CRAN",
         "Date/Publication": "2024-10-28 13:30:02 UTC",
-        "Built": "R 4.5.2; ; 2026-06-18 20:58:32 UTC; unix"
+        "Built": "R 4.6.0; ; 2026-06-09 01:06:02 UTC; windows",
+        "RemoteType": "standard",
+        "RemotePkgRef": "withr",
+        "RemoteRef": "withr",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "3.0.2"
       }
     },
     "xtable": {
       "Source": "CRAN",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "https://cran.rstudio.com",
       "description": {
         "Package": "xtable",
         "Version": "1.8-8",
@@ -973,385 +1155,399 @@
         "Packaged": "2026-02-20 02:51:53 UTC; dsco0",
         "Author": "David B. Dahl [aut],\n  David Scott [aut, cre],\n  Charles Roosen [aut],\n  Arni Magnusson [aut],\n  Jonathan Swinton [aut],\n  Ajay Shah [ctb],\n  Arne Henningsen [ctb],\n  Benno Puetz [ctb],\n  Bernhard Pfaff [ctb],\n  Claudio Agostinelli [ctb],\n  Claudius Loehnert [ctb],\n  David Mitchell [ctb],\n  David Whiting [ctb],\n  Fernando da Rosa [ctb],\n  Guido Gay [ctb],\n  Guido Schulz [ctb],\n  Ian Fellows [ctb],\n  Jeff Laake [ctb],\n  John Walker [ctb],\n  Jun Yan [ctb],\n  Liviu Andronic [ctb],\n  Markus Loecher [ctb],\n  Martin Gubri [ctb],\n  Matthieu Stigler [ctb],\n  Robert Castelo [ctb],\n  Seth Falcon [ctb],\n  Stefan Edwards [ctb],\n  Sven Garbade [ctb],\n  Uwe Ligges [ctb]",
         "Date/Publication": "2026-02-22 11:20:02 UTC",
-        "Built": "R 4.5.2; ; 2026-06-10 16:47:46 UTC; unix"
+        "Built": "R 4.6.0; ; 2026-05-30 00:57:50 UTC; windows",
+        "RemoteType": "standard",
+        "RemotePkgRef": "xtable",
+        "RemoteRef": "xtable",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteSha.Version": "1.8-8"
       }
     }
   },
   "files": {
     "app.R": {
-      "checksum": "7720d232a4d2f75c29b65593b5ec2a67"
+      "checksum": "d2450de1469bf3d8c43bb75a0c054f64"
+    },
+    "data/interview_data.json.enc": {
+      "checksum": "2614fcc463e3ae07ca6f9c52a610e04a"
+    },
+    "data/interview_translations.json": {
+      "checksum": "e6507c3ef67cb9077efd0d6663f2d40b"
+    },
+    "data/service_details.json": {
+      "checksum": "bd016aee433fe4d62048a49266fb732f"
     },
     "data/survey_data.csv.enc": {
-      "checksum": "c2633d644884fe633bb5b8c6f05996c2"
+      "checksum": "89272443ea50c87ba502efe05b60e337"
     },
     "data/translations/ar.json": {
-      "checksum": "22e9cfbc6b6fe83c5e05b52fb47c1697"
+      "checksum": "3ded1d130f6eaaf7511974507a32a871"
     },
     "data/translations/en.json": {
-      "checksum": "2958f28489137def39f6a83f7ad057cb"
+      "checksum": "34fb3093b3cf7d35a791de58a6c6afe0"
     },
     "data/translations/es-419.json": {
-      "checksum": "9d556b7c58b893ac64cdebe3c23b37d2"
+      "checksum": "8087ecbe36398dd8721b909132679ceb"
     },
     "data/translations/es.json": {
-      "checksum": "9d556b7c58b893ac64cdebe3c23b37d2"
+      "checksum": "dbd2f6845a9fb66a629a8799764ececa"
     },
     "data/translations/fr-FR.json": {
-      "checksum": "40a4b4aef88d77b30a7a176f2f026d80"
+      "checksum": "dedff888e4437be05f653f922e010802"
     },
     "data/translations/fr.json": {
-      "checksum": "40a4b4aef88d77b30a7a176f2f026d80"
+      "checksum": "12349e29bfd6fdd41cbc7841885fd0cc"
     },
     "data/translations/ht.json": {
-      "checksum": "1599de85cfaa38d9acec901e3413c299"
+      "checksum": "946458102c72b529e55b90d1305bec8b"
     },
     "data/translations/kea.json": {
-      "checksum": "4f52ea135084df5f936379629aa4b2ae"
+      "checksum": "3e06c040cd8a12417959ecc6c22a7090"
     },
     "data/translations/pt-BR.json": {
-      "checksum": "6770c7c7e73d79c7e7ca32524b4117e7"
+      "checksum": "28d485df8e3b7f3e9638cdab494b3461"
     },
     "data/translations/ru.json": {
-      "checksum": "6650b781499800e3033a5d8a90125748"
+      "checksum": "09281bdc9a2405896e2a8f2e32efd603"
     },
     "data/translations/so.json": {
-      "checksum": "133547a6b187cfcebdf3b15a2bef0698"
+      "checksum": "27131763ac4ce8cf7d81e4d3819b6bfc"
     },
     "data/translations/vi.json": {
-      "checksum": "795b50563f10f93649bd2894b17d0f07"
+      "checksum": "6bfafac53f45fb7d4007ddf344ef46a8"
     },
     "data/translations/yue.json": {
-      "checksum": "c0f86ea5e723057265ffdc94e4bd18f7"
+      "checksum": "f6ce169bd2090d8bc58547b0f7851985"
     },
     "data/translations/zh-Hans.json": {
-      "checksum": "90e6f4a6ee3aca517e0511b5820ad4e2"
+      "checksum": "5e8ef3b393e5b7090951c0859ed4cff3"
     },
     "Makefile": {
-      "checksum": "fe49925ed8493362a85521d31a8a2b6d"
+      "checksum": "3514fa69d0bc7e4616cb31d565f1d191"
     },
     "R/data.R": {
-      "checksum": "9e356079cfa6aa58debf3458185f5ee3"
+      "checksum": "5906d51a36caa5c2108fab63bde4a33b"
     },
     "R/data/crypto.R": {
-      "checksum": "3a7b776db1ab35adee6b153a40f24644"
+      "checksum": "a2c4c48470b2e423bafb33905420da29"
     },
     "R/data/demographics.R": {
-      "checksum": "125ee14c1727b4a010eb37c5fa706e02"
+      "checksum": "06b9606166a712fd12491704288cb76b"
     },
     "R/data/dimensions.R": {
-      "checksum": "8cf5ba4f7fdb7ee7a317c48caef8da46"
+      "checksum": "aaedae7b5db53c101afa5f5e827c6e0d"
     },
     "R/data/interviews.R": {
-      "checksum": "a4cae164e40bdf53ae1a133f3bb45cae"
+      "checksum": "f0c09de9b6557d42577978efb9379b22"
     },
     "R/data/org_details_context.R": {
-      "checksum": "a030cead7eefe82dbf0c3cb60a87c177"
+      "checksum": "ecca907331159981b502e5b47b1d5bc9"
     },
     "R/data/orgservices.R": {
-      "checksum": "0d893d50b9d149b0c5c298f79f09bc4d"
+      "checksum": "d024d47310813298f6d7dca1e3202e23"
     },
     "R/data/survey_pipeline.R": {
-      "checksum": "c40ef3f875037c93c7d897d7dbaf5e9f"
+      "checksum": "f49aaa385d2a8ba3692f64bd495def2e"
     },
     "R/data/survey_store.R": {
-      "checksum": "4725378e2700c4eb6467b205a6c262dd"
+      "checksum": "6d9b65e62f27d442c74479991ba7133d"
     },
     "R/data/translations.R": {
-      "checksum": "57ef3d9c86601e6a359f934bcba55351"
+      "checksum": "b50be0e99c9928be7a2206d06b48977f"
     },
     "R/data/utils.R": {
-      "checksum": "d8675bade28d823ca28167be750e4271"
+      "checksum": "a580b2f246e1a0c161d0aab81a3ff4e0"
     },
     "R/lang.R": {
-      "checksum": "15a2d8cbbfb563c496d9d043cd89ef69"
+      "checksum": "fd014909976e84eff758a874f79379cb"
     },
     "R/server.R": {
-      "checksum": "a73cdbff6768cecded1b9a69ceb41ce7"
+      "checksum": "dabeb48f264befb0710ea129554ac72e"
     },
     "R/templates/components/lang_change_nav_link_ui.R": {
-      "checksum": "2e8c6cbc27990e3fad9ba5739f2e74de"
+      "checksum": "e11df25781d8ce3bdf3d3aaaaa55789e"
     },
     "R/templates/components/login_nav_link_ui.R": {
-      "checksum": "e735e3a5d6b047b1e44275d5fe2164d1"
+      "checksum": "86df2b8f38f8e60f6acf20b31e7ed748"
     },
     "R/templates/components/organizations_list_ui.R": {
-      "checksum": "bf675dd7e2ea38272ddaa8041a8b99bc"
+      "checksum": "778b245553c7b4ffe8dbb320c1cbc59c"
     },
     "R/templates/components/theme_toggle_nav_link_ui.R": {
-      "checksum": "a5c0115eb6e0eebfcd1e35c82e776f60"
+      "checksum": "7705516fec0435c61d7b409188fb7521"
+    },
+    "R/templates/layout/footer_ui.R": {
+      "checksum": "d976607bc6779d031e9764ebdf3f3cb4"
     },
     "R/templates/layout/header_ui.R": {
-      "checksum": "5393b3b946fd118882caf29231beeb41"
+      "checksum": "fb436d650fe4603bdc05a2a437b58ac3"
+    },
+    "R/templates/layout/main_ui.R": {
+      "checksum": "53b2726db61f89ce6617a9de77895e7c"
+    },
+    "R/templates/pages/about_ui.R": {
+      "checksum": "79c432fd4e67f13fd3eaddb906589818"
     },
     "R/templates/pages/home_ui.R": {
-      "checksum": "a68d4c02a7d57afc97e61d9ba74f2fae"
+      "checksum": "db31696b5cd4e8b64247c8ea945d196c"
     },
     "R/templates/pages/login_ui.R": {
-      "checksum": "f7fe9d0d40685b45d59d729cd39f27b4"
+      "checksum": "6c60d22ee4ece9c2876f258ffc79819b"
     },
     "R/templates/pages/organization_details_ui.R": {
-      "checksum": "7058657fbcde4703c24bb41e0a518b1e"
+      "checksum": "ba4807f89f45cc88eee785c6318ff71a"
     },
     "R/templates/pages/organizations_ui.R": {
-      "checksum": "c0e466f49a75108c674293ce6ef53d38"
+      "checksum": "ad56c56801aab348e457e06ac3c41b19"
     },
     "R/ui.R": {
-      "checksum": "96c6a10ae2009a6b1e59581a2db7d873"
+      "checksum": "9fafe71ddb025bfc53613adb9cfee024"
     },
     "README.md": {
       "checksum": "cfaf6efa9bb3482e81d5cd52e434aef2"
     },
     "www/css/styles.css": {
-      "checksum": "a804bcffdf49add24d3e84662bbe8931"
+      "checksum": "3daa1e7d46972b74c515e8bb9da963cc"
     },
     "www/css/tabler/tabler-flags.css": {
-      "checksum": "1b5a60be0b295cc17ec9943d1a62c5de"
+      "checksum": "89e321a456e82072518a4f5cef0dcd81"
     },
     "www/css/tabler/tabler-flags.css.map": {
       "checksum": "dafce8fad3ff45f1558120c443c398d3"
     },
     "www/css/tabler/tabler-flags.min.css": {
-      "checksum": "2fc2259822a6f42a04b05e7ceda3ff66"
+      "checksum": "77dd5626d0e595d78bc37dba99a4b18b"
     },
     "www/css/tabler/tabler-flags.min.css.map": {
       "checksum": "b5a738de9c00da7cbf5eb274c340b323"
     },
     "www/css/tabler/tabler-flags.rtl.css": {
-      "checksum": "42385b88f7f3e329e93d650bcddbd36f"
+      "checksum": "ff47eebb2f3ed36950f489ed8f5a983e"
     },
     "www/css/tabler/tabler-flags.rtl.css.map": {
       "checksum": "d2d27e28fcf84321063487ffb9a23d1b"
     },
     "www/css/tabler/tabler-flags.rtl.min.css": {
-      "checksum": "4b4f9475419c4dbab5184483c0ee18d2"
+      "checksum": "cab804704cf4c7d896a776cc9bd4a75f"
     },
     "www/css/tabler/tabler-flags.rtl.min.css.map": {
       "checksum": "b5a738de9c00da7cbf5eb274c340b323"
     },
     "www/css/tabler/tabler-marketing.css": {
-      "checksum": "a59e11dd63653758751069f888f03b74"
+      "checksum": "9aaa8659e4d229cdaf00d3f859a9010a"
     },
     "www/css/tabler/tabler-marketing.css.map": {
       "checksum": "aa95db39334ad1630770ada7e8df43ea"
     },
     "www/css/tabler/tabler-marketing.min.css": {
-      "checksum": "2dee26537d5e16536392bd640a394132"
+      "checksum": "cca0d0898b3ef23ad5de312801511f1e"
     },
     "www/css/tabler/tabler-marketing.min.css.map": {
       "checksum": "42ddac66bed28af7bdfd8b5948b44a1f"
     },
     "www/css/tabler/tabler-marketing.rtl.css": {
-      "checksum": "e51cb37852eddfc00aff167e18bdc78e"
+      "checksum": "350752242d710fb2c7c3ba4f3b55e9b1"
     },
     "www/css/tabler/tabler-marketing.rtl.css.map": {
       "checksum": "ac731746709f2d22ed99efd39419561f"
     },
     "www/css/tabler/tabler-marketing.rtl.min.css": {
-      "checksum": "72cd88226061852b80eb3b8fe5d7a792"
+      "checksum": "4cc35b8962ae61d1f493defd20d46d6e"
     },
     "www/css/tabler/tabler-marketing.rtl.min.css.map": {
       "checksum": "e5535ada1a6e727434c286d2b9ecf900"
     },
     "www/css/tabler/tabler-payments.css": {
-      "checksum": "1f3b91a77f1c080457580a36f3b6a82f"
+      "checksum": "97bd69a3103f4bebbfc79bcc38886e7a"
     },
     "www/css/tabler/tabler-payments.css.map": {
       "checksum": "8bf7f1187cd1d8db7ce5f9589b750e2a"
     },
     "www/css/tabler/tabler-payments.min.css": {
-      "checksum": "244a22c4fe19300b15a9fb0bcbdb11a6"
+      "checksum": "48287e52f46669110e81a07a2f773a4a"
     },
     "www/css/tabler/tabler-payments.min.css.map": {
       "checksum": "60d3f976a2fc0c87f5a7701e8033120b"
     },
     "www/css/tabler/tabler-payments.rtl.css": {
-      "checksum": "d2f4435d7552648e72d121c5f39a566b"
+      "checksum": "d5ac542b9d38af60f9d3eb00018468ae"
     },
     "www/css/tabler/tabler-payments.rtl.css.map": {
       "checksum": "1225dfd8f28c2eab13b43ffe8710d2cf"
     },
     "www/css/tabler/tabler-payments.rtl.min.css": {
-      "checksum": "3a966856064486d6388c348f620a39c1"
+      "checksum": "4b76e282f83f80e905864f9da00078b8"
     },
     "www/css/tabler/tabler-payments.rtl.min.css.map": {
       "checksum": "60d3f976a2fc0c87f5a7701e8033120b"
     },
     "www/css/tabler/tabler-props.css": {
-      "checksum": "195f77cb681210ec21146266fc1daa44"
+      "checksum": "a31b9b444300932de7ef3f275603025f"
     },
     "www/css/tabler/tabler-props.css.map": {
       "checksum": "4eec4e27e578844448bd149edfb797b4"
     },
     "www/css/tabler/tabler-props.min.css": {
-      "checksum": "4d6cb97a820b0274a755fd2577b4c2ad"
+      "checksum": "8c1c5b45edb81002945326f0ac3f64d6"
     },
     "www/css/tabler/tabler-props.min.css.map": {
       "checksum": "77e5dd1d29aa26aec5b2ba0dcbe06df4"
     },
     "www/css/tabler/tabler-props.rtl.css": {
-      "checksum": "78a0837413898c4e7cfe0705e45a9c5a"
+      "checksum": "712baf579487422e07ad1b0f5b0e58ff"
     },
     "www/css/tabler/tabler-props.rtl.css.map": {
       "checksum": "f6af3954928c1beb62b72a7f6b3ae744"
     },
     "www/css/tabler/tabler-props.rtl.min.css": {
-      "checksum": "98664f98ea9ce2ada81e00a626d682a8"
+      "checksum": "107f7949733e4a373c44daf133df87e7"
     },
     "www/css/tabler/tabler-props.rtl.min.css.map": {
       "checksum": "9523fabefc70ef7e12f5c29994c31235"
     },
     "www/css/tabler/tabler-socials.css": {
-      "checksum": "9288bdae0cecb81109bd1bb732e18177"
+      "checksum": "22421875fe695df9fed6f014e36664b1"
     },
     "www/css/tabler/tabler-socials.css.map": {
       "checksum": "f3c9c996a80e9c9cef1e42e2d690f264"
     },
     "www/css/tabler/tabler-socials.min.css": {
-      "checksum": "0ba99ea79e46a8f46ee873bc928d42d6"
+      "checksum": "5dcb1b70b838be7a4ee90f063c2b03bd"
     },
     "www/css/tabler/tabler-socials.min.css.map": {
       "checksum": "1aac4533dff8ad4b9cfcdb6edda70644"
     },
     "www/css/tabler/tabler-socials.rtl.css": {
-      "checksum": "46a7c84f146c6644ee181bb9325c5b59"
+      "checksum": "64b72418e29c89b1c33bdf2d7f23bb04"
     },
     "www/css/tabler/tabler-socials.rtl.css.map": {
       "checksum": "9b4e32e55f05c7bc8713b15a63a0292a"
     },
     "www/css/tabler/tabler-socials.rtl.min.css": {
-      "checksum": "265c5fe9ef549a5957682dc8681e6dac"
+      "checksum": "dcdba17c76c8f6efc0721b11dfaf4e80"
     },
     "www/css/tabler/tabler-socials.rtl.min.css.map": {
       "checksum": "1aac4533dff8ad4b9cfcdb6edda70644"
     },
     "www/css/tabler/tabler-themes.css": {
-      "checksum": "239893ae1084579d2aedeae96e106a4b"
+      "checksum": "f2e270a1f128f27512b52faa52d4abff"
     },
     "www/css/tabler/tabler-themes.css.map": {
       "checksum": "4ef7f5af55d331773a7e909471aaaff3"
     },
     "www/css/tabler/tabler-themes.min.css": {
-      "checksum": "c84f81fedf683c6cd79085492c6e9cd4"
+      "checksum": "1205964174a1d1075ceab9d567784733"
     },
     "www/css/tabler/tabler-themes.min.css.map": {
       "checksum": "870b04d22c452d19f0090ebd3ab5beb6"
     },
     "www/css/tabler/tabler-themes.rtl.css": {
-      "checksum": "d31929c1c49be18f5800a0d787085be3"
+      "checksum": "e5b1f1a56e627c7e76251ee105e2020e"
     },
     "www/css/tabler/tabler-themes.rtl.css.map": {
       "checksum": "33e7044d366447064b9a9e695f92b006"
     },
     "www/css/tabler/tabler-themes.rtl.min.css": {
-      "checksum": "ba71357a24bce0a015bcefa3112280cb"
+      "checksum": "729688efd092f7912a919d6bc7b73b3f"
     },
     "www/css/tabler/tabler-themes.rtl.min.css.map": {
       "checksum": "e8cccdc47f38e87fc5a465c66ad90d24"
     },
     "www/css/tabler/tabler-vendors.css": {
-      "checksum": "3e8da815e0158f8acf1a54be2d082dc0"
+      "checksum": "4f276387fcf098fe75b215ab53497083"
     },
     "www/css/tabler/tabler-vendors.css.map": {
       "checksum": "78f4412b415f9b2ab1c487991649407e"
     },
     "www/css/tabler/tabler-vendors.min.css": {
-      "checksum": "4cc3810be9218770a236aca32518c1a3"
+      "checksum": "86d25e73727c7ed9552e936abe9a0c08"
     },
     "www/css/tabler/tabler-vendors.min.css.map": {
       "checksum": "e67c3b53528171a2e77bd939b50ba16a"
     },
     "www/css/tabler/tabler-vendors.rtl.css": {
-      "checksum": "03b0e23f1564f21952af0f61b22ab689"
+      "checksum": "484cf806b05351b83c56ab7529c0db5b"
     },
     "www/css/tabler/tabler-vendors.rtl.css.map": {
       "checksum": "ada240c77a9087561149b47bf8d5689a"
     },
     "www/css/tabler/tabler-vendors.rtl.min.css": {
-      "checksum": "a8cc0bfee2572b1374d23de24f59bc17"
+      "checksum": "a6f39de3a11bef9e3d80b26d88579d37"
     },
     "www/css/tabler/tabler-vendors.rtl.min.css.map": {
       "checksum": "b981204b84cce1a0732f9b48c5ee80e8"
     },
     "www/css/tabler/tabler.css": {
-      "checksum": "dc3a82e655770cb2d7c2544d93e748ac"
+      "checksum": "d95de7de96343bb875a6596c98229a2f"
     },
     "www/css/tabler/tabler.css.map": {
       "checksum": "fa793ab99f389cd12eaf745602d65328"
     },
     "www/css/tabler/tabler.min.css": {
-      "checksum": "b5d49cd738bcdf2bc4f4facf2da08c32"
+      "checksum": "7a8e77cd8911eeacccb811eb111e78c0"
     },
     "www/css/tabler/tabler.min.css.map": {
       "checksum": "c8350e1844b9e89ce7311e373ec70dec"
     },
     "www/css/tabler/tabler.rtl.css": {
-      "checksum": "280d70e8fae08847b632690a84a92e0e"
+      "checksum": "2ea3127d7c2766a41c343f7f9c8bf96a"
     },
     "www/css/tabler/tabler.rtl.css.map": {
       "checksum": "72c700a429b59b890082e23fcab68828"
     },
     "www/css/tabler/tabler.rtl.min.css": {
-      "checksum": "34639c43fe718d133663aa77edf4d569"
+      "checksum": "8dfee460771deefd2c581d592dfac760"
     },
     "www/css/tabler/tabler.rtl.min.css.map": {
       "checksum": "1527d01c526b82e3f222808b6070eeda"
     },
-    "www/html/footer.html": {
-      "checksum": "1c8da7e1bf81afb3ea8dc2e55752d75e"
-    },
-    "www/html/index.html": {
-      "checksum": "f22b52656dcc0b0c12fab665c4f254d5"
-    },
-    "www/html/intro.html": {
-      "checksum": "94b78598b02d7d1d1f6bb51e6722dfd1"
-    },
     "www/js/app.js": {
-      "checksum": "27adaa1eadda11743227c52543809ca2"
+      "checksum": "8b74cc3831c1b89d6776cf5dd664f7b5"
     },
     "www/js/tabler/tabler-theme.esm.js": {
-      "checksum": "56cebccda6acf7f706d2cce32d2cd016"
+      "checksum": "5dae42e257f208b493384e1750f46f52"
     },
     "www/js/tabler/tabler-theme.esm.js.map": {
       "checksum": "96b8ea998dfa3f64d3a4a581f3c5369d"
     },
     "www/js/tabler/tabler-theme.esm.min.js": {
-      "checksum": "74cefd8717ff495361e8ab46f27f878d"
+      "checksum": "60289823cda27fe4cc543d53abf61da4"
     },
     "www/js/tabler/tabler-theme.esm.min.js.map": {
       "checksum": "874d035e90b0f86b4f0f095933479fa9"
     },
     "www/js/tabler/tabler-theme.js": {
-      "checksum": "5e70c298f45cafae17dd393568c1f6c3"
+      "checksum": "442b3a1e346e3560e650f975d841825b"
     },
     "www/js/tabler/tabler-theme.js.map": {
       "checksum": "90543e2643f4d0d4af198b73678b524e"
     },
     "www/js/tabler/tabler-theme.min.js": {
-      "checksum": "f8b93fc0979ff4271df5f0e5177094f5"
+      "checksum": "bf4791f958a1d170cedd7c20de3f047b"
     },
     "www/js/tabler/tabler-theme.min.js.map": {
       "checksum": "d7950d4776ec3488518140e8ed770dff"
     },
     "www/js/tabler/tabler.esm.js": {
-      "checksum": "f3559d9fc9e7995e558e2bd56792109c"
+      "checksum": "df718703960bbe24fffc1abb1f6de33c"
     },
     "www/js/tabler/tabler.esm.js.map": {
       "checksum": "51c263de81f095f603224acd8876d258"
     },
     "www/js/tabler/tabler.esm.min.js": {
-      "checksum": "4e2b8a496d9dd94722d906aa02a50e55"
+      "checksum": "19cf077d3d71e238d649ae8298712d8f"
     },
     "www/js/tabler/tabler.esm.min.js.map": {
       "checksum": "71f0682ea3bbde8f063e2dc586788d03"
     },
     "www/js/tabler/tabler.js": {
-      "checksum": "38f2c1ed84466ae981c79570dff22740"
+      "checksum": "13396f22e0d54037b1789bb055ccab1a"
     },
     "www/js/tabler/tabler.js.map": {
       "checksum": "34cd06ad6926412db3cedb8b46ab342b"
     },
     "www/js/tabler/tabler.min.js": {
-      "checksum": "cf0dbd0750e6fa5bcc6a52109af5fbf6"
+      "checksum": "b284194fe84fde4cd224f06902ee5524"
     },
     "www/js/tabler/tabler.min.js.map": {
       "checksum": "5dfccf9a9ea9048516224243c1142136"
