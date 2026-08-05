@@ -105,6 +105,11 @@ get_organization_details_context <- function(
   # organizational focus ("not_interested").
   interview_dims <- get_interview_dimensions(get_named_value(row, "irb_participant_id", ""))
 
+  # Survey-matched services plus interview-coded other_services, so the wheel
+  # shows offerings the survey instrument never asked about. Computed once: the
+  # detail-text lookup is scoped to exactly the keys the wheel will render.
+  established_subcats <- org_subcat_keys(orgservices, interview_dims)
+
   c(
     list(
       details = details,
@@ -116,9 +121,12 @@ get_organization_details_context <- function(
     get_organization_details_demographics(row),
     list(
       established_categories = get_dimension_categories(orgservices, lang, "established"),
-      # Survey-matched services plus interview-coded other_services, so the
-      # wheel shows offerings the survey instrument never asked about.
-      established_subcats = org_subcat_keys(orgservices, interview_dims),
+      established_subcats = established_subcats,
+      # Per-service detail text, keyed by sub-key. Empty until someone authors an
+      # entry in data/service_details.json for this organization.
+      subcat_details = get_service_details(
+        get_named_value(row, "irb_participant_id", ""), established_subcats
+      ),
       # Emerging wheel = survey-marked emerging dimensions only.
       emerging_categories = get_emerging_dimension_categories(orgservices, lang),
       barriers = get_interview_dimension_items(interview_dims, "barriers", lang, orgservices = orgservices),

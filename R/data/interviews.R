@@ -100,6 +100,80 @@ org_subcat_keys <- function(orgservices, interview_dims) {
   ))
 }
 
+# Per-service detail text for the established wheel: a sentence or two about how
+# THIS organization delivers a service the wheel already lists (e.g. that its job
+# training is blue-collar). Lives UNENCRYPTED and English-only in
+# data/service_details.json, hand-authored one organization at a time, because the
+# editing loop is frequent and small and a .enc file would make every edit an
+# unreviewable binary diff. Missing file, malformed JSON, or missing entries all
+# degrade to no detail text rather than failing. Cached for the process.
+#
+# Shape: { "service_details": { "<irb_id>": { "<dim>": { "<sub_key>": "text" } } } }
+load_service_details <- local({
+  cached <- NULL
+  function(path = file.path("data", "service_details.json")) {
+    if (!is.null(cached)) {
+      return(cached)
+    }
+    cached <<- tryCatch(
+      {
+        if (!file.exists(path) || !requireNamespace("jsonlite", quietly = TRUE)) {
+          list()
+        } else {
+          raw <- jsonlite::fromJSON(path, simplifyVector = FALSE)
+          raw$service_details %||% list()
+        }
+      },
+      error = function(e) list()
+    )
+    cached
+  }
+})
+
+# Detail text for one organization, flattened to sub_key -> text.
+#
+# subcat_keys is the org's rendered subcategory set (org_subcat_keys()). Anything
+# outside it is dropped, so text authored for a service the org does not show
+# cannot leak into the DOM, and stale text survives harmlessly in the file if a
+# service is later removed. Blank or whitespace-only text is dropped too, which is
+# what makes an unwritten service render no box at all.
+get_service_details <- function(irb_id, subcat_keys,
+                                details = load_service_details()) {
+  irb_id <- trimws(as.character(irb_id %||% ""))
+  if (!nzchar(irb_id) || !length(subcat_keys)) {
+    return(list())
+  }
+  record <- details[[irb_id]]
+  if (is.null(record) || !length(record)) {
+    return(list())
+  }
+
+  out <- list()
+  for (key in names(DIMENSION_LABEL_KEYS)) {
+    entries <- record[[key]]
+    if (is.null(entries) || !length(entries)) next
+    for (sub_key in names(entries)) {
+      if (!sub_key %in% subcat_keys) next
+      text <- trimws(as.character(entries[[sub_key]] %||% ""))
+      if (nzchar(text)) {
+        out[[sub_key]] <- text
+      }
+    }
+  }
+  out
+}
+
+# Serialize detail text for the wheel's data-subcat-details attribute, or NULL when
+# there is none. NULL matters: Shiny omits NULL attributes entirely, so createWheel
+# sees no attribute and skips the detail path rather than parsing an empty object.
+subcat_details_attr <- function(subcat_details) {
+  if (is.null(subcat_details) || !length(subcat_details)) {
+    return(NULL)
+  }
+  assert_packages_installed("jsonlite")
+  as.character(jsonlite::toJSON(subcat_details, auto_unbox = TRUE))
+}
+
 # Interview content is stored in the encrypted file as opaque keys; the actual
 # text (in every language) lives in the UNENCRYPTED data/interview_translations.json,
 # keyed by those keys. This keeps the sensitive organization<->statement linkage

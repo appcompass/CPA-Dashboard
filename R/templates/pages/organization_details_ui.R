@@ -299,7 +299,10 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
                 class = "card-body",
                 div(
                   `data-active-categories` = paste(details_context$established_categories, collapse = ", "),
-                  `data-active-subcats` = paste(details_context$established_subcats, collapse = ",")
+                  `data-active-subcats` = paste(details_context$established_subcats, collapse = ","),
+                  # Omitted entirely (NULL) when this org has no authored detail
+                  # text, so createWheel renders labels exactly as before.
+                  `data-subcat-details` = subcat_details_attr(details_context$subcat_details)
                 )
               )
             )
