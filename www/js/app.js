@@ -19,6 +19,9 @@ const WHEEL_META = [
       'wellness_physical_fitness',
       'wellness_physical_nutrition',
       'wellness_physical_screenings',
+      // interview-coded, from other_services (see DIMENSION_INTERVIEW_SUB_KEYS)
+      'wellness_physical_meals',
+      'wellness_physical_movement',
     ],
   },
   {
@@ -32,6 +35,10 @@ const WHEEL_META = [
       'sub_emotional_1',
       'sub_emotional_2',
       'sub_emotional_3',
+      // interview-coded, from other_services (see DIMENSION_INTERVIEW_SUB_KEYS)
+      'wellness_emotional_check_ins',
+      'wellness_emotional_trauma_informed',
+      'wellness_emotional_clinical_referral',
     ],
   },
   {
@@ -45,6 +52,9 @@ const WHEEL_META = [
       'sub_intellectual_1',
       'sub_intellectual_2',
       'sub_intellectual_3',
+      // interview-coded, from other_services (see DIMENSION_INTERVIEW_SUB_KEYS)
+      'wellness_intellectual_creative_arts',
+      'wellness_intellectual_social_justice',
     ],
   },
   {
@@ -59,6 +69,9 @@ const WHEEL_META = [
       'sub_occupational_2',
       'sub_occupational_3',
       'sub_occupational_4',
+      // interview-coded, from other_services (see DIMENSION_INTERVIEW_SUB_KEYS)
+      'wellness_occupational_stipend',
+      'wellness_occupational_mock_interviews',
     ],
   },
   {
@@ -72,6 +85,9 @@ const WHEEL_META = [
       'sub_financial_1',
       'sub_financial_2',
       'sub_financial_3',
+      // interview-coded, from other_services (see DIMENSION_INTERVIEW_SUB_KEYS)
+      'wellness_financial_emergency_fund',
+      'wellness_financial_stipend_empowerment',
     ],
   },
   {
@@ -85,6 +101,9 @@ const WHEEL_META = [
       'sub_social_1',
       'sub_social_2',
       'sub_social_3',
+      // interview-coded, from other_services (see DIMENSION_INTERVIEW_SUB_KEYS)
+      'wellness_social_youth_council',
+      'wellness_social_peer_mentoring',
     ],
   },
   {
@@ -112,6 +131,8 @@ const WHEEL_META = [
       'sub_spiritual_2',
       'sub_spiritual_3',
       'sub_spiritual_4',
+      // interview-coded, from other_services (see DIMENSION_INTERVIEW_SUB_KEYS)
+      'wellness_spiritual_mindfulness_embedded',
     ],
   },
 ];

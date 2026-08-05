@@ -8,8 +8,9 @@ organizations_ui <- function(lang = get_lang()) {
   org_names <- get_org_names(survey_data)
 
   # Sidebar sub-category labels, shown in the active language. (The taxonomy keys
-  # live in DIMENSION_SUB_KEYS; service-to-subcategory matching happens in data.R
-  # against English via established_subcat_keys().)
+  # live in DIMENSION_ALL_SUB_KEYS -- survey vocabulary plus interview-coded
+  # vocabulary; survey service matching happens in data.R against English via
+  # established_subcat_keys(), interview keys arrive verbatim from other_services.)
   sub_label <- function(key) organizations[[key]] %||% wheel[[key]] %||% key
 
   # Dimension -> Tabler text color for the established-areas badges, matching the
@@ -87,8 +88,10 @@ organizations_ui <- function(lang = get_lang()) {
     unlist(matched, use.names = FALSE)
   }
 
-  # (service_matches_label() and established_subcat_keys() now live in data.R so
-  # they can be unit-tested; the cards below call established_subcat_keys().)
+  # (service_matches_label(), established_subcat_keys() and org_subcat_keys() live
+  # in data.R so they can be unit-tested; the cards below call org_subcat_keys() --
+  # the same accessor the details-page wheel uses, so a filter hit and the wheel
+  # can never disagree.)
 
   # Inline Tabler outline icon for a wellness dimension, built from the shared
   # DIMENSION_WHEEL_ICON_PATHS source of truth (mirrors the wheel's WHEEL_META
@@ -162,7 +165,7 @@ organizations_ui <- function(lang = get_lang()) {
 
   render_wellness_groups <- function(group) {
     tagList(lapply(names(DIMENSION_LABEL_KEYS), function(key) {
-      children <- lapply(DIMENSION_SUB_KEYS[[key]], function(sub_key) {
+      children <- lapply(DIMENSION_ALL_SUB_KEYS[[key]], function(sub_key) {
         filter_checkbox(group, key, "child", sub_label(sub_key), subcat = sub_key)
       })
       div(
@@ -325,7 +328,13 @@ organizations_ui <- function(lang = get_lang()) {
                       class = "col-12 organization-result",
                       `data-org-name` = tolower(org_name),
                       `data-established` = paste(dimension_keys_by_state(orgservices, "established"), collapse = ","),
-                      `data-established-subcats` = paste(established_subcat_keys(orgservices), collapse = ","),
+                      `data-established-subcats` = paste(
+                        org_subcat_keys(
+                          orgservices,
+                          get_interview_dimensions(get_named_value(row, "irb_participant_id", ""))
+                        ),
+                        collapse = ","
+                      ),
                       organization_card(org_name, orgservices, lengthserve)
                     )
                   }),
