@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# Interview-coded data (barriers / resource_needs / emerging per dimension),
+# Interview-coded data (barriers / resource_needs / emerging / other_services
 # decrypted at runtime and joined to the survey on irb_participant_id. This is
 # OPTIONAL supplemental data: when the encrypted file or the key is absent, the
 # loader returns an empty lookup and the dashboard simply renders no
@@ -57,6 +57,47 @@ get_interview_dimensions <- function(irb_id, interview_data = load_interview_dat
     return(NULL)
   }
   interview_data[[irb_id]]
+}
+
+# Subcategory keys an organization provides according to its interview coding,
+# read from `other_services` -- the sub-keys a human coder assigned from the
+# transcript. Never inferred from text, so nothing lands on an org that a coder
+# did not put there. Gated two ways:
+#   * only dimensions the SURVEY marked "established", mirroring
+#     established_subcat_keys(). The only consumers are the established wheel and
+#     the established filter group, so a service coded in an emerging or
+#     not_interested dimension has nowhere to render, and emitting it would make
+#     the org match an "established" filter it does not belong in.
+#   * only keys declared in DIMENSION_ALL_SUB_KEYS for that dimension, so a typo
+#     or a retired key never reaches the DOM as an unlabelled sub-key. Validating
+#     against the union (not just the interview list) lets a coder legitimately
+#     add a SURVEY-vocabulary service the org forgot to check off.
+interview_subcat_keys <- function(orgservices, interview_dims) {
+  if (is.null(interview_dims) || !length(interview_dims)) {
+    return(character(0))
+  }
+  out <- character(0)
+  for (key in names(DIMENSION_LABEL_KEYS)) {
+    dim <- orgservices[[key]]
+    if (is.null(dim) || !identical(dim$state, "established")) next
+    coded <- trimws(as.character(unlist(interview_dims[[key]][["other_services"]] %||% list())))
+    coded <- coded[nzchar(coded)]
+    if (!length(coded)) next
+    out <- c(out, intersect(coded, DIMENSION_ALL_SUB_KEYS[[key]]))
+  }
+  unique(out)
+}
+
+# Every subcategory an organization provides as an established service: matched
+# from its survey answers, plus coded from its interview. Both places that expose
+# subcategories to the client -- the details-page wheel (data-active-subcats) and
+# the organizations list cards (data-established-subcats) -- go through here, so
+# the wheel and the filter can never disagree about what an org offers.
+org_subcat_keys <- function(orgservices, interview_dims) {
+  unique(c(
+    established_subcat_keys(orgservices),
+    interview_subcat_keys(orgservices, interview_dims)
+  ))
 }
 
 # Interview content is stored in the encrypted file as opaque keys; the actual

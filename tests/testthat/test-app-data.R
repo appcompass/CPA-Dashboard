@@ -702,3 +702,160 @@ test_that("band_filled_count fills 0/1/3/6 of the six meter slots", {
   expect_equal(band_filled_count("some"), 3L)
   expect_equal(band_filled_count("a_lot"), 6L)
 })
+# ---------------------------------------------------------------------------
+# Service subcategory vocabularies: survey-matched vs interview-coded.
+# ---------------------------------------------------------------------------
+
+test_that("DIMENSION_ALL_SUB_KEYS is the survey-first union of both vocabularies", {
+  expect_named(DIMENSION_INTERVIEW_SUB_KEYS, names(DIMENSION_LABEL_KEYS))
+  expect_named(DIMENSION_ALL_SUB_KEYS, names(DIMENSION_LABEL_KEYS))
+
+  for (key in names(DIMENSION_LABEL_KEYS)) {
+    expect_equal(
+      DIMENSION_ALL_SUB_KEYS[[key]],
+      unique(c(DIMENSION_SUB_KEYS[[key]], DIMENSION_INTERVIEW_SUB_KEYS[[key]])),
+      info = key
+    )
+  }
+
+  # The two vocabularies must stay disjoint. A key in both would make provenance
+  # ambiguous and would reintroduce text-matching for an interview-coded service.
+  expect_length(
+    intersect(
+      unlist(DIMENSION_SUB_KEYS, use.names = FALSE),
+      unlist(DIMENSION_INTERVIEW_SUB_KEYS, use.names = FALSE)
+    ),
+    0L
+  )
+})
+
+test_that("every subcategory key resolves to an English label", {
+  withr::local_dir(project_root)
+  en <- get_lang("en")
+  for (key in unlist(DIMENSION_ALL_SUB_KEYS, use.names = FALSE)) {
+    label <- en$organizations[[key]] %||% en$wheel[[key]]
+    expect_true(!is.null(label) && nzchar(label), info = key)
+  }
+})
+
+test_that("WHEEL_META subKeys in js/app.js match DIMENSION_ALL_SUB_KEYS", {
+  withr::local_dir(project_root)
+  js <- paste(readLines(file.path("www", "js", "app.js"), warn = FALSE), collapse = "\n")
+
+  blocks <- regmatches(
+    js,
+    gregexpr("(?s)key: '[a-z]+',.*?subKeys: \\[.*?\\]", js, perl = TRUE)
+  )[[1]]
+  expect_length(blocks, length(DIMENSION_ALL_SUB_KEYS))
+
+  for (block in blocks) {
+    dim_key <- sub("(?s)^key: '([a-z]+)'.*$", "\\1", block, perl = TRUE)
+    arr <- sub("(?s)^.*subKeys: \\[", "", block, perl = TRUE)
+    subs <- gsub("'", "", regmatches(arr, gregexpr("'[^']+'", arr))[[1]])
+    expect_equal(subs, DIMENSION_ALL_SUB_KEYS[[dim_key]], info = dim_key)
+  }
+})
+
+test_that("interview_subcat_keys emits coded services only for established dimensions", {
+  cols <- c("OccupationalEorE", "Occupational", "EmotionalEorE", "Emotional")
+  vals <- c("Established", "Job training", "Emerging", "Counseling services")
+  row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  os <- parse_orgservices_json(build_orgservices_json(row))
+
+  iv <- list(
+    occupational = list(other_services = list("wellness_occupational_stipend")),
+    emotional = list(other_services = list("wellness_emotional_check_ins"))
+  )
+
+  keys <- interview_subcat_keys(os, iv)
+  expect_true("wellness_occupational_stipend" %in% keys)
+  # Emotional is only emerging here: the established wheel never renders that
+  # panel, and emitting the key would match an "established" filter wrongly.
+  expect_false("wellness_emotional_check_ins" %in% keys)
+})
+
+test_that("interview_subcat_keys drops keys absent from the taxonomy", {
+  cols <- c("OccupationalEorE", "Occupational")
+  vals <- c("Established", "Job training")
+  row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  os <- parse_orgservices_json(build_orgservices_json(row))
+
+  iv <- list(occupational = list(other_services = list(
+    "wellness_occupational_stipend",
+    "wellness_occupational_not_a_real_key"
+  )))
+  expect_equal(interview_subcat_keys(os, iv), "wellness_occupational_stipend")
+})
+
+test_that("interview_subcat_keys returns nothing without an interview record", {
+  cols <- c("OccupationalEorE", "Occupational")
+  vals <- c("Established", "Job training")
+  row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  os <- parse_orgservices_json(build_orgservices_json(row))
+
+  expect_length(interview_subcat_keys(os, NULL), 0L)
+  expect_length(interview_subcat_keys(os, list()), 0L)
+})
+
+test_that("org_subcat_keys unions survey-matched and interview-coded subcategories", {
+  cols <- c("OccupationalEorE", "Occupational")
+  vals <- c("Established", "Job training,Resume support")
+  row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  os <- parse_orgservices_json(build_orgservices_json(row))
+
+  iv <- list(occupational = list(other_services = list("wellness_occupational_stipend")))
+  keys <- org_subcat_keys(os, iv)
+
+  expect_true("sub_occupational_4" %in% keys) # Job training, from the survey
+  expect_true("sub_occupational_3" %in% keys) # Resume support, from the survey
+  expect_true("wellness_occupational_stipend" %in% keys) # from the interview
+  # Survey keys come first so the attribute order is deterministic.
+  expect_equal(keys, c(established_subcat_keys(os), "wellness_occupational_stipend"))
+})
+
+test_that("survey free text never mints an interview-coded subcategory key", {
+  # service_matches_label() is prefix-tolerant, so these free-text answers WOULD
+  # match the interview labels "Mindfulness throughout programming" and
+  # "Daily meals" if the interview vocabulary were text-matched. Keeping
+  # DIMENSION_INTERVIEW_SUB_KEYS out of established_subcat_keys() is what stops an
+  # organization being tagged with a service no coder ever assigned it.
+  cols <- c(
+    "SpiritualEorE", "Spiritual", "Spiritual_6_TEXT",
+    "PhysicalEorE", "Physical", "Physical_5_TEXT"
+  )
+  vals <- c(
+    "Established", "Other (please specify):", "Mindfulness",
+    "Established", "Other (please specify):", "Daily meals for teens"
+  )
+  row <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  os <- parse_orgservices_json(build_orgservices_json(row))
+
+  expect_false("wellness_spiritual_mindfulness_embedded" %in% established_subcat_keys(os))
+  expect_false("wellness_physical_meals" %in% established_subcat_keys(os))
+  # Both probes DO match under a merged vocabulary, which is what makes the two
+  # assertions above meaningful rather than vacuous: "Mindfulness" is a prefix of
+  # "Mindfulness throughout programming", and "Daily meals for teens" starts with
+  # "Daily meals". The survey vocabulary still matches normally, so this is not
+  # simply a dead code path:
+  expect_true("sub_spiritual_1" %in% established_subcat_keys(os))
+  expect_false("wellness_physical_meals" %in% org_subcat_keys(os, NULL))
+})
+
+test_that("get_organization_details_context exposes the union in established_subcats", {
+  withr::local_dir(project_root)
+  survey <- load_survey_data()
+  skip_if(nrow(survey) == 0L, "No survey rows available.")
+
+  org <- get_org_names(survey)[[1]]
+  ctx <- get_organization_details_context(org_name = org, lang = get_lang("en"), survey_data = survey)
+  row <- get_organization_details_row(org_name = org, survey_data = survey)
+  orgservices <- parse_orgservices_json(get_named_value(row, "orgservices_json", ""))
+  interview_dims <- get_interview_dimensions(get_named_value(row, "irb_participant_id", ""))
+
+  expect_equal(ctx$established_subcats, org_subcat_keys(orgservices, interview_dims))
+  # Whatever the union contains must be renderable: every key has to exist in the
+  # taxonomy the wheel iterates, or it silently vanishes from the panel.
+  expect_true(all(
+    ctx$established_subcats %in% unlist(DIMENSION_ALL_SUB_KEYS, use.names = FALSE)
+  ))
+})

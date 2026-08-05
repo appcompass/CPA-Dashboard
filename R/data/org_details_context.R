@@ -116,7 +116,9 @@ get_organization_details_context <- function(
     get_organization_details_demographics(row),
     list(
       established_categories = get_dimension_categories(orgservices, lang, "established"),
-      established_subcats = established_subcat_keys(orgservices),
+      # Survey-matched services plus interview-coded other_services, so the
+      # wheel shows offerings the survey instrument never asked about.
+      established_subcats = org_subcat_keys(orgservices, interview_dims),
       # Emerging wheel = survey-marked emerging dimensions only.
       emerging_categories = get_emerging_dimension_categories(orgservices, lang),
       barriers = get_interview_dimension_items(interview_dims, "barriers", lang, orgservices = orgservices),
