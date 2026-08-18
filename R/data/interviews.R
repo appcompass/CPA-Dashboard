@@ -109,13 +109,18 @@ org_subcat_keys <- function(orgservices, interview_dims) {
 # degrade to no detail text rather than failing. Cached for the process.
 #
 # Shape: { "service_details": { "<irb_id>": { "<dim>": { "<sub_key>": "text" } } } }
+# Cached PER PATH rather than once for the process. A single shared cache would make
+# the path argument meaningless after the first call: whichever caller ran first
+# would fix the value, and a later call with a different path would silently get the
+# earlier file back.
 load_service_details <- local({
-  cached <- NULL
+  cache <- list()
   function(path = file.path("data", "service_details.json")) {
-    if (!is.null(cached)) {
-      return(cached)
+    key <- as.character(path)[[1]]
+    if (!is.null(cache[[key]])) {
+      return(cache[[key]])
     }
-    cached <<- tryCatch(
+    value <- tryCatch(
       {
         if (!file.exists(path) || !requireNamespace("jsonlite", quietly = TRUE)) {
           list()
@@ -126,7 +131,8 @@ load_service_details <- local({
       },
       error = function(e) list()
     )
-    cached
+    cache[[key]] <<- value
+    value
   }
 })
 
