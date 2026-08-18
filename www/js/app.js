@@ -772,6 +772,24 @@ $(function () {
   $(window).on('hashchange', updateHomeBodyClasses);
   $(document).on('shiny:value', updateHomeBodyClasses);
 
+  // shiny.router navigates by hash, and a fragment like "!/organizations/details"
+  // matches no element id, so the browser leaves the scroll offset untouched and
+  // only the visible .router div swaps. Coming from the organizations list -- long
+  // enough to scroll a long way down before clicking a card -- that offset carries
+  // into the detail page and, when it exceeds the shorter page's maximum, the
+  // browser clamps it to the bottom. Reset on route change, the way a full page
+  // load would. Query-param updates (pushQuery) use pushState and never fire
+  // hashchange, so filter and theme changes are unaffected.
+  var lastRouteHash = window.location.hash || '';
+  $(window).on('hashchange', function () {
+    var nextRouteHash = window.location.hash || '';
+    if (nextRouteHash === lastRouteHash) {
+      return;
+    }
+    lastRouteHash = nextRouteHash;
+    window.scrollTo(0, 0);
+  });
+
   var themeConfig = {
     theme: 'light',
     'theme-base': 'gray',
