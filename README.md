@@ -90,10 +90,37 @@ The app currently defines these routes:
 
 The organization selector on the login page is generated from survey data.
 
-- `load_survey_data()` reads and decrypts `data/survey_data.csv.enc`.
+- `load_survey_data()` reads and decrypts `data/survey_data.csv.enc`. This is the
+  raw reader, used by the transform pipeline and the offline scripts.
 - For encrypted files, decryption uses the `CPA_DATA_KEY` environment variable at runtime.
+- `load_displayable_survey_data()` is the same data with non-consenting
+  organizations removed. Every public surface reads through this one.
 - `get_org_names()` extracts, trims, deduplicates, and sorts the organization names.
 - `organizations_list_ui()` renders those names into the `<select>` control.
+
+### Publication consent
+
+The survey asks each organization whether it may be shown on the public
+dashboard. That answer is stored on every row as `display_on_website`.
+
+Consent is **strictly opt-in**: an organization appears only when the column
+holds an explicit `Yes`. A `No`, a blank answer, and any organization whose row
+predates the question are all withheld — from the organizations list, from the
+login picker, from login validation, and from the details page, so a hand-typed
+`?id=` URL will not surface one either.
+
+The answer is *stored* rather than applied at import, because the transform is
+cumulative and never deletes an organization. Dropping a `No` row on the way in
+would leave that organization's earlier consenting row in the dataset and still
+on display. Keeping the flag makes a `Yes` -> `No` -> `Yes` change just a change
+of value.
+
+If you rebuild the dataset from an export that does not carry the question, the
+dashboard lists nothing. That is intended: no consent on record is not consent.
+`R/scripts/transform_survey.R` prints the column it matched and a Yes/No/blank
+count on every run, so a mismatch shows up immediately. If it reports `0 Yes` for
+an export that did ask the question, the column name is wrong — add the real one
+to `SURVEY_DISPLAY_COL_CANDIDATES` in `R/data/survey_pipeline.R`.
 
 ## Encrypted data workflow
 
@@ -140,6 +167,7 @@ The tests cover:
 - page and component templates
 - router-driven server behavior
 - survey data loading and organization name extraction
+- publication-consent filtering (including a revoked-consent round trip)
 - encrypted data helper and runtime decryption behavior
 
 ## Development notes
