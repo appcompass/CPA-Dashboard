@@ -1,0 +1,30 @@
+"YSP16": {
+  "physical": {
+    "wellness_physical_nutrition": "Visiting facilitators run meal-prep workshops on putting together a lunch and managing meals around an 8:30 start, since some worksites have no restaurant nearby.",
+    "wellness_physical_meals": "Breakfast and lunch are provided for the first few weeks of the program, continuing until a member receives their first stipend payment.",
+    "wellness_physical_movement": "A visiting facilitator runs sessions on simple exercises and stretching that members can keep up on their own to stay in shape."
+  },
+  "emotional": {
+    "sub_emotional_1": "Weekly opt-in men's and women's groups meet on site after program hours, the men's with City of Boston's Black Male Advancement; members may attend either.",
+    "sub_emotional_2": "Members in crisis are connected to city resources including the Trauma Team and the 311 line, matched to whichever specialist agency fits the situation.",
+    "wellness_emotional_clinical_referral": "Set on a Roxbury healthcare and academic campus, the program connects interested members to mental health services there, with support staff helping make the calls."
+  },
+  "intellectual": {
+    "sub_intellectual_1": "Workshops and trainings carry industry-recognized certifications: OSHA, CPR and first aid, a Sherwin-Williams painting credential, GPRO building decarbonization, and a two-day statewide PREVENT de-escalation certificate."
+  },
+  "occupational": {
+    "sub_occupational_1": "Phase two members complete a six-month internship with one of our employer partners, ideally hired on by that partner at the end of it.",
+    "sub_occupational_2": "A four-month exploratory phase exposes members to green-industry lines of work to test fit; a workforce development team then connects members to their next employer.",
+    "sub_occupational_3": "Advancing past phase one requires a completed PowerCorps-standard resume, built with a certified career coach who also flags details like an unprofessional email address.",
+    "sub_occupational_4": "Phase two specializes in one of three tracks: urban forestry with a horticulture focus, arboriculture and tree care, or building operations for energy-efficient commercial buildings.",
+    "wellness_occupational_stipend": "Members receive roughly $1,100 every two weeks, above minimum wage, plus a monthly T pass, PowerCorps gear and composite-toe boots.",
+    "wellness_occupational_mock_interviews": "At least three rounds with volunteer employer partners in panel, online and one-to-one formats, scored out of twenty on preparation, posture, handshake and eye contact."
+  },
+  "financial": {
+    "sub_financial_2": "Staff assist with FAFSA applications, and as an AmeriCorps program every member earns a Segal Education Award for their time in the program."
+  },
+  "environmental": {
+    "sub_environmental_1": "Members learn to name local parks, tree species and invasive plants, and study heat island effect and building decarbonization, often applying it at home.",
+    "sub_environmental_2": "Neighborhood beautification crews remove invasive species, plant and prune, build and maintain trails, and repair and paint park benches."
+  }
+}

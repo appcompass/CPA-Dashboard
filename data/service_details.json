@@ -33,6 +33,52 @@
     }
   },
   "service_details": {
+    "YSP01": {
+      "physical": {
+        "wellness_physical_meals": "Fruit, bread and cheese at every school workshop, sandwiches at apprenticeships, and full cooked meals at the end-of-cohort celebration, chosen as whole rather than processed foods."
+      },
+      "intellectual": {
+        "wellness_intellectual_social_justice": "A social justice apprenticeship group presented on Bad Bunny's use of music for change; workshops also examine which professionalism norms are rooted in white supremacy."
+      },
+      "occupational": {
+        "wellness_occupational_stipend": "Apprenticeships pay a $200 stipend across the twelve-week program; City Summer Internship runs six to eight weeks for about forty girls at roughly $550 weekly."
+      },
+      "financial": {
+        "wellness_financial_stipend_empowerment": "Paid alongside covered transport between school and placements, so earnings stay intact; a check-cashing worksheet and Eastern Bank IDs help students access their money."
+      }
+    },
+    "YSP02": {
+      "physical": {
+        "wellness_physical_fitness": "The fitness center is open daily and staff actively incentivize members to use it; swim team and newly added baseball clinics give teens organized options.",
+        "wellness_physical_nutrition": "A Healthy Habits course pairs nutrition lessons with hands-on activities such as smoothie making, and a spring health and wellness fair covers diet, hygiene and simple self-checks.",
+        "wellness_physical_movement": "An adventure club ran last fall and a walking club follows this spring, taking teens out of the building on foot around Dorchester at no cost."
+      },
+      "emotional": {
+        "sub_emotional_3": "An on-site social worker, supported by two clinical interns, is a direct resource for members needing behavioral or emotional support during the after-school day."
+      },
+      "intellectual": {
+        "sub_intellectual_1": "STEM classes run alongside arts and music, and staff or groups of youth who take an interest in a subject can start a new class around it.",
+        "sub_intellectual_2": "Power Forward is the teen college and career prep program; sessions bring in outside professionals, including a certified clinician who ran an hour on mental health.",
+        "wellness_intellectual_creative_arts": "Art and music programming runs year-round, including a girls of color class within the art program and music therapy led by outside facilitators for younger members."
+      },
+      "financial": {
+        "sub_financial_3": "Financial literacy sessions for teens run in partnership with Webster Bank, as part of its initiative to spread financial literacy across the Boston area."
+      },
+      "social": {
+        "sub_social_1": "Teen Breakout starts this spring: ten weeks of separate girls' and boys' sessions with guest speakers, led by staff in their early twenties, closing with a spring fling.",
+        "sub_social_2": "Families are invited in through the year for a family Thanksgiving, holiday celebrations and season kickoff events, held at the clubhouses for members and their relatives.",
+        "sub_social_3": "The club runs its own Juneteenth celebration and joins wider neighborhood events, including Harbor Point's community Juneteenth festival, tabling or running activities when partners invite them.",
+        "wellness_social_youth_council": "Keystone Club, for ages thirteen to eighteen, follows Boys and Girls Clubs of America pillars including leadership, community service and academic success, and runs its own service projects.",
+        "wellness_social_peer_mentoring": "Keystone teens mentor Torch Club, its ten to thirteen year old counterpart, bringing younger members into Keystone activities and helping them with their own small projects."
+      },
+      "environmental": {
+        "sub_environmental_3": "A small gardening class runs each spring: members plant seeds indoors and move them outside to the grass area beside the clubhouses."
+      },
+      "spiritual": {
+        "sub_spiritual_1": "Yoga and other mindfulness-centered enrichments are optional, and the Zen Den is an open space members can use whenever they are having a difficult time.",
+        "wellness_spiritual_mindfulness_embedded": "Sensory corners sit in program areas and at large events, with fidgets, ear protection and lower-mobility alternatives, so an overstimulated member always has an option."
+      }
+    },
     "YSP04": {
       "intellectual": {
         "sub_intellectual_2": "A post-secondary team works with Bunker Hill, UMass Boston and Roxbury Community College, running Community Connect hubs on campus and monitoring grades with consent."
@@ -50,6 +96,230 @@
       },
       "social": {
         "sub_social_1": "Community Connect pairs students with a mentor in the same major, matched by an interests survey, which raises on-time graduation rates."
+      }
+    },
+    "YSP05": {
+      "intellectual": {
+        "sub_intellectual_1": "Academic workshops run through the school year and intensively over the summer for middle schoolers, previewing the next grade's curriculum so students start the year ahead.",
+        "sub_intellectual_2": "Monthly workshops through the school year, plus a dedicated week when rising seniors work on college applications; support continues into college for as long as students want it.",
+        "sub_intellectual_3": "After-school support during the school year for students who need it, which in practice often takes the form of tutoring in current coursework.",
+        "wellness_intellectual_creative_arts": "Arts and crafts clubs and project-based classes run through summer programming, where creative work is most concentrated; high school Saturdays include free time for crafts and board games."
+      },
+      "occupational": {
+        "sub_occupational_1": "A high school intern program for underclassmen and Junior Teacher roles for upperclassmen leading in classrooms, plus a database of Boston jobs and programs out of state and abroad.",
+        "sub_occupational_2": "Post-secondary advisors hold one-on-one check-ins with college students and alumni on job searching and salary negotiation; a February or April break each year is given to career exploration.",
+        "sub_occupational_3": "Resumes are workshopped on Super Saturdays, the roughly six monthly high school sessions where students also sit down and apply for jobs on the spot.",
+        "wellness_occupational_stipend": "Rising ninth graders in the summer Leadership Academy are paid at the end of the season for campus leadership: peer mentoring, helping at snack, interning for a day.",
+        "wellness_occupational_mock_interviews": "Practice interviews sit inside the monthly high school career and college exploration curriculum, giving students a rehearsal before the applications they submit in the same sessions."
+      },
+      "financial": {
+        "sub_financial_1": "High school is where money conversations start: how to save a first paycheck and what to do with it, as students begin earning through summer positions.",
+        "sub_financial_2": "Workshops on scholarships such as Posse and QuestBridge, plus a financial aid calculator that helps students work out what a college award letter actually means.",
+        "sub_financial_3": "Students vote on choice workshop topics; a recent one covered taxes and their effect on a paycheck, and others cover talking with family about what college costs.",
+        "wellness_financial_emergency_fund": "The Bridge the Gap Fund covers emergency costs once students reach college: a replacement laptop, a semester of books, or a small gap between aid and tuition."
+      }
+    },
+    "YSP06": {
+      "physical": {
+        "wellness_physical_fitness": "Middle schoolers run with Soul Train at Trinity Boston Connects, which supplies a year-long facilitation guide, and train with the Soccer Unity Project through the summer.",
+        "wellness_physical_nutrition": "Conversations about quick, healthy choices and cooking rotations with middle schoolers build practical eating skills; nutrition programming is still being built out.",
+        "wellness_physical_meals": "Young people are fed every day at both the South End elementary site and the Lower Roxbury middle school site.",
+        "wellness_physical_movement": "A daily health and wellness rotation gets everyone moving; elementary groups head to nearby parks to run, use the playground and play on the basketball court."
+      },
+      "emotional": {
+        "wellness_emotional_check_ins": "Weekly social-emotional-spiritual care rotations open with a check-in on how everyone is feeling; teens also submit a Thursday checkout form to the teen director.",
+        "wellness_emotional_clinical_referral": "Referrals and references to outside providers when a young person needs licensed counseling beyond what the program's own social worker and chaplain offer."
+      },
+      "intellectual": {
+        "sub_intellectual_1": "Rotations are planned around learning objectives and critical thinking questions from the Five C's of Youth Development, each closing with a short reflection on what it sparked.",
+        "sub_intellectual_2": "An annual bridge trip tours HBCUs and campuses teens picked for fit; a recent session had them role-play an admissions team weighing what colleges actually look for.",
+        "wellness_intellectual_social_justice": "Racial equity and cultural humility are built into lesson planning across programs, alongside violence prevention grounded in restorative rather than punitive responses."
+      },
+      "occupational": {
+        "sub_occupational_2": "College and career programming runs through the teen program, with the goal that every teen leaves with a clear post-secondary plan; 100% graduate each year.",
+        "sub_occupational_4": "Family programs are built as one- or two-year jobs that develop workforce skills toward stronger employment, with a staff social worker adding workforce development support for parents.",
+        "wellness_occupational_stipend": "Teens hired after ninth grade work about ten hours a week in the out-of-school-time programs, nine on site plus a weekly training or staff meeting."
+      },
+      "financial": {
+        "wellness_financial_emergency_fund": "Partner churches drop off bags of groceries and grocery store gift cards once or twice a week for families, with bags tailored to be culturally respectful.",
+        "wellness_financial_stipend_empowerment": "Ninth graders who finish the middle school program earn a stipend for a first job experience built around community volunteering, leadership training and the organization's podcast."
+      },
+      "social": {
+        "sub_social_2": "A parent program places about 42 parents as trained classroom aides in Boston Public Schools, running in English, Spanish, Somali and Haitian Creole.",
+        "sub_social_3": "Step-up days bring the oldest elementary groups over to the middle school site for shared celebrations, such as a Black Excellence Month event.",
+        "wellness_social_peer_mentoring": "Younger participants are supported by teen staff who came up through the same programs, several of whom have been part of St. Stephen's since first grade."
+      }
+    },
+    "YSP07": {
+      "emotional": {
+        "sub_emotional_1": "Therapy groups for young people in detention and in the community, including a therapeutic sports group on one detention unit and a group at a Charlestown education program.",
+        "sub_emotional_2": "Outreach begins in the aftermath of an arrest or an incident of community violence, with referrals from the Boston Police Department, schools, hospitals and juvenile detention centers.",
+        "sub_emotional_3": "Free individual therapy from trained social workers, with no insurance billing and no cap on how long a family is served; sessions happen in homes, schools, hospitals or detention.",
+        "wellness_emotional_trauma_informed": "Ongoing training from trauma specialists keeps therapy informal and relational for youth who would not otherwise engage; tools include sand tray and an EMDR protocol being adapted for community settings.",
+        "wellness_emotional_clinical_referral": "Referrals to in-home or outpatient therapy, psychological and neuropsychological testing, and DMH applications; social workers file the paperwork, sit with parents at appointments and bring youth to evaluations."
+      },
+      "occupational": {
+        "sub_occupational_3": "A social worker builds a first resume with a young person from babysitting, painting or yard work, then accompanies them to the interview and can provide professional clothing."
+      },
+      "social": {
+        "sub_social_1": "A social worker walks the young person into an after-school center, basketball team or Boston Center for Youth and Families, handles the introductions, and follows up so a positive adult sticks.",
+        "sub_social_2": "One referral brings in the whole household: parents connected to employment, medical or mental health care, younger siblings to camp, and help navigating school, hospital and legal systems."
+      },
+      "spiritual": {
+        "sub_spiritual_1": "Mindfulness and meditation are worked into the group sessions run on the detention units and at the Charlestown education program.",
+        "wellness_spiritual_mindfulness_embedded": "The same mindfulness practices carry into one-to-one sessions, and spirituality is explored further when a young person chooses to raise it."
+      }
+    },
+    "YSP08": {
+      "intellectual": {
+        "sub_intellectual_1": "Workshops run regularly and are often outsourced to partners such as the Mirror Project, including Know Your Rights sessions where youth can ask immigration questions directly.",
+        "sub_intellectual_2": "A career services manager sits with each young person on school applications, joins campus site visits, and coordinates meetings with staff at the institution."
+      },
+      "occupational": {
+        "sub_occupational_2": "Each young person is paired with a youth development or career services manager and meets weekly, planning the move into employment beyond More Than Words.",
+        "sub_occupational_4": "Readiness is a six-to-twelve-week introductory program every new young person completes, building the professionalism, punctuality and dress-code habits the job itself will expect.",
+        "wellness_occupational_stipend": "Young people hold two jobs: a business job in the retail shop, trucks or online bookstore, and a You job working toward personal goals."
+      },
+      "financial": {
+        "sub_financial_1": "Managers build a budget with the young person when support tapers off, for example covering a first month of phone service and planning the handover.",
+        "sub_financial_2": "Career services managers sit with young people to complete the FAFSA, part of the same one-on-one help offered when applying to college or training programs.",
+        "sub_financial_3": "Financial trainings are largely outsourced to expert partners, with banks running sessions on checking versus savings accounts and which products suit a given young person.",
+        "wellness_financial_emergency_fund": "Just in Time Funds cover urgent needs like a bus pass, a bed or groceries, and grocery gift cards went to every young person when SNAP lapsed."
+      },
+      "social": {
+        "wellness_social_youth_council": "Changemakers brings youth together each year to change organizational policy directly; one group rewrote the attendance policy, including how tallies and strikes work."
+      }
+    },
+    "YSP09": {
+      "physical": {
+        "wellness_physical_fitness": "Twenty-three Olympic-style sports, free and open to youth with and without disabilities, each with a six-to-eight-week introductory clinic and a competitive arm that travels to other cities.",
+        "wellness_physical_nutrition": "Most program sites offer healthy snacks alongside food knowledge resources: pointers to local food pantries, guidance on daily water intake, and basic nutrition charts.",
+        "wellness_physical_movement": "Young Athletes develops fine and gross motor skills for ages two to seven. Train for Life is a twelve-week strength and conditioning program built with Vanderbilt University clinicians."
+      },
+      "social": {
+        "sub_social_2": "Take-home activity materials in several languages let families run the program at home when they cannot get to a site. Parent and community leadership groups guide neighborhood outreach.",
+        "sub_social_3": "Unified bowling nights, open houses, pizza parties, movie nights, joint volunteer projects and dances at the summer games and state competitions, for people with and without disabilities.",
+        "wellness_social_peer_mentoring": "Athletes are paired with neurotypical partners on rosters split evenly, with volunteer team escorts at competitions and, in some programs, accountability buddies who check in between practices."
+      }
+    },
+    "YSP10": {
+      "emotional": {
+        "sub_emotional_1": "An eight-week Caregivers healing cohort for youth and women affected by incarceration or community harm; members support one another, then graduate into a mentor phase.",
+        "sub_emotional_2": "After a shooting nearby, separate youth and adult teams run healing circles in the affected area, three following one recent Roxbury incident, plus door-to-door flyers.",
+        "sub_emotional_3": "Counseling is delivered on site by a lead clinician and a staff of clinicians, open to youth and to families connected through our programs.",
+        "wellness_emotional_trauma_informed": "Facilitators follow a guide developed with a consulting doctor, saying community harm rather than homicide, and refresh it in workshops run with the City of Boston.",
+        "wellness_emotional_clinical_referral": "Referrals reach our clinicians from the Boston Police Department and the City of Boston, and families are connected onward to partner organizations for services we do not run."
+      },
+      "occupational": {
+        "sub_occupational_2": "Facilitators ask which fields interest youth, map college and technical-school routes, and bring in local professionals, a hair salon owner for instance, to talk about that work.",
+        "sub_occupational_3": "Resume workshops sit inside the youth mentorship program, alongside professionalism and career-advancement sessions, so participants finish the cohort with a resume in hand.",
+        "sub_occupational_4": "Job-sustainability workshops cover workplace responsibilities, raising a problem with a manager, presentation do's and don'ts, and norms such as phone use during a shift."
+      }
+    },
+    "YSP12": {
+      "emotional": {
+        "sub_emotional_2": "Triggered by repeating patterns rather than one-off incidents, such as a young person disengaging from learning; staff work with school social workers to confirm the concern appears in more than one setting.",
+        "wellness_emotional_clinical_referral": "Staff refer families to outside professionals sourced through schools, parents and partner meetings, including a Haitian psychiatrist for the center's large Haitian community and a partner organization that makes home visits."
+      },
+      "intellectual": {
+        "sub_intellectual_1": "Free computer classes run from the site's computer center, open to teens and to their parents, since the program extends its services to whole families."
+      },
+      "occupational": {
+        "sub_occupational_1": "High school students who need community service hours for a course requirement can complete them on site at Georgetowne.",
+        "sub_occupational_3": "Free resume writing for teens and for their parents, with staff also available to help families through summer job applications.",
+        "sub_occupational_4": "Career exploration and job training workshops for teens, backed by guest speakers from different professions, including an attorney last year and a further lineup this year."
+      },
+      "financial": {
+        "sub_financial_3": "A mostly online course covering saving, opening a bank account and writing a check, with a certificate on completion; staff also pass on the Boston Public Schools family savings account."
+      },
+      "social": {
+        "sub_social_1": "In-house mentoring is informal, built through years of relationship with staff; more formal mentoring matches are usually arranged through the young person's school.",
+        "sub_social_3": "Weekly social activities open to all ages, from dance to health sessions to college visits, plus community events that whole families are invited to attend.",
+        "wellness_social_youth_council": "A youth council running several years gives teens of any age a place to raise needs; staff hear every side before decisions and coach youth to advocate for themselves."
+      }
+    },
+    "YSP13": {
+      "physical": {
+        "wellness_physical_fitness": "Quarterly wellness retreats where yoga and similar practices are led by hired specialists, with girls suggesting facilitators they have enjoyed and helping shape what each retreat includes.",
+        "wellness_physical_movement": "When weather allows, retreats move outdoors for field-day activities such as jump rope and hand games, and the group also joins organized walks together."
+      },
+      "intellectual": {
+        "sub_intellectual_1": "Workshops built on an in-house curriculum, including All About Self-Love, where girls define themselves on their own terms; activities are tried with girls and revised on their feedback.",
+        "sub_intellectual_2": "Belonging and Becoming Fellows attend monthly workshops on the application process and what campus life will ask of them, plus one-on-one meetings for college essay feedback.",
+        "wellness_intellectual_social_justice": "Every program is rooted in social justice and identity development, giving girls language for criminalization and adultification and the skills to question the systems behind them."
+      },
+      "occupational": {
+        "sub_occupational_1": "One or two interns are hosted each semester and supported across the full term by the staff team.",
+        "sub_occupational_2": "Girls spend time with local Black and Brown professional women who volunteer to talk through their careers and the paths that took them there.",
+        "sub_occupational_3": "Fellows build resumes and LinkedIn profiles alongside their college-access workshops, with networking practice folded into the same sessions.",
+        "wellness_occupational_stipend": "High school girls are hired as counselors at the organization's summer camp, a paid part-time role for older participants."
+      },
+      "financial": {
+        "sub_financial_2": "Fellowship workshops walk through the financial aid process, and fellows can book one-on-one meetings to make sense of an aid package before deciding.",
+        "sub_financial_3": "Partner organizations run sessions on bank accounts, credit cards and everyday money decisions, so girls can weigh choices that fit their own circumstances."
+      },
+      "social": {
+        "sub_social_1": "Staff sit down with girls to problem-solve school and home situations as they arise, coaching self-advocacy; check-ins continue after graduation, with gatherings when college students are home.",
+        "sub_social_3": "Events grounded in being in community with each other, paired with workshops on healthy relationships, boundaries and communication; girls help decide what each event looks like."
+      }
+    },
+    "YSP15": {
+      "intellectual": {
+        "wellness_intellectual_creative_arts": "Semester-long hands-on programs in songwriting, performance and instrumental music, plus production, videography, engineering and a youth-powered low-power FM radio station; groups meet two to four hours weekly on shared projects."
+      },
+      "occupational": {
+        "sub_occupational_1": "Medium-specific internships follow the introductory sound or video class, moving youth into paid gig work in that field, with an abundant number of gigs to opt into.",
+        "sub_occupational_3": "Part of the weekly professional-development session for Leaders in Training, the paid youth cohort who co-facilitate Zumix programs.",
+        "sub_occupational_4": "Sound engineering learned in programs becomes a working skill: youth run live sound for the community groups and artists who perform in Zumix's space.",
+        "wellness_occupational_stipend": "A summer jobs program with the City of Boston and the City of Revere places about 20 young people in 20 to 25 hour weeks of cohort learning and concert-series support."
+      },
+      "social": {
+        "sub_social_2": "Community arts events are deliberately all-ages, keeping families connected to their young people's work; recent examples include a dance film screening and a Mother's Day concert.",
+        "sub_social_3": "An outdoor concert series runs in Pierce Park each summer, open to everyone and often how neighbors first meet Zumix; other community groups also program events in Zumix's space.",
+        "wellness_social_youth_council": "Teen Council brings together youth from across Zumix's programs, meeting every Friday to plan community arts events, advise staff on organizational questions, and propose projects of their own.",
+        "wellness_social_peer_mentoring": "Every program pairs an adult co-facilitator with a youth co-facilitator from the Leaders in Training cohort, who design the agenda and curriculum together."
+      }
+    },
+    "YSP16": {
+      "physical": {
+        "wellness_physical_nutrition": "Visiting facilitators run meal-prep workshops on putting together a lunch and managing meals around an 8:30 start, since some worksites have no restaurant nearby.",
+        "wellness_physical_meals": "Breakfast and lunch are provided for the first few weeks of the program, continuing until a member receives their first stipend payment.",
+        "wellness_physical_movement": "A visiting facilitator runs sessions on simple exercises and stretching that members can keep up on their own to stay in shape."
+      },
+      "emotional": {
+        "sub_emotional_1": "Weekly opt-in men's and women's groups meet on site after program hours, the men's with City of Boston's Black Male Advancement; members may attend either.",
+        "sub_emotional_2": "Members in crisis are connected to city resources including the Trauma Team and the 311 line, matched to whichever specialist agency fits the situation.",
+        "wellness_emotional_clinical_referral": "Set on a Roxbury healthcare and academic campus, the program connects interested members to mental health services there, with support staff helping make the calls."
+      },
+      "intellectual": {
+        "sub_intellectual_1": "Workshops and trainings carry industry-recognized certifications: OSHA, CPR and first aid, a Sherwin-Williams painting credential, GPRO building decarbonization, and a two-day statewide PREVENT de-escalation certificate."
+      },
+      "occupational": {
+        "sub_occupational_1": "Phase two members complete a six-month internship with one of our employer partners, ideally hired on by that partner at the end of it.",
+        "sub_occupational_2": "A four-month exploratory phase exposes members to green-industry lines of work to test fit; a workforce development team then connects members to their next employer.",
+        "sub_occupational_3": "Advancing past phase one requires a completed PowerCorps-standard resume, built with a certified career coach who also flags details like an unprofessional email address.",
+        "sub_occupational_4": "Phase two specializes in one of three tracks: urban forestry with a horticulture focus, arboriculture and tree care, or building operations for energy-efficient commercial buildings.",
+        "wellness_occupational_stipend": "Members receive roughly $1,100 every two weeks, above minimum wage, plus a monthly T pass, PowerCorps gear and composite-toe boots.",
+        "wellness_occupational_mock_interviews": "At least three rounds with volunteer employer partners in panel, online and one-to-one formats, scored out of twenty on preparation, posture, handshake and eye contact."
+      },
+      "financial": {
+        "sub_financial_2": "Staff assist with FAFSA applications, and as an AmeriCorps program every member earns a Segal Education Award for their time in the program."
+      },
+      "environmental": {
+        "sub_environmental_1": "Members learn to name local parks, tree species and invasive plants, and study heat island effect and building decarbonization, often applying it at home.",
+        "sub_environmental_2": "Neighborhood beautification crews remove invasive species, plant and prune, build and maintain trails, and repair and paint park benches."
+      }
+    },
+    "YSP19": {
+      "intellectual": {
+        "sub_intellectual_1": "Sessions on Massachusetts state financial aid (MASFA), covering eligibility rules many immigrant families do not know about, so youth can apply for aid and pursue college."
+      },
+      "financial": {
+        "sub_financial_2": "Guidance on accessing Massachusetts state financial aid, offered through trusted community channels by staff of African and Caribbean descent, with college enrollment tracked afterwards.",
+        "wellness_financial_stipend_empowerment": "Participants in the six-week summer African Storytelling Program clock 20 hours weekly and are paid about $1,800 each, funded by the City of Boston."
+      },
+      "social": {
+        "sub_social_3": "Gatherings open to all ages, bringing together families of shared cultural background, including a final showcase where African Storytelling Program participants present their group projects."
       }
     }
   }

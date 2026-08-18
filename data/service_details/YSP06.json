@@ -1,0 +1,31 @@
+"YSP06": {
+  "physical": {
+    "wellness_physical_fitness": "Middle schoolers run with Soul Train at Trinity Boston Connects, which supplies a year-long facilitation guide, and train with the Soccer Unity Project through the summer.",
+    "wellness_physical_nutrition": "Conversations about quick, healthy choices and cooking rotations with middle schoolers build practical eating skills; nutrition programming is still being built out.",
+    "wellness_physical_meals": "Young people are fed every day at both the South End elementary site and the Lower Roxbury middle school site.",
+    "wellness_physical_movement": "A daily health and wellness rotation gets everyone moving; elementary groups head to nearby parks to run, use the playground and play on the basketball court."
+  },
+  "emotional": {
+    "wellness_emotional_check_ins": "Weekly social-emotional-spiritual care rotations open with a check-in on how everyone is feeling; teens also submit a Thursday checkout form to the teen director.",
+    "wellness_emotional_clinical_referral": "Referrals and references to outside providers when a young person needs licensed counseling beyond what the program's own social worker and chaplain offer."
+  },
+  "intellectual": {
+    "sub_intellectual_1": "Rotations are planned around learning objectives and critical thinking questions from the Five C's of Youth Development, each closing with a short reflection on what it sparked.",
+    "sub_intellectual_2": "An annual bridge trip tours HBCUs and campuses teens picked for fit; a recent session had them role-play an admissions team weighing what colleges actually look for.",
+    "wellness_intellectual_social_justice": "Racial equity and cultural humility are built into lesson planning across programs, alongside violence prevention grounded in restorative rather than punitive responses."
+  },
+  "occupational": {
+    "sub_occupational_2": "College and career programming runs through the teen program, with the goal that every teen leaves with a clear post-secondary plan; 100% graduate each year.",
+    "sub_occupational_4": "Family programs are built as one- or two-year jobs that develop workforce skills toward stronger employment, with a staff social worker adding workforce development support for parents.",
+    "wellness_occupational_stipend": "Teens hired after ninth grade work about ten hours a week in the out-of-school-time programs, nine on site plus a weekly training or staff meeting."
+  },
+  "financial": {
+    "wellness_financial_emergency_fund": "Partner churches drop off bags of groceries and grocery store gift cards once or twice a week for families, with bags tailored to be culturally respectful.",
+    "wellness_financial_stipend_empowerment": "Ninth graders who finish the middle school program earn a stipend for a first job experience built around community volunteering, leadership training and the organization's podcast."
+  },
+  "social": {
+    "sub_social_2": "A parent program places about 42 parents as trained classroom aides in Boston Public Schools, running in English, Spanish, Somali and Haitian Creole.",
+    "sub_social_3": "Step-up days bring the oldest elementary groups over to the middle school site for shared celebrations, such as a Black Excellence Month event.",
+    "wellness_social_peer_mentoring": "Younger participants are supported by teen staff who came up through the same programs, several of whom have been part of St. Stephen's since first grade."
+  }
+}

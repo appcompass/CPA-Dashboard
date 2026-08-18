@@ -1,0 +1,32 @@
+"YSP02": {
+  "physical": {
+    "wellness_physical_fitness": "The fitness center is open daily and staff actively incentivize members to use it; swim team and newly added baseball clinics give teens organized options.",
+    "wellness_physical_nutrition": "A Healthy Habits course pairs nutrition lessons with hands-on activities such as smoothie making, and a spring health and wellness fair covers diet, hygiene and simple self-checks.",
+    "wellness_physical_movement": "An adventure club ran last fall and a walking club follows this spring, taking teens out of the building on foot around Dorchester at no cost."
+  },
+  "emotional": {
+    "sub_emotional_3": "An on-site social worker, supported by two clinical interns, is a direct resource for members needing behavioral or emotional support during the after-school day."
+  },
+  "intellectual": {
+    "sub_intellectual_1": "STEM classes run alongside arts and music, and staff or groups of youth who take an interest in a subject can start a new class around it.",
+    "sub_intellectual_2": "Power Forward is the teen college and career prep program; sessions bring in outside professionals, including a certified clinician who ran an hour on mental health.",
+    "wellness_intellectual_creative_arts": "Art and music programming runs year-round, including a girls of color class within the art program and music therapy led by outside facilitators for younger members."
+  },
+  "financial": {
+    "sub_financial_3": "Financial literacy sessions for teens run in partnership with Webster Bank, as part of its initiative to spread financial literacy across the Boston area."
+  },
+  "social": {
+    "sub_social_1": "Teen Breakout starts this spring: ten weeks of separate girls' and boys' sessions with guest speakers, led by staff in their early twenties, closing with a spring fling.",
+    "sub_social_2": "Families are invited in through the year for a family Thanksgiving, holiday celebrations and season kickoff events, held at the clubhouses for members and their relatives.",
+    "sub_social_3": "The club runs its own Juneteenth celebration and joins wider neighborhood events, including Harbor Point's community Juneteenth festival, tabling or running activities when partners invite them.",
+    "wellness_social_youth_council": "Keystone Club, for ages thirteen to eighteen, follows Boys and Girls Clubs of America pillars including leadership, community service and academic success, and runs its own service projects.",
+    "wellness_social_peer_mentoring": "Keystone teens mentor Torch Club, its ten to thirteen year old counterpart, bringing younger members into Keystone activities and helping them with their own small projects."
+  },
+  "environmental": {
+    "sub_environmental_3": "A small gardening class runs each spring: members plant seeds indoors and move them outside to the grass area beside the clubhouses."
+  },
+  "spiritual": {
+    "sub_spiritual_1": "Yoga and other mindfulness-centered enrichments are optional, and the Zen Den is an open space members can use whenever they are having a difficult time.",
+    "wellness_spiritual_mindfulness_embedded": "Sensory corners sit in program areas and at large events, with fidgets, ear protection and lower-mobility alternatives, so an overstimulated member always has an option."
+  }
+}
