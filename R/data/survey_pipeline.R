@@ -12,17 +12,54 @@
 # interview-coded data, joined on irb_participant_id.
 # ---------------------------------------------------------------------------
 
+# Qualtrics exports are not reliably UTF-8. One saved through Excel or exported on
+# a Windows machine arrives as Windows-1252, where an em dash, curly apostrophe, or
+# curly quote is a single byte (0x97, 0x92, 0x93/0x94) that is invalid UTF-8.
+# read.csv() with no encoding argument treats the bytes as the native encoding and
+# lets invalid sequences through without complaint, so the damage stays hidden
+# until it reaches a rendered page. Detect instead, and be explicit.
+#
+# This only started mattering when `about` joined the clean schema: every other
+# extracted column in the 2026-08-04 export was pure ASCII, so nothing exercised
+# the gap before.
+detect_export_encoding <- function(path) {
+  size <- file.size(path)
+  if (is.na(size) || size == 0) {
+    return("UTF-8")
+  }
+  bytes <- readBin(path, what = "raw", n = size)
+  # rawToChar rejects embedded NULs; drop them before testing validity.
+  bytes <- bytes[bytes != as.raw(0)]
+  if (!length(bytes)) {
+    return("UTF-8")
+  }
+  if (!validUTF8(rawToChar(bytes))) {
+    return("Windows-1252")
+  }
+  if (length(bytes) >= 3 &&
+        identical(as.integer(bytes[1:3]), c(0xEFL, 0xBBL, 0xBFL))) {
+    "UTF-8-BOM"
+  } else {
+    "UTF-8"
+  }
+}
+
 # Read a raw Qualtrics export: row 1 = variable names, rows 2..header_rows =
 # question text + ImportId metadata, data starts after. Returns a data frame
 # with the original (exact) Qualtrics column names preserved.
-read_qualtrics_export <- function(path, header_rows = 3L) {
+#
+# `file_encoding` defaults lazily, so detection runs only after the existence
+# check below; pass it explicitly to override.
+read_qualtrics_export <- function(path, header_rows = 3L,
+                                  file_encoding = detect_export_encoding(path)) {
   if (!file.exists(path)) {
     stop(sprintf("Expected survey export at '%s'.", path), call. = FALSE)
   }
   raw <- read.csv(
     path,
     header = FALSE, stringsAsFactors = FALSE,
-    check.names = FALSE, colClasses = "character", na.strings = character(0)
+    check.names = FALSE, colClasses = "character", na.strings = character(0),
+    fileEncoding = file_encoding
   )
   if (nrow(raw) <= header_rows) {
     stop("Survey export has header rows but no data rows.", call. = FALSE)
@@ -111,6 +148,8 @@ clean_display_flag <- function(value) {
 # Qualtrics source column. Each demographic is a cleaned percentage range
 # (clean_pct); years are wording-stripped (clean_lengthserve).
 #   orgname          <- Organization
+#   about            <- About Org (free-text organization blurb; may be empty,
+#                      and may contain paragraph breaks)
 #   display_on_website <- the publication-consent question (resolve_display_column);
 #                      "Yes" / "No" / "" -- only "Yes" is ever published
 #   lengthserve      <- YearsServed
@@ -146,6 +185,7 @@ build_clean_survey <- function(raw) {
     irb_participant_id = trimws(get_col("IRB Participant ID")),
     orgname = trimws(get_col("Organization")),
     website = trimws(get_col("Website Url")),
+    about = trimws(get_col("About Org")),
     display_on_website = unname(vapply(display_raw, clean_display_flag, character(1))),
     lengthserve = unname(vapply(get_col("YearsServed"), clean_lengthserve, character(1))),
 

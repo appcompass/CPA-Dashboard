@@ -37,7 +37,7 @@
     "howto_step4_body": "Discover each organization's expertise to build connections, seek guidance, and make referrals.",
     "howto_login_title": "See the full profile — log in",
     "howto_login_body": "The public view shows a summary of each organization. Verified organization members can log in to view and update complete profile details — contact information, full service descriptions, and more. Logging in keeps your organization's information accurate so partners can reach you and refer to you.",
-    "howto_login_contact": "Need a password or having trouble logging in? Contact ",
+    "howto_login_contact": "Need a password, having trouble logging in, or need us to make any edits or updates to your organization's page? Contact ",
     "howto_customize_title": "Make it yours",
     "howto_customize_body": "Switch the dashboard into any of our supported languages using the language selector in the navigation — your choice carries across the site."
   },
@@ -51,7 +51,7 @@
     "cpa_title": "What is the CPA?",
     "cpa_body": "The Community Partners Assessment (CPA) is how the CHANGE Lab identifies and connects with community-based organizations whose missions align with our own. Through outreach and conversational, semi-structured interviews, we learn about each organization's strengths, priorities, and needs along [SAMHSA's 8 dimensions of wellness](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf): physical, emotional, intellectual, occupational, financial, social, environmental, and spiritual. We also gain their perspectives on the health and wellness of youth across their communities.",
     "connect_title": "Connect with Us",
-    "connect_body": "Have a question or want to partner with the CHANGE Lab? We'd love to hear from you.",
+    "connect_body": "Have a question, want to partner with the CHANGE Lab, or have new information about your organization that we can update on our website? We'd love to hear from you.",
     "connect_email_label": "Email"
   },
   "login": {
@@ -87,12 +87,16 @@
   "organization_details": {
     "org_name_placeholder": "Organization Name",
     "org_subtitle": "Years Serving youth in Greater Boston",
+    "card_about_title": "About the Organization",
     "card_age_title": "Age Breakdown of Youth Served",
     "age_12_17": "12-17 yrs old",
     "age_18_25": "18-25 yrs old",
     "age_26_plus": "26+ yrs old",
     "card_established_title": "Established Areas of Wellness",
+    "card_established_description": "“Established” domains of wellness refers to domains that organizations have well-recognized and widely used tools, programs, or supports with a proven track record. These domains are a core priority for the organization, and is part of their mission and vision. Domains that are not listed as established may be so for a certain reasons, such as: 1) it is not a primary focus of the organization, 2) it is an emerging domain, 3) it is out of scope of organization’s mission, or 4) specific services are no longer provided due to funding, staffing, etc.",
     "card_emerging_title": "Emerging Areas of Wellness",
+    "card_emerging_description": "“Emerging” domains of wellness refers to domains that organizations have new or developing tools, programs, or supports. The tools, programs, or supports are not widely available, tested, or may just recently be rolled out for service.",
+    "card_definition_toggle": "What does this mean?",
     "card_barriers_resources_title": "Challenges & Resource Needs",
     "col_barriers_title": "What to Keep in Mind - Important things to consider when establishing resources for the following dimensions",
     "col_resource_needs_title": "Resource Needs",

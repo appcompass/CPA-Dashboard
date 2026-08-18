@@ -264,7 +264,10 @@ home_ui <- function(lang = get_lang()) {
               class = "text-secondary mt-3 mb-0",
               hp(
                 "howto_login_contact",
-                "Need a password or having trouble logging in? Contact "
+                paste0(
+                  "Need a password, having trouble logging in, or need us to ",
+                  "make any edits or updates to your organization's page? Contact "
+                )
               ),
               a(
                 href = "mailto:changelabboston@gmail.com",

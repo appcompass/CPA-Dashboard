@@ -37,7 +37,7 @@
     "howto_step4_body": "Diskubri spesializason di kada organizason pa kria koneson, pidi orientason i fazi referénsia.",
     "howto_login_title": "Odja perfil kompletu — faze login",
     "howto_login_body": "Vista públiku ta mostra un rezumu di kada organizason. Membru verifikadu di un organizason pode faze login pa odja i atualiza tudu detalhe di perfil — informason di kontaktu, diskrison kompletu di servisu, i más. Faze login ta manten informason di bu organizason atualizadu pa parseirus pode kontakta-u i fazi referénsia.",
-    "howto_login_contact": "Bu meste un senha ô bu ten prublema pa faze login? Kontakta ",
+    "howto_login_contact": "Bu meste un senha, bu ten prublema pa faze login, ô bu meste pa nu faze algun mudansa ô atualizason na pájina di bu organizason? Kontakta ",
     "howto_customize_title": "Pô-l di bu manera",
     "howto_customize_body": "Muda painel pa kualker un di nos língua disponível ku seletor di língua na navegason — bu skolha ta fika na tudu site."
   },
@@ -51,7 +51,7 @@
     "cpa_title": "Kuze ki é CPA?",
     "cpa_body": "Avaliason di Parseirus Komunitáriu (CPA) é manera ki CHANGE Lab ta identifika i ta konekta ku organizasons di bazi komunitáriu ki ten meson igual ku nos. Através di kontaktu i entrevista semi-strukturadu na forma di konversa, nu ta fika ta sabe forsa, prioridadi i nesesidadi di kada organizason di akordu ku [8 dimenson di ben-star di SAMHSA](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf): fízika, emosional, intelektual, okupasional, finanseru, sosial, ambiental i spiritual. Nu ta fika ta sabe tanbe ses perspetiva sobri saúdi i ben-star di jovens na ses komunidadi.",
     "connect_title": "Konekta ku nos",
-    "connect_body": "Bu ten un pergunta ô bu krê kolabora ku CHANGE Lab? Nu ta gosta di obi di bo.",
+    "connect_body": "Bu ten un pergunta, bu krê kolabora ku CHANGE Lab, ô bu ten informason nobu sobri bu organizason ki nu pode atualiza na nos sítiu web? Nu ta gosta di obi di bo.",
     "connect_email_label": "Email"
   },
   "login": {
@@ -87,12 +87,16 @@
   "organization_details": {
     "org_name_placeholder": "Nomi di organizason",
     "org_subtitle": "Anu a sirbi jovens na Grande Boston",
+    "card_about_title": "Sobri organizason",
     "card_age_title": "Distribuison pa idadi di jóvens atendidu",
     "age_12_17": "12-17 anu",
     "age_18_25": "18-25 anu",
     "age_26_plus": "26+ anu",
     "card_established_title": "Areas stabelesidu di ben-star",
+    "card_established_description": "Areas di ben-star “stabelesidu” é kes area undi organizason ten ferramenta, prugrama ô apoiu ben ruknesidu, uzadu na txeu ladu, ku rezultadu ki dja prova. Kes area li é un prioridadi sentral pa organizason i es ta faze parti di se misãu ku se vizãu. Un area pode ka parse komu stabelesidu pa vários razãu, pur izenplu: 1) el ka é un fóku prinsipal di organizason, 2) el é un area emergenti, 3) el sta fóra di skopu di misãu di organizason, ô 4) alguns servisu dja ka ta ser oferesidu pamodi finansiamentu, pesoal, etc.",
     "card_emerging_title": "Areas emergenti di ben-star",
+    "card_emerging_description": "Areas di ben-star “emergenti” é kes area undi organizason ten ferramenta, prugrama ô apoiu nobu ô inda na dizenvolvimentu. Kes ferramenta, prugrama ô apoiu inda ka sta disponível na txeu ladu, inda ka foi testadu, ô pode ser ki es kumesa poku tenpu.",
+    "card_definition_toggle": "Kuze ki es ta signifika?",
     "card_barriers_resources_title": "Dezafius i nesesidadis di rekursu",
     "col_barriers_title": "O que ter em mente",
     "col_resource_needs_title": "Nesesidadis di rekursu",

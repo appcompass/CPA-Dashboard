@@ -223,7 +223,11 @@ about_ui <- function(lang = get_lang()) {
         ),
         p(class = "text-secondary fs-3 lh-base", ap(
           "connect_body",
-          "Have a question or want to partner with the CHANGE Lab? We'd love to hear from you."
+          paste(
+            "Have a question, want to partner with the CHANGE Lab, or have new",
+            "information about your organization that we can update on our",
+            "website? We'd love to hear from you."
+          )
         )),
         tags$ul(
           class = "list-unstyled fs-3 m-0",

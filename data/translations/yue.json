@@ -37,7 +37,7 @@
     "howto_step4_body": "了解每個機構嘅專長，從而建立聯繫、尋求指導同進行轉介。",
     "howto_login_title": "查看完整檔案 — 登入",
     "howto_login_body": "公開檢視只顯示每個機構嘅摘要。經核實嘅機構成員可以登入查看同更新完整嘅檔案資料 — 聯絡資訊、完整嘅服務說明等等。登入可以令你機構嘅資料保持準確，方便夥伴聯絡你同轉介俾你。",
-    "howto_login_contact": "需要密碼或者登入有問題？請聯絡 ",
+    "howto_login_contact": "需要密碼、登入有問題，或者需要我哋幫你機構嘅頁面作出修改或更新？請聯絡 ",
     "howto_customize_title": "打造你嘅版面",
     "howto_customize_body": "透過導覽列嘅語言選擇器，將儀表板切換成我哋支援嘅任何語言 — 你嘅選擇會喺成個網站保留。"
   },
@@ -51,7 +51,7 @@
     "cpa_title": "咩係 CPA？",
     "cpa_body": "社區夥伴評估（CPA）係 CHANGE Lab 用嚟識別同聯繫使命同我哋一致嘅社區機構嘅方式。透過接觸同對話形式嘅半結構式訪談，我哋會按照 [SAMHSA 嘅 8 個健康維度](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf)了解每個機構嘅強項、優先事項同需要：身體、情緒、智力、職業、財務、社交、環境同心靈。我哋亦會了解佢哋對社區青少年健康同福祉嘅睇法。",
     "connect_title": "聯絡我哋",
-    "connect_body": "有問題或者想同 CHANGE Lab 合作？我哋好樂意聽到你嘅聲音。",
+    "connect_body": "有問題、想同 CHANGE Lab 合作，或者有關於你機構嘅新資料想我哋喺網站上更新？我哋好樂意聽到你嘅聲音。",
     "connect_email_label": "電郵"
   },
   "login": {
@@ -87,12 +87,16 @@
   "organization_details": {
     "org_name_placeholder": "機構名稱",
     "org_subtitle": "於大波士頓地區服務青年嘅年數",
+    "card_about_title": "關於機構",
     "card_age_title": "所服務青年嘅年齡分佈",
     "age_12_17": "12-17 歲",
     "age_18_25": "18-25 歲",
     "age_26_plus": "26+ 歲",
     "card_established_title": "已建立健康範疇",
+    "card_established_description": "「已建立」嘅健康範疇，係指機構喺呼啲範疇有廣受認可、廣泛使用而且成效有實證嘅工具、計劃或支援。呼啲範疇係機構嘅核心優先事項，亦係佢哋使命同願景嘅一部分。某個範疇未被列為已建立，可能有唔同原因，例如：1）唔係機構嘅主要重點；2）屬於新興範疇；3）超出咗機構使命嘅範圍；4）因為資金、人手等原因，某啲服務已經唔再提供。",
     "card_emerging_title": "新興健康範疇",
+    "card_emerging_description": "「新興」嘅健康範疇，係指機構喺呼啲範疇有新設立或者仲喺發展中嘅工具、計劃或支援。呼啲工具、計劃或支援仲未廣泛提供或者經過驗證，又或者係最近先開始投入服務。",
+    "card_definition_toggle": "呢個係咩意思？",
     "card_barriers_resources_title": "挑戰與資源需要",
     "col_barriers_title": "需要留意嘅事",
     "col_resource_needs_title": "資源需要",

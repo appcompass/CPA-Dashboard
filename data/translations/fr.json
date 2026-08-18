@@ -37,7 +37,7 @@
     "howto_step4_body": "Découvrez l'expertise de chaque organisation pour créer des liens, demander des conseils et faire des références.",
     "howto_login_title": "Voir le profil complet — connectez-vous",
     "howto_login_body": "La vue publique présente un résumé de chaque organisation. Les membres vérifiés d'une organisation peuvent se connecter pour consulter et mettre à jour l'intégralité des informations du profil — coordonnées, descriptions complètes des services, et plus encore. La connexion permet de garder les informations de votre organisation à jour afin que les partenaires puissent vous joindre et vous référer.",
-    "howto_login_contact": "Besoin d'un mot de passe ou des difficultés à vous connecter ? Contactez ",
+    "howto_login_contact": "Besoin d'un mot de passe, des difficultés à vous connecter ou besoin que nous apportions des modifications ou des mises à jour à la page de votre organisation ? Contactez ",
     "howto_customize_title": "Personnalisez-le",
     "howto_customize_body": "Basculez le tableau de bord dans l'une de nos langues prises en charge à l'aide du sélecteur de langue dans la navigation — votre choix est conservé sur tout le site."
   },
@@ -51,7 +51,7 @@
     "cpa_title": "Qu'est-ce que la CPA ?",
     "cpa_body": "L'évaluation des partenaires communautaires (CPA) est la manière dont le CHANGE Lab identifie les organisations communautaires dont la mission rejoint la nôtre et entre en relation avec elles. Grâce à des démarches de contact et à des entretiens semi-structurés et conversationnels, nous découvrons les forces, les priorités et les besoins de chaque organisation selon [les 8 dimensions du bien-être de la SAMHSA](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf) : physique, émotionnelle, intellectuelle, professionnelle, financière, sociale, environnementale et spirituelle. Nous recueillons aussi leurs points de vue sur la santé et le bien-être des jeunes de leurs communautés.",
     "connect_title": "Contactez-nous",
-    "connect_body": "Vous avez une question ou souhaitez collaborer avec le CHANGE Lab ? Nous serions ravis d'avoir de vos nouvelles.",
+    "connect_body": "Vous avez une question, souhaitez collaborer avec le CHANGE Lab ou disposez de nouvelles informations sur votre organisation que nous pourrions mettre à jour sur notre site web ? Nous serions ravis d'avoir de vos nouvelles.",
     "connect_email_label": "Courriel"
   },
   "login": {
@@ -87,12 +87,16 @@
   "organization_details": {
     "org_name_placeholder": "Nom de l'organisation",
     "org_subtitle": "Années au service des jeunes dans le Grand Boston",
+    "card_about_title": "À propos de l'organisation",
     "card_age_title": "Répartition par âge des jeunes desservis",
     "age_12_17": "12-17 ans",
     "age_18_25": "18-25 ans",
     "age_26_plus": "26+ ans",
     "card_established_title": "Domaines de bien-être établis",
+    "card_established_description": "Les domaines de bien-être « établis » sont ceux pour lesquels l'organisation dispose d'outils, de programmes ou de soutiens reconnus, largement utilisés et dont l'efficacité est démontrée. Ces domaines constituent une priorité centrale de l'organisation et font partie de sa mission et de sa vision. Un domaine peut ne pas figurer comme établi pour différentes raisons, par exemple : 1) ce n'est pas un axe principal de l'organisation, 2) c'est un domaine émergent, 3) il dépasse le cadre de la mission de l'organisation, ou 4) certains services ne sont plus proposés en raison du financement, du personnel, etc.",
     "card_emerging_title": "Domaines de bien-être émergents",
+    "card_emerging_description": "Les domaines de bien-être « émergents » sont ceux pour lesquels l'organisation dispose d'outils, de programmes ou de soutiens nouveaux ou en cours de développement. Ces outils, programmes ou soutiens ne sont pas encore largement disponibles ni éprouvés, ou viennent tout juste d'être mis en service.",
+    "card_definition_toggle": "Qu'est-ce que cela signifie ?",
     "card_barriers_resources_title": "Défis et besoins en ressources",
     "col_barriers_title": "À garder à l'esprit",
     "col_resource_needs_title": "Besoins en ressources",
