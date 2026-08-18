@@ -1,0 +1,21 @@
+{
+  "YSP04": {
+    "intellectual": {
+      "sub_intellectual_2": "A post-secondary team works with Bunker Hill, UMass Boston and Roxbury Community College, running Community Connect hubs on campus and monitoring grades with consent."
+    },
+    "occupational": {
+      "sub_occupational_1": "Summer internships posted on Future Boss; the PIC funds community-based roles and handles onboarding and payroll so employers can focus on training.",
+      "sub_occupational_2": "A career specialist sits in every Boston public high school, and coaching continues after placement, including mediating misunderstandings with new managers.",
+      "sub_occupational_3": "Career specialists in each Boston public high school help students build a first resume and understand what city employers look for.",
+      "sub_occupational_4": "Career-readiness programs at ABCD Boston and MassHire Downtown covering soft skills and personality assessments, plus ESL classes and tracks for youth with disabilities."
+    },
+    "financial": {
+      "sub_financial_1": "Career coaches are trained in budgeting, taxes and monthly expenses, and refer young adults to the Roxbury Financial Empowerment Center for hands-on plans.",
+      "sub_financial_2": "Support completing the FAFSA correctly and finding scholarships, with the goal of graduating with as little debt as possible.",
+      "sub_financial_3": "Workshops for parents on saving for a home or college tuition, plus Financially Lit with The Possible Zone, aimed at young fathers."
+    },
+    "social": {
+      "sub_social_1": "Community Connect pairs students with a mentor in the same major, matched by an interests survey, which raises on-time graduation rates."
+    }
+  }
+}

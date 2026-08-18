@@ -1,0 +1,25 @@
+"YSP13": {
+  "physical": {
+    "wellness_physical_fitness": "Quarterly wellness retreats where yoga and similar practices are led by hired specialists, with girls suggesting facilitators they have enjoyed and helping shape what each retreat includes.",
+    "wellness_physical_movement": "When weather allows, retreats move outdoors for field-day activities such as jump rope and hand games, and the group also joins organized walks together."
+  },
+  "intellectual": {
+    "sub_intellectual_1": "Workshops built on an in-house curriculum, including All About Self-Love, where girls define themselves on their own terms; activities are tried with girls and revised on their feedback.",
+    "sub_intellectual_2": "Belonging and Becoming Fellows attend monthly workshops on the application process and what campus life will ask of them, plus one-on-one meetings for college essay feedback.",
+    "wellness_intellectual_social_justice": "Every program is rooted in social justice and identity development, giving girls language for criminalization and adultification and the skills to question the systems behind them."
+  },
+  "occupational": {
+    "sub_occupational_1": "One or two interns are hosted each semester and supported across the full term by the staff team.",
+    "sub_occupational_2": "Girls spend time with local Black and Brown professional women who volunteer to talk through their careers and the paths that took them there.",
+    "sub_occupational_3": "Fellows build resumes and LinkedIn profiles alongside their college-access workshops, with networking practice folded into the same sessions.",
+    "wellness_occupational_stipend": "High school girls are hired as counselors at the organization's summer camp, a paid part-time role for older participants."
+  },
+  "financial": {
+    "sub_financial_2": "Fellowship workshops walk through the financial aid process, and fellows can book one-on-one meetings to make sense of an aid package before deciding.",
+    "sub_financial_3": "Partner organizations run sessions on bank accounts, credit cards and everyday money decisions, so girls can weigh choices that fit their own circumstances."
+  },
+  "social": {
+    "sub_social_1": "Staff sit down with girls to problem-solve school and home situations as they arise, coaching self-advocacy; check-ins continue after graduation, with gatherings when college students are home.",
+    "sub_social_3": "Events grounded in being in community with each other, paired with workshops on healthy relationships, boundaries and communication; girls help decide what each event looks like."
+  }
+}
