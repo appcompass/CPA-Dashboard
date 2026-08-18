@@ -157,6 +157,23 @@ test_that("get_organization_details_context exposes a sanitized website", {
   expect_equal(make_ctx("javascript:alert(1)")$website, "")
 })
 
+test_that("get_organization_details_context exposes the About blurb", {
+  make_ctx <- function(about) {
+    raw <- as.data.frame(
+      as.list(setNames(c("Blurb Org", about), c("Organization", "About Org"))),
+      stringsAsFactors = FALSE, check.names = FALSE
+    )
+    get_organization_details_context(get_lang("en"), "Blurb Org", build_clean_survey(raw))
+  }
+  expect_equal(make_ctx("Serves youth citywide.")$about, "Serves youth citywide.")
+  # Blank and whitespace-only both resolve to "", which is what makes the details
+  # page drop the card instead of rendering an empty one.
+  expect_equal(make_ctx("")$about, "")
+  expect_equal(make_ctx("   ")$about, "")
+  # Paragraph breaks survive the transform; the page renders them with pre-line.
+  expect_match(make_ctx("First para.\n\nSecond para.")$about, "\n", fixed = TRUE)
+})
+
 # ---- per-dimension services + state (orgservices) ----
 
 test_that("parse_services splits canonical comma-joined selections", {
@@ -271,6 +288,65 @@ test_that("build_encrypted_survey accumulates across two weekly runs", {
   expect_equal(sort(wk2$orgname), c("Org A", "Org B", "Org C"))
   expect_equal(wk2$lengthserve[wk2$orgname == "Org B"], "8+")
   expect_equal(wk2$pct_age_12_17[wk2$orgname == "Org B"], "26%-60%")
+})
+
+# ---- about text + export encoding ----
+
+test_that("build_clean_survey carries About Org into the about column", {
+  vals <- c("Org A", "A blurb about the org.")
+  cols <- c("Organization", "About Org")
+  raw <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  clean <- build_clean_survey(raw)
+  expect_true("about" %in% names(clean))
+  expect_equal(clean$about, "A blurb about the org.")
+})
+
+test_that("about is blank when the export has no About Org column", {
+  raw <- as.data.frame(
+    as.list(setNames("Org B", "Organization")),
+    stringsAsFactors = FALSE, check.names = FALSE
+  )
+  clean <- build_clean_survey(raw)
+  expect_true(is.na(clean$about) || !nzchar(clean$about))
+})
+
+test_that("detect_export_encoding distinguishes UTF-8, BOM, and Windows-1252", {
+  utf8 <- tempfile(fileext = ".csv")
+  writeBin(charToRaw("Organization\nOrg \xe2\x80\x94 dash\n"), utf8)
+  expect_equal(detect_export_encoding(utf8), "UTF-8")
+
+  bom <- tempfile(fileext = ".csv")
+  writeBin(c(as.raw(c(0xEF, 0xBB, 0xBF)), charToRaw("Organization\n")), bom)
+  expect_equal(detect_export_encoding(bom), "UTF-8-BOM")
+
+  # 0x97 is an em dash in Windows-1252 and invalid as a lone UTF-8 byte.
+  cp1252 <- tempfile(fileext = ".csv")
+  writeBin(c(charToRaw("Organization\nOrg "), as.raw(0x97), charToRaw(" dash\n")), cp1252)
+  expect_equal(detect_export_encoding(cp1252), "Windows-1252")
+
+  empty <- tempfile(fileext = ".csv")
+  file.create(empty)
+  expect_equal(detect_export_encoding(empty), "UTF-8")
+})
+
+test_that("a Windows-1252 export round-trips its punctuation intact", {
+  path <- tempfile(fileext = ".csv")
+  # Row 1 names, rows 2-3 Qualtrics metadata, then one data row whose About Org
+  # holds a Windows-1252 em dash (0x97) and curly apostrophe (0x92).
+  writeBin(c(
+    charToRaw("Organization,About Org\nOrg,About\n{\"ImportId\":\"a\"},{\"ImportId\":\"b\"}\nOrg A,\"Youth "),
+    as.raw(0x97),
+    charToRaw(" that"),
+    as.raw(0x92),
+    charToRaw("s it\"\n")
+  ), path)
+
+  clean <- build_clean_survey(read_qualtrics_export(path))
+  expect_equal(nrow(clean), 1L)
+  # Correctly decoded, both characters survive as real Unicode punctuation.
+  expect_match(clean$about, "\u2014", fixed = TRUE)
+  expect_match(clean$about, "\u2019", fixed = TRUE)
+  expect_true(validUTF8(clean$about))
 })
 
 # ---- publication consent (display_on_website) ----

@@ -37,7 +37,7 @@
     "howto_step4_body": "Descubra a especialidade de cada organização para criar conexões, pedir orientação e fazer encaminhamentos.",
     "howto_login_title": "Veja o perfil completo — faça login",
     "howto_login_body": "A visualização pública mostra um resumo de cada organização. Membros verificados de uma organização podem fazer login para ver e atualizar os detalhes completos do perfil — informações de contato, descrições completas dos serviços e muito mais. Fazer login mantém as informações da sua organização atualizadas para que parceiros possam contatá-la e fazer encaminhamentos.",
-    "howto_login_contact": "Precisa de uma senha ou está com problemas para fazer login? Entre em contato pelo ",
+    "howto_login_contact": "Precisa de uma senha, está com problemas para fazer login ou precisa que façamos alguma alteração ou atualização na página da sua organização? Entre em contato pelo ",
     "howto_customize_title": "Deixe do seu jeito",
     "howto_customize_body": "Mude o painel para qualquer um dos idiomas disponíveis usando o seletor de idioma na navegação — sua escolha é mantida em todo o site."
   },
@@ -51,7 +51,7 @@
     "cpa_title": "O que é a CPA?",
     "cpa_body": "A Avaliação de Parceiros Comunitários (CPA) é como o CHANGE Lab identifica e se conecta com organizações de base comunitária cuja missão se alinha com a nossa. Por meio de contato e entrevistas semiestruturadas e conversacionais, conhecemos os pontos fortes, as prioridades e as necessidades de cada organização ao longo das [8 dimensões do bem-estar da SAMHSA](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf): física, emocional, intelectual, ocupacional, financeira, social, ambiental e espiritual. Também conhecemos suas perspectivas sobre a saúde e o bem-estar dos jovens em suas comunidades.",
     "connect_title": "Fale conosco",
-    "connect_body": "Tem alguma pergunta ou quer ser parceiro do CHANGE Lab? Adoraríamos ouvir você.",
+    "connect_body": "Tem alguma pergunta, quer ser parceiro do CHANGE Lab ou tem novas informações sobre sua organização que possamos atualizar em nosso site? Adoraríamos ouvir você.",
     "connect_email_label": "E-mail"
   },
   "login": {
@@ -87,12 +87,16 @@
   "organization_details": {
     "org_name_placeholder": "Nome da organização",
     "org_subtitle": "Anos atendendo jovens na Grande Boston",
+    "card_about_title": "Sobre a organização",
     "card_age_title": "Distribuição etária dos jovens atendidos",
     "age_12_17": "12-17 anos",
     "age_18_25": "18-25 anos",
     "age_26_plus": "26+ anos",
     "card_established_title": "Áreas estabelecidas de bem-estar",
+    "card_established_description": "As áreas de bem-estar “estabelecidas” são aquelas em que a organização dispõe de ferramentas, programas ou apoios reconhecidos, amplamente utilizados e com resultados comprovados. Essas áreas são uma prioridade central da organização e fazem parte de sua missão e visão. Uma área pode não aparecer como estabelecida por diversos motivos, tais como: 1) não é um foco principal da organização, 2) é uma área emergente, 3) está fora do escopo da missão da organização, ou 4) determinados serviços deixaram de ser oferecidos por questões de financiamento, equipe, etc.",
     "card_emerging_title": "Áreas emergentes de bem-estar",
+    "card_emerging_description": "As áreas de bem-estar “emergentes” são aquelas em que a organização dispõe de ferramentas, programas ou apoios novos ou em desenvolvimento. Essas ferramentas, programas ou apoios ainda não estão amplamente disponíveis nem testados, ou podem ter sido lançados muito recentemente.",
+    "card_definition_toggle": "O que isso significa?",
     "card_barriers_resources_title": "Desafios e Necessidades de Recursos",
     "col_barriers_title": "O que ter em mente",
     "col_resource_needs_title": "Necessidades de Recursos",

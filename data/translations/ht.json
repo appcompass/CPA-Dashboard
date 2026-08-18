@@ -37,7 +37,7 @@
     "howto_step4_body": "Dekouvri ekspètiz chak òganizasyon pou bati koneksyon, mande konsèy, ak fè referans.",
     "howto_login_title": "Wè pwofil konplè a — konekte",
     "howto_login_body": "Vi piblik la montre yon rezime chak òganizasyon. Manm òganizasyon ki verifye yo ka konekte pou wè epi mete ajou tout detay pwofil la — enfòmasyon kontak, deskripsyon konplè sèvis yo, ak plis ankò. Konekte ede enfòmasyon òganizasyon w lan rete egzat pou patnè yo ka kontakte w epi voye referans ba ou.",
-    "howto_login_contact": "Ou bezwen yon modpas oswa w gen pwoblèm pou konekte? Kontakte ",
+    "howto_login_contact": "Ou bezwen yon modpas, w gen pwoblèm pou konekte, oswa ou bezwen nou fè chanjman oswa mizajou nan paj òganizasyon ou? Kontakte ",
     "howto_customize_title": "Fè l pa ou",
     "howto_customize_body": "Chanje tablo a nan nenpòt lang nou sipòte avèk seleksyonè lang nan nan navigasyon an — chwa w la rete sou tout sit la."
   },
@@ -51,7 +51,7 @@
     "cpa_title": "Kisa CPA a ye?",
     "cpa_body": "Evalyasyon Patnè Kominotè (CPA) se fason CHANGE Lab idantifye epi konekte ak òganizasyon kominotè ki gen menm misyon ak pa nou. Atravè kontak ak entèvyou semi-estriktire ki tankou yon konvèsasyon, nou aprann fòs, priyorite, ak bezwen chak òganizasyon selon [8 dimansyon byennèt SAMHSA yo](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf): fizik, emosyonèl, entèlektyèl, pwofesyonèl, finansye, sosyal, anviwònmantal, ak espirityèl. Nou aprann tou pèspektiv yo sou sante ak byennèt jèn yo nan kominote yo.",
     "connect_title": "Konekte ak nou",
-    "connect_body": "Ou gen yon kesyon oswa ou vle kolabore ak CHANGE Lab? Nou ta renmen tande nan men ou.",
+    "connect_body": "Ou gen yon kesyon, ou vle kolabore ak CHANGE Lab, oswa ou gen nouvo enfòmasyon sou òganizasyon ou ke nou ka mete ajou sou sit wèb nou? Nou ta renmen tande nan men ou.",
     "connect_email_label": "Imèl"
   },
   "login": {
@@ -87,12 +87,16 @@
   "organization_details": {
     "org_name_placeholder": "Non òganizasyon",
     "org_subtitle": "Ane ap sèvi jèn moun nan Greater Boston",
+    "card_about_title": "Konsènan òganizasyon an",
     "card_age_title": "Distribisyon laj jèn yo sèvi yo",
     "age_12_17": "12-17 zan",
     "age_18_25": "18-25 zan",
     "age_26_plus": "26+ zan",
     "card_established_title": "Zòn byennèt etabli",
+    "card_established_description": "Zòn byennèt ki “etabli” yo se zòn kote òganizasyon an gen zouti, pwogram, oswa sipò ki byen rekònèt, ki lajman itilize, epi ki bay rezilta ki pwouve. Zòn sa yo se yon priyorite santral pou òganizasyon an epi yo fè pati misyon ak vizyon li. Yon zòn ka pa parèt kòm etabli pou plizyè rezon, tankou: 1) li pa yon konsantrasyon prensipal pou òganizasyon an, 2) se yon zòn k ap parèt, 3) li deyò limit misyon òganizasyon an, oswa 4) kèk sèvis pa bay ankò akòz finansman, anplwaye, elatriye.",
     "card_emerging_title": "Zòn byennèt k ap parèt",
+    "card_emerging_description": "Zòn byennèt “k ap parèt” yo se zòn kote òganizasyon an gen zouti, pwogram, oswa sipò ki nouvo oswa k ap devlope. Zouti, pwogram, oswa sipò sa yo poko lajman disponib oswa teste, oswa yo fèk kòmanse bay sèvis.",
+    "card_definition_toggle": "Kisa sa vle di?",
     "card_barriers_resources_title": "Defi ak Bezwen Resous",
     "col_barriers_title": "Sa pou sonje",
     "col_resource_needs_title": "Bezwen resous",

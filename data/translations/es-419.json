@@ -37,7 +37,7 @@
     "howto_step4_body": "Descubra la experiencia de cada organización para crear conexiones, pedir orientación y hacer referencias.",
     "howto_login_title": "Vea el perfil completo: inicie sesión",
     "howto_login_body": "La vista pública muestra un resumen de cada organización. Los miembros verificados de una organización pueden iniciar sesión para ver y actualizar los detalles completos del perfil: información de contacto, descripciones completas de servicios y más. Iniciar sesión mantiene la información de su organización actualizada para que los socios puedan comunicarse con usted y hacer referencias.",
-    "howto_login_contact": "¿Necesita una contraseña o tiene problemas para iniciar sesión? Escriba a ",
+    "howto_login_contact": "¿Necesita una contraseña, tiene problemas para iniciar sesión o necesita que hagamos algún cambio o actualización en la página de su organización? Escriba a ",
     "howto_customize_title": "Hágalo suyo",
     "howto_customize_body": "Cambie el panel a cualquiera de nuestros idiomas disponibles con el selector de idioma en la navegación; su elección se mantiene en todo el sitio."
   },
@@ -51,7 +51,7 @@
     "cpa_title": "¿Qué es la CPA?",
     "cpa_body": "La Evaluación de Socios Comunitarios (CPA) es la forma en que CHANGE Lab identifica y se conecta con organizaciones comunitarias cuya misión se alinea con la nuestra. Mediante el contacto y entrevistas semiestructuradas y conversacionales, conocemos las fortalezas, prioridades y necesidades de cada organización a lo largo de [las 8 dimensiones del bienestar de SAMHSA](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf): física, emocional, intelectual, ocupacional, financiera, social, ambiental y espiritual. También conocemos sus perspectivas sobre la salud y el bienestar de los jóvenes en sus comunidades.",
     "connect_title": "Conéctese con nosotros",
-    "connect_body": "¿Tiene alguna pregunta o desea colaborar con CHANGE Lab? Nos encantaría saber de usted.",
+    "connect_body": "¿Tiene alguna pregunta, desea colaborar con CHANGE Lab o cuenta con información nueva sobre su organización que podamos actualizar en nuestro sitio web? Nos encantaría saber de usted.",
     "connect_email_label": "Correo electrónico"
   },
   "login": {
@@ -87,12 +87,16 @@
   "organization_details": {
     "org_name_placeholder": "Nombre de la organización",
     "org_subtitle": "Años al servicio de jóvenes en el área metropolitana de Boston",
+    "card_about_title": "Acerca de la organización",
     "card_age_title": "Desglose por edad de los jóvenes atendidos",
     "age_12_17": "12-17 años",
     "age_18_25": "18-25 años",
     "age_26_plus": "26+ años",
     "card_established_title": "Áreas establecidas de bienestar",
+    "card_established_description": "Las áreas de bienestar “establecidas” son aquellas en las que la organización cuenta con herramientas, programas o apoyos reconocidos, de uso generalizado y con resultados comprobados. Estas áreas son una prioridad central de la organización y forman parte de su misión y visión. Un área puede no figurar como establecida por distintas razones, por ejemplo: 1) no es un enfoque principal de la organización, 2) es un área emergente, 3) está fuera del alcance de la misión de la organización, o 4) ciertos servicios ya no se ofrecen por motivos de financiamiento, personal, etc.",
     "card_emerging_title": "Áreas emergentes de bienestar",
+    "card_emerging_description": "Las áreas de bienestar “emergentes” son aquellas en las que la organización cuenta con herramientas, programas o apoyos nuevos o en desarrollo. Estas herramientas, programas o apoyos aún no están ampliamente disponibles ni probados, o acaban de ponerse en marcha.",
+    "card_definition_toggle": "¿Qué significa esto?",
     "card_barriers_resources_title": "Desafíos y necesidades de recursos",
     "col_barriers_title": "Qué tener en cuenta",
     "col_resource_needs_title": "Necesidades de recursos",

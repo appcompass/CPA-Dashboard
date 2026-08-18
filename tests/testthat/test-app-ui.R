@@ -153,6 +153,45 @@ test_that("about_ui links SAMHSA's 8 dimensions of wellness in the CPA body", {
   )
 })
 
+test_that("about_ui and home_ui invite orgs to request page edits", {
+  withr::local_dir(project_root)
+
+  # Stakeholder ask: organizations should be told they can email the lab to get
+  # their own page corrected, on both the About and Home entry points.
+  about_html <- render_html(about_ui())
+  expect_match(about_html, "new information about your organization", fixed = TRUE)
+  expect_match(about_html, "changelabboston@gmail.com", fixed = TRUE)
+
+  home_html <- render_html(home_ui())
+  expect_match(home_html, "edits or updates to your organization", fixed = TRUE)
+  expect_match(home_html, "changelabboston@gmail.com", fixed = TRUE)
+})
+
+test_that("the edit-request invitation is translated into every language", {
+  withr::local_dir(project_root)
+
+  en_connect <- get_lang("en")$about$connect_body
+  en_contact <- get_lang("en")$home$howto_login_contact
+
+  for (code in rownames(SUPPORTED_LANGUAGES)) {
+    lang <- get_lang(code)
+    connect <- as.character(lang$about$connect_body %||% "")
+    contact <- as.character(lang$home$howto_login_contact %||% "")
+
+    expect_true(nzchar(trimws(connect)), info = paste(code, "connect_body"))
+    expect_true(nzchar(trimws(contact)), info = paste(code, "howto_login_contact"))
+
+    # The email <a> is appended after this string in home_ui.R, so the trailing
+    # space is load-bearing: without it the link runs into the sentence.
+    expect_true(endsWith(contact, " "), info = paste(code, "trailing space"))
+
+    if (!identical(code, "en")) {
+      expect_false(identical(connect, en_connect), info = paste(code, "connect untranslated"))
+      expect_false(identical(contact, en_contact), info = paste(code, "contact untranslated"))
+    }
+  }
+})
+
 test_that("about_ui sizes the section descriptions per stakeholder feedback", {
   withr::local_dir(project_root)
 
@@ -332,6 +371,93 @@ test_that("organization_details_ui links the org name to its website, or renders
   plain <- render_html(organization_details_ui(logged_in = TRUE))
   expect_match(plain, "Plain Org", fixed = TRUE)
   expect_false(grepl(">Plain Org</a>", plain, fixed = TRUE))
+})
+
+test_that("organization_details_ui shows the About card to logged-out visitors", {
+  withr::local_dir(project_root)
+
+  detail_data <- load_organization_details_data()
+  skip_if(
+    nrow(detail_data) == 0,
+    "No organization in the local dataset has consented to publication."
+  )
+  ctx <- get_organization_details_context()
+  skip_if(
+    !nzchar(ctx$about %||% ""),
+    "The first published organization has no About text in the local dataset."
+  )
+  labels <- ctx$labels
+
+  # logged_in = FALSE: the About blurb is public, unlike the emerging card.
+  html <- render_html(organization_details_ui(logged_in = FALSE))
+
+  expect_match(html, labels$card_about_title, fixed = TRUE)
+  expect_match(html, "white-space: pre-line", fixed = TRUE)
+
+  # It sits above the Age Breakdown card, per the stakeholder request.
+  about_at <- regexpr(labels$card_about_title, html, fixed = TRUE)
+  age_at <- regexpr(labels$card_age_title, html, fixed = TRUE)
+  expect_gt(about_at, 0L)
+  expect_gt(age_at, 0L)
+  expect_lt(about_at, age_at)
+})
+
+test_that("organization_details_ui explains the established wellness card", {
+  withr::local_dir(project_root)
+
+  detail_data <- load_organization_details_data()
+  skip_if(
+    nrow(detail_data) == 0,
+    "No organization in the local dataset has consented to publication."
+  )
+  en <- get_lang("en")$organization_details
+
+  html <- render_html(organization_details_ui())
+
+  # Collapsed by default and rendered as a native <details>, so it needs no JS.
+  expect_match(html, "<details", fixed = TRUE)
+  expect_match(html, en$card_definition_toggle, fixed = TRUE)
+  expect_match(html, substr(en$card_established_description, 1, 60), fixed = TRUE)
+
+  # The wheel mount still carries its data attribute alongside the new sibling.
+  expect_match(html, "data-active-categories", fixed = TRUE)
+})
+
+test_that("the emerging definition is gated behind login with its card", {
+  withr::local_dir(project_root)
+
+  detail_data <- load_organization_details_data()
+  skip_if(
+    nrow(detail_data) == 0,
+    "No organization in the local dataset has consented to publication."
+  )
+  en <- get_lang("en")$organization_details
+  emerging_snippet <- substr(en$card_emerging_description, 1, 60)
+
+  expect_false(grepl(emerging_snippet, render_html(organization_details_ui()), fixed = TRUE))
+})
+
+test_that("every supported language carries the wellness definition copy", {
+  withr::local_dir(project_root)
+
+  for (code in rownames(SUPPORTED_LANGUAGES)) {
+    details <- get_lang(code)$organization_details
+    for (key in c(
+      "card_definition_toggle",
+      "card_established_description",
+      "card_emerging_description"
+    )) {
+      expect_true(
+        nzchar(trimws(as.character(details[[key]] %||% ""))),
+        info = paste(code, key)
+      )
+    }
+  }
+})
+
+test_that("wellness_definition_ui renders nothing without body text", {
+  expect_null(wellness_definition_ui("What does this mean?", ""))
+  expect_null(wellness_definition_ui("What does this mean?", NULL))
 })
 
 test_that("organization_details_ui renders the first org when no id is supplied", {

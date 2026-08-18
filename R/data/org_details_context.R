@@ -34,6 +34,7 @@ get_organization_details_demographics <- function(row) {
 ORGANIZATION_DETAILS_LABEL_SPEC <- list(
   page_subtitle_fallback = c(key = "page_subtitle_fallback", fallback = "Organization details"),
   org_subtitle = c(key = "org_subtitle", fallback = "Serving youth in Greater Boston"),
+  card_about_title = c(key = "card_about_title", fallback = "About"),
   card_age_title = c(key = "card_age_title", fallback = "Age Breakdown"),
   age_12_17 = c(key = "age_12_17", fallback = "12-17 yrs old"),
   age_18_25 = c(key = "age_18_25", fallback = "18-25 yrs old"),
@@ -116,6 +117,9 @@ get_organization_details_context <- function(
       labels = build_organization_details_labels(details),
       orgname = get_named_value(row, "orgname", fallback = fallback_org_name),
       website = website,
+      # Free-text organization blurb from the survey. Empty for orgs that left the
+      # question blank; the details page omits the card entirely in that case.
+      about = get_named_value(row, "about", fallback = ""),
       lengthserve = get_named_value(row, "lengthserve")
     ),
     get_organization_details_demographics(row),

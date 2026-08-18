@@ -37,7 +37,7 @@
     "howto_step4_body": "了解每个组织的专长，以建立联系、寻求指导并进行转介。",
     "howto_login_title": "查看完整资料 — 登录",
     "howto_login_body": "公开视图仅显示每个组织的摘要。经过验证的组织成员可以登录以查看和更新完整的资料 — 包括联系信息、完整的服务说明等。登录可使您组织的信息保持准确，便于合作伙伴联系您并向您转介。",
-    "howto_login_contact": "需要密码或登录遇到问题？请联系 ",
+    "howto_login_contact": "需要密码、登录遇到问题，或需要我们对您机构的页面进行修改或更新？请联系 ",
     "howto_customize_title": "打造您的页面",
     "howto_customize_body": "使用导航栏中的语言选择器，将仪表板切换为我们支持的任何语言 — 您的选择将在整个网站中保留。"
   },
@@ -51,7 +51,7 @@
     "cpa_title": "什么是 CPA？",
     "cpa_body": "社区伙伴评估（CPA）是 CHANGE Lab 识别并联系与我们使命一致的社区组织的方式。通过接触和对话式的半结构化访谈，我们按照 [SAMHSA 的 8 个健康维度](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf)了解每个组织的优势、重点和需求：身体、情绪、智力、职业、财务、社交、环境和心灵。我们还会了解他们对社区青少年健康与福祉的看法。",
     "connect_title": "联系我们",
-    "connect_body": "有疑问或想与 CHANGE Lab 合作？我们很乐意听到您的声音。",
+    "connect_body": "有疑问、想与 CHANGE Lab 合作，或有关于您机构的新信息希望我们在网站上更新？我们很乐意听到您的声音。",
     "connect_email_label": "电子邮件"
   },
   "login": {
@@ -87,12 +87,16 @@
   "organization_details": {
     "org_name_placeholder": "组织名称",
     "org_subtitle": "服务大波士顿地区青年的年数",
+    "card_about_title": "关于机构",
     "card_age_title": "所服务青少年的年龄分布",
     "age_12_17": "12-17岁",
     "age_18_25": "18-25岁",
     "age_26_plus": "26岁以上",
     "card_established_title": "已建立的健康领域",
+    "card_established_description": "“已建立”的健康领域是指组织拥有广受认可、广泛使用且成效经过验证的工具、项目或支持的领域。这些领域是组织的核心优先事项，也是其使命与愿景的一部分。某个领域未被列为已建立可能有多种原因，例如：1）它不是组织的主要工作重点；2）它属于新兴领域；3）它超出了组织使命的范围；4）由于资金、人员等原因，某些具体服务已不再提供。",
     "card_emerging_title": "新兴健康领域",
+    "card_emerging_description": "“新兴”的健康领域是指组织拥有新设立或仍在发展中的工具、项目或支持的领域。这些工具、项目或支持尚未广泛提供或经过验证，也可能是最近才开始投入服务。",
+    "card_definition_toggle": "这是什么意思？",
     "card_barriers_resources_title": "挑战与资源需求",
     "col_barriers_title": "需要注意的事项",
     "col_resource_needs_title": "资源需求",

@@ -37,7 +37,7 @@
     "howto_step4_body": "Khám phá chuyên môn của từng tổ chức để xây dựng kết nối, xin hướng dẫn và giới thiệu.",
     "howto_login_title": "Xem hồ sơ đầy đủ — đăng nhập",
     "howto_login_body": "Chế độ xem công khai hiển thị bản tóm tắt của mỗi tổ chức. Thành viên đã xác minh của tổ chức có thể đăng nhập để xem và cập nhật toàn bộ thông tin hồ sơ — thông tin liên hệ, mô tả dịch vụ đầy đủ và hơn thế nữa. Việc đăng nhập giúp giữ cho thông tin tổ chức của bạn luôn chính xác để các đối tác có thể liên hệ và giới thiệu đến bạn.",
-    "howto_login_contact": "Cần mật khẩu hoặc gặp khó khăn khi đăng nhập? Hãy liên hệ ",
+    "howto_login_contact": "Cần mật khẩu, gặp khó khăn khi đăng nhập, hoặc cần chúng tôi chỉnh sửa hay cập nhật trang của tổ chức bạn? Hãy liên hệ ",
     "howto_customize_title": "Tùy chỉnh theo ý bạn",
     "howto_customize_body": "Chuyển bảng thông tin sang bất kỳ ngôn ngữ nào được hỗ trợ bằng bộ chọn ngôn ngữ trên thanh điều hướng — lựa chọn của bạn được giữ trên toàn bộ trang web."
   },
@@ -51,7 +51,7 @@
     "cpa_title": "CPA là gì?",
     "cpa_body": "Đánh giá Đối tác Cộng đồng (CPA) là cách CHANGE Lab xác định và kết nối với các tổ chức cộng đồng có sứ mệnh phù hợp với chúng tôi. Thông qua việc liên hệ và các cuộc phỏng vấn bán cấu trúc mang tính trò chuyện, chúng tôi tìm hiểu về thế mạnh, ưu tiên và nhu cầu của từng tổ chức theo [8 khía cạnh của sự khỏe mạnh của SAMHSA](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf): thể chất, cảm xúc, trí tuệ, nghề nghiệp, tài chính, xã hội, môi trường và tinh thần. Chúng tôi cũng tìm hiểu quan điểm của họ về sức khỏe và sự khỏe mạnh của thanh thiếu niên trong cộng đồng.",
     "connect_title": "Kết nối với chúng tôi",
-    "connect_body": "Bạn có câu hỏi hoặc muốn hợp tác với CHANGE Lab? Chúng tôi rất mong được nghe từ bạn.",
+    "connect_body": "Bạn có câu hỏi, muốn hợp tác với CHANGE Lab, hoặc có thông tin mới về tổ chức của bạn mà chúng tôi có thể cập nhật trên trang web? Chúng tôi rất mong được nghe từ bạn.",
     "connect_email_label": "Email"
   },
   "login": {
@@ -87,12 +87,16 @@
   "organization_details": {
     "org_name_placeholder": "Tên tổ chức",
     "org_subtitle": "Năm phục vụ thanh thiếu niên tại Greater Boston",
+    "card_about_title": "Giới thiệu về tổ chức",
     "card_age_title": "Phân tích độ tuổi của thanh thiếu niên được phục vụ",
     "age_12_17": "12-17 tuổi",
     "age_18_25": "18-25 tuổi",
     "age_26_plus": "26+ tuổi",
     "card_established_title": "Các lĩnh vực sức khỏe đã thiết lập",
+    "card_established_description": "Các lĩnh vực sức khỏe “đã thiết lập” là những lĩnh vực mà tổ chức có các công cụ, chương trình hoặc hỗ trợ được công nhận rộng rãi, được sử dụng phổ biến và đã chứng minh được hiệu quả. Những lĩnh vực này là ưu tiên cốt lõi của tổ chức và là một phần trong sứ mệnh và tầm nhìn của họ. Một lĩnh vực có thể không được liệt kê là đã thiết lập vì nhiều lý do, chẳng hạn như: 1) đó không phải là trọng tâm chính của tổ chức, 2) đó là một lĩnh vực mới nổi, 3) nó nằm ngoài phạm vi sứ mệnh của tổ chức, hoặc 4) một số dịch vụ cụ thể không còn được cung cấp do kinh phí, nhân sự, v.v.",
     "card_emerging_title": "Các lĩnh vực sức khỏe mới nổi",
+    "card_emerging_description": "Các lĩnh vực sức khỏe “mới nổi” là những lĩnh vực mà tổ chức có các công cụ, chương trình hoặc hỗ trợ mới hoặc đang phát triển. Những công cụ, chương trình hoặc hỗ trợ này chưa được cung cấp rộng rãi, chưa được kiểm chứng, hoặc có thể vừa mới được triển khai.",
+    "card_definition_toggle": "Điều này có nghĩa là gì?",
     "card_barriers_resources_title": "Thách thức & Nhu cầu nguồn lực",
     "col_barriers_title": "Điều cần lưu ý",
     "col_resource_needs_title": "Nhu cầu nguồn lực",

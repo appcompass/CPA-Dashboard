@@ -17,6 +17,34 @@ render_interview_items_column <- function(groups, empty_text) {
   })
 }
 
+# Collapsible definition shown at the top of a wellness card: a "What does this
+# mean?" line the reader can open for the full explanation, closed by default so
+# it never pushes the wheel down the page.
+#
+# Uses a native <details>/<summary> rather than Bootstrap's collapse plugin: no
+# JS dependency, no id to collide when both cards render, and the browser
+# supplies the keyboard and screen-reader behaviour for free.
+#
+# Placed as a sibling BEFORE the wheel mount inside .card-body. createWheel()
+# finds its mount by the data-active-categories attribute (the home page mounts
+# the same wheel with a preceding sibling and no card at all), so an extra
+# element ahead of it does not disturb rendering.
+wellness_definition_ui <- function(summary_label, body_text) {
+  body_text <- trimws(as.character(body_text %||% ""))
+  if (!nzchar(body_text)) {
+    return(NULL)
+  }
+  tags$details(
+    class = "wellness-definition mb-3",
+    tags$summary(
+      class = "text-secondary",
+      style = "cursor: pointer;",
+      summary_label %||% "What does this mean?"
+    ),
+    tags$p(class = "text-secondary mt-2 mb-0", body_text)
+  )
+}
+
 # ---------------------------------------------------------------------------
 # Demographic value rendering: a qualitative word plus a six-slot figure meter.
 # pct_band() (in data.R) collapses a percentage range to a band; this layer
@@ -174,6 +202,30 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
         div(
           class = "row row-deck row-cards",
 
+          # About card. Public (no `logged_in` gate) and full width, sitting
+          # directly under the org name. Omitted rather than rendered empty when
+          # the survey has no blurb for this org: an empty bordered card reads as
+          # broken. Survey free text is escaped by Shiny; pre-line preserves the
+          # paragraph breaks some organizations wrote into the field.
+          if (nzchar(details_context$about %||% "")) div(
+            class = "col-12",
+            div(
+              class = "card",
+              div(
+                class = "card-header",
+                h3(class = "card-title", labels$card_about_title)
+              ),
+              div(
+                class = "card-body",
+                p(
+                  class = "text-secondary fs-3 lh-base mb-0",
+                  style = "white-space: pre-line;",
+                  details_context$about
+                )
+              )
+            )
+          ),
+
           # Youth Ages Breakdown card
           div(
             class = "col-sm-12 col-lg-6",
@@ -297,6 +349,10 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
               ),
               div(
                 class = "card-body",
+                wellness_definition_ui(
+                  details$card_definition_toggle,
+                  details$card_established_description
+                ),
                 div(
                   `data-active-categories` = paste(details_context$established_categories, collapse = ", "),
                   `data-active-subcats` = paste(details_context$established_subcats, collapse = ","),
@@ -319,6 +375,10 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
               ),
               div(
                 class = "card-body",
+                wellness_definition_ui(
+                  details$card_definition_toggle,
+                  details$card_emerging_description
+                ),
                 div(`data-active-categories` = paste(details_context$emerging_categories, collapse = ", "))
               )
             )

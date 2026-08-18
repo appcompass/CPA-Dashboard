@@ -37,7 +37,7 @@
     "howto_step4_body": "Ogow khibradda urur kasta si aad u dhisto xiriiro, u weydiisato talo, iyo aad u gudbiso.",
     "howto_login_title": "Arag profile-ka buuxa — gal",
     "howto_login_body": "Muuqaalka dadweynaha wuxuu tusayaa kooban oo urur kasta ah. Xubnaha la xaqiijiyay ee ururku way geli karaan si ay u arkaan oo ay u cusboonaysiiyaan faahfaahinta buuxda ee profile-ka — macluumaadka xiriirka, sharraxaadda buuxda ee adeegyada, iyo wax dheeraad ah. Gelitaanku wuxuu ka dhigayaa macluumaadka ururkaaga mid sax ah si ay la-hawlgalayaashu kuula soo xiriiraan oo ay kuu gudbiyaan.",
-    "howto_login_contact": "Ma u baahan tahay furaha sirta ah ama dhibaato ku haysata gelitaanka? La xiriir ",
+    "howto_login_contact": "Ma u baahan tahay furaha sirta ah, dhibaato ku haysata gelitaanka, mise ma rabtaa inaan wax ka beddelno ama cusboonaysiinno bogga ururkaaga? La xiriir ",
     "howto_customize_title": "Ka dhig mid adiga kuu gaar ah",
     "howto_customize_body": "U beddel dashboard-ka mid kasta oo ka mid ah luqadaha la taageeray adoo isticmaalaya doorraha luqadda ee navigation-ka — doorashadaadu waxay sii socotaa goobta oo dhan."
   },
@@ -51,7 +51,7 @@
     "cpa_title": "Waa maxay CPA?",
     "cpa_body": "Qiimaynta Iskaashatada Bulshada (CPA) waa sida CHANGE Lab u aqoonsado oo ula xiriiro ururada bulshada ku dhisan ee hadafkoodu la mid yahay kayaga. Iyadoo la adeegsanayo gaarsiin iyo wareysiyo qaab-dhismeed dhexdhexaad ah oo sheeko ah, waxaan baranaa xoogagga, mudnaanta, iyo baahiyaha urur kasta marka loo eego [8-da cabbir ee fayoobida SAMHSA](https://library.samhsa.gov/sites/default/files/sma16-4953.pdf): jidheed, shucuureed, caqli, shaqo, maaliyadeed, bulsho, deegaan, iyo ruuxi. Waxaan sidoo kale baranaa aragtidooda ku saabsan caafimaadka iyo fayoobida dhallinyarada bulshooyinkooda.",
     "connect_title": "Nala soo xiriir",
-    "connect_body": "Su'aal ma qabtaa ama ma rabtaa inaad la shaqayso CHANGE Lab? Waan ku faraxsanaan lahayn inaan kaa maqalno.",
+    "connect_body": "Su'aal ma qabtaa, ma rabtaa inaad la shaqayso CHANGE Lab, mise ma haysataa macluumaad cusub oo ku saabsan ururkaaga oo aan ku cusboonaysiin karno websaydkeenna? Waan ku faraxsanaan lahayn inaan kaa maqalno.",
     "connect_email_label": "Iimayl"
   },
   "login": {
@@ -87,12 +87,16 @@
   "organization_details": {
     "org_name_placeholder": "Magaca ururka",
     "org_subtitle": "Sano oo u adeegaya dhalinyarada Greater Boston",
+    "card_about_title": "Ku saabsan ururka",
     "card_age_title": "Kala qaybinta da'da dhallinyarada la adeegayo",
     "age_12_17": "12-17 jir",
     "age_18_25": "18-25 jir",
     "age_26_plus": "26+ jir",
     "card_established_title": "Meelaha caafimaadka guud ee la aasaasay",
+    "card_established_description": "Meelaha caafimaadka guud ee “la aasaasay” waa meelaha uu ururku ku leeyahay qalab, barnaamijyo, ama taageero si weyn loo aqoonsan yahay, si ballaaran loo isticmaalo, oo natiijooyinkoodu caddaysan yihiin. Meelahan waa mudnaanta ugu weyn ee ururka waana qayb ka mid ah himilada iyo aragtidiisa. Meel laga yaabo inaan lagu taxin kuwa la aasaasay sababo kala duwan awgood, sida: 1) ma aha diiradda koowaad ee ururka, 2) waa meel soo baxaysa, 3) way ka baxsan tahay himilada ururka, ama 4) adeegyo gaar ah lama sii bixiyo maalgelin, shaqaale, iwm. awgood.",
     "card_emerging_title": "Meelaha caafimaadka guud ee soo baxaya",
+    "card_emerging_description": "Meelaha caafimaadka guud ee “soo baxaya” waa meelaha uu ururku ku leeyahay qalab, barnaamijyo, ama taageero cusub ama weli horumaraya. Qalabkan, barnaamijyadan, ama taageeradan weli si ballaaran looma heli karo, lamana tijaabin, ama waxaa laga yaabaa in dhawaan la bilaabay.",
+    "card_definition_toggle": "Waa maxay macnaha kani?",
     "card_barriers_resources_title": "Caqabadaha & Baahiyaha Kheyraadka",
     "col_barriers_title": "Waxa la xusuusto",
     "col_resource_needs_title": "Baahiyaha Kheyraadka",
