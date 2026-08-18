@@ -222,6 +222,10 @@ test_that("organization_details_ui renders detail cards", {
   withr::local_dir(project_root)
 
   detail_data <- load_organization_details_data()
+  skip_if(
+    nrow(detail_data) == 0,
+    "No organization in the local dataset has consented to publication."
+  )
   first_org_name <- trimws(detail_data[["orgname"]][1])
   first_org_years <- trimws(detail_data[["lengthserve"]][1])
 
@@ -260,6 +264,10 @@ test_that("organization_details_ui gates emerging areas and barriers/resource ne
   # emerging wheel is survey-only, so the default first org may have no emerging
   # areas; drive the UI to a known-emerging org via the "id" query param.
   detail_data <- load_organization_details_data()
+  skip_if(
+    nrow(detail_data) == 0,
+    "No organization in the local dataset has consented to publication."
+  )
   lang <- get_lang("en")
   emerging_org <- NULL
   for (i in seq_len(nrow(detail_data))) {
@@ -330,6 +338,10 @@ test_that("organization_details_ui renders the first org when no id is supplied"
   withr::local_dir(project_root)
 
   detail_data <- load_organization_details_data()
+  skip_if(
+    nrow(detail_data) == 0,
+    "No organization in the local dataset has consented to publication."
+  )
   first_org_name <- trimws(detail_data[["orgname"]][1])
 
   html <- render_html(organization_details_ui())

@@ -141,6 +141,10 @@ rows <- lapply(seq_len(nrow(survey)), function(i) {
   out <- data.frame(
     orgname              = orgname,
     irb_participant_id   = pid,
+    # Publication consent. This export is the lab's internal view, so it is built
+    # from the RAW survey and lists withheld organizations too -- this column is
+    # how you tell which ones the public dashboard actually shows.
+    display_on_website   = trimws(as.character(org_row[["display_on_website"]] %||% "")),
     lengthserve          = trimws(as.character(org_row[["lengthserve"]] %||% "")),
     stringsAsFactors     = FALSE
   )

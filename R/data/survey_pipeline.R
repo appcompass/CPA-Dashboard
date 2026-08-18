@@ -34,6 +34,76 @@ read_qualtrics_export <- function(path, header_rows = 3L) {
   data
 }
 
+# ---------------------------------------------------------------------------
+# Publication consent.
+#
+# The survey asks each organization whether it may appear on the public
+# dashboard. Consent is strictly opt-in: only an explicit "Yes" publishes. "No",
+# a skipped answer, and any organization whose row predates the question are all
+# withheld, because a missing answer is an absence of consent rather than
+# permission to publish.
+#
+# The answer rides through the clean schema as `display_on_website` instead of
+# being applied here. merge_survey_data() is cumulative and never drops an
+# organization, so filtering at ingest would leave last week's consenting row
+# sitting in the encrypted dataset -- still on display -- after the organization
+# revoked. Applying it on the READ side (org_is_displayable(), survey_store.R)
+# makes a Yes -> No -> Yes flip nothing more than three values of one column.
+# ---------------------------------------------------------------------------
+
+# Raw Qualtrics header for the consent question. Qualtrics names the column after
+# the variable name set in the survey editor, so the exact string is a property
+# of the instrument and cannot be derived from anything in this repo. These
+# candidates are tried in order; CONFIRM the real name against the export header
+# and move it to the front.
+SURVEY_DISPLAY_COL_CANDIDATES <- c(
+  "DisplayOnWebsite",
+  "DisplayOrg",
+  "Display on Website",
+  "Yes/No (display organization on website)"
+)
+
+# Locate the consent column in a raw export. Falls back to any header that
+# normalizes to something containing both "display" and "website", so a variable
+# renamed in Qualtrics still lands instead of silently withholding every
+# organization. Returns NA_character_ when the export carries no such column.
+resolve_display_column <- function(raw_names) {
+  raw_names <- as.character(raw_names)
+  raw_names <- raw_names[!is.na(raw_names)]
+  if (!length(raw_names)) {
+    return(NA_character_)
+  }
+  for (candidate in SURVEY_DISPLAY_COL_CANDIDATES) {
+    if (candidate %in% raw_names) {
+      return(candidate)
+    }
+  }
+  normalized <- tolower(gsub("[^A-Za-z0-9]", "", raw_names))
+  hit <- which(
+    grepl("display", normalized, fixed = TRUE) &
+      grepl("website", normalized, fixed = TRUE)
+  )
+  if (length(hit)) raw_names[[hit[[1]]]] else NA_character_
+}
+
+# Normalize one consent answer to the stored vocabulary: "Yes", "No", or "" when
+# the question was skipped or the answer is unrecognized. Prefix matching mirrors
+# how build_orgservices_json() reads the <Dim>Gap columns, so a Qualtrics option
+# worded "Yes, display our organization" still reads as consent.
+clean_display_flag <- function(value) {
+  value <- trimws(as.character(value %||% ""))
+  if (!nzchar(value) || identical(toupper(value), "NA")) {
+    return("")
+  }
+  if (grepl("^yes", value, ignore.case = TRUE)) {
+    return("Yes")
+  }
+  if (grepl("^no", value, ignore.case = TRUE)) {
+    return("No")
+  }
+  ""
+}
+
 # Raw export -> clean, named per-organization data frame (one row per org): the
 # demographic / identity half of the dashboard schema.
 #
@@ -41,6 +111,8 @@ read_qualtrics_export <- function(path, header_rows = 3L) {
 # Qualtrics source column. Each demographic is a cleaned percentage range
 # (clean_pct); years are wording-stripped (clean_lengthserve).
 #   orgname          <- Organization
+#   display_on_website <- the publication-consent question (resolve_display_column);
+#                      "Yes" / "No" / "" -- only "Yes" is ever published
 #   lengthserve      <- YearsServed
 #   pct_age_12_17    <- Age#1_1       (stakeholder spec writes this id hyphenated: pct_age_12-17)
 #   pct_age_18_25    <- Age#1_2       (spec: pct_age_18-25)
@@ -63,11 +135,18 @@ build_clean_survey <- function(raw) {
   }
   pct <- function(col) unname(vapply(get_col(col), clean_pct, character(1)))
 
+  # An absent (or renamed-past-recognition) column makes every value normalize to
+  # "", so nothing is published. That is the intended strict-opt-in failure mode:
+  # loud and empty rather than quietly publishing without consent.
+  display_col <- resolve_display_column(names(raw))
+  display_raw <- if (is.na(display_col)) rep(NA_character_, nrow(raw)) else get_col(display_col)
+
   clean <- data.frame(
     dashboard_id = trimws(get_col("Dashboard ID")),
     irb_participant_id = trimws(get_col("IRB Participant ID")),
     orgname = trimws(get_col("Organization")),
     website = trimws(get_col("Website Url")),
+    display_on_website = unname(vapply(display_raw, clean_display_flag, character(1))),
     lengthserve = unname(vapply(get_col("YearsServed"), clean_lengthserve, character(1))),
 
     # Youth served (rendered today).

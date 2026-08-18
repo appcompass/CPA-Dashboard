@@ -44,11 +44,14 @@ if (!nzchar(Sys.getenv("CPA_DATA_KEY")) && nzchar(Sys.getenv("CI"))) {
 
   .fixture_raw <- tempfile(fileext = ".csv")
   writeLines(c(
-    "Dashboard ID,Organization,YearsServed,Age#1_1,Emotional,EmotionalEorE,Physical,PhysicalEorE",
-    "id,org,years,age,emotional,eore,physical,peore",
-    '{"ImportId":"a"},{"ImportId":"b"},{"ImportId":"c"},{"ImportId":"d"},{"ImportId":"e"},{"ImportId":"f"},{"ImportId":"g"},{"ImportId":"h"}',
-    "CI1,CI Test Org A,8+ years,A lot (61%-100%),Counseling services,Established,,",
-    "CI2,CI Test Org B,4-7 years,Some (26%-60%),,,Fitness programs,Emerging"
+    # DisplayOnWebsite is required: publication consent is strictly opt-in, so a
+    # fixture without it would withhold both organizations and empty every
+    # data-dependent test in CI.
+    "Dashboard ID,Organization,YearsServed,Age#1_1,Emotional,EmotionalEorE,Physical,PhysicalEorE,DisplayOnWebsite",
+    "id,org,years,age,emotional,eore,physical,peore,display",
+    '{"ImportId":"a"},{"ImportId":"b"},{"ImportId":"c"},{"ImportId":"d"},{"ImportId":"e"},{"ImportId":"f"},{"ImportId":"g"},{"ImportId":"h"},{"ImportId":"i"}',
+    "CI1,CI Test Org A,8+ years,A lot (61%-100%),Counseling services,Established,,,Yes",
+    "CI2,CI Test Org B,4-7 years,Some (26%-60%),,,Fitness programs,Emerging,Yes"
   ), .fixture_raw)
 
   .fixture_clean <- tempfile(fileext = ".csv")

@@ -4,7 +4,9 @@
 organizations_ui <- function(lang = get_lang()) {
   organizations <- lang$organizations
   wheel <- lang$wheel
-  survey_data <- load_survey_data()
+  # Consent-gated: only organizations that answered "Yes" to the publication
+  # question are listed (see org_is_displayable() in R/data/survey_store.R).
+  survey_data <- load_displayable_survey_data()
   org_names <- get_org_names(survey_data)
 
   # Sidebar sub-category labels, shown in the active language. (The taxonomy keys
