@@ -7,6 +7,16 @@ _Last updated: 2026-06-25_
 - **Tests:** `make test` → **897 passing** (FAIL 0 / WARN 0 / SKIP 0).
 
 ## What shipped recently (committed)
+- **Publication consent gate** — the survey's "display this organization on the
+  website" question is stored on the clean schema as `display_on_website`, and
+  `load_displayable_survey_data()` (`R/data/survey_store.R`) is now the single
+  read path for every public surface: organizations list, login picker, login
+  validation, details page. Strictly opt-in — only an explicit `Yes` publishes,
+  and a dataset with no such column publishes nothing. The filter is deliberately
+  on the read side, not at ingest: `merge_survey_data()` never deletes rows, so
+  dropping a `No` at import would strand the previous consenting row on display.
+  `R/scripts/transform_survey.R` reports the matched column and a Yes/No/blank
+  count each run. See README > Data flow > Publication consent.
 - **Interview data → org details** — `load_interview_data()` decrypts `data/interview_data.json.enc` at runtime (cached, env key `CPA_DATA_KEY`), joined to the survey on `irb_participant_id`; degrades to an empty lookup when the file/key is absent. The emerging wheel unions survey-marked emerging dimensions with dimensions that have emerging interview initiatives. New logged-in-only **Challenges & Resource Needs** card above Established Areas (two columns Barriers | Resource Needs; hidden when the org has no interview entries). `get_interview_dimension_items()` filters out "Not part of organizational mission" placeholders.
 - **Interview content localization (key indirection)** — the encrypted file stores opaque keys (`iv_NNNN`); the de-associated text + translations for all 12 languages live in the **unencrypted** `data/interview_translations.json`. This keeps the organization↔statement linkage encrypted while the text travels with the i18n data. `translate_interview_item()` resolves keys to the active language (English fallback); each lang pack is stamped with its `lang_code` in `R/lang.R`.
 - **About page typography** — intro bolds the CHANGE acronym (first letter of each acronym word; lowercase connectors stay plain); logo 160→200px; vision/mission/CPA/connect descriptions enlarged; "What is the CPA?" header+body sized to match the hero.
@@ -18,6 +28,14 @@ _Last updated: 2026-06-25_
 - **Language selector** — labels show endonyms (Español, 简体中文, Tiếng Việt, العربية, …).
 
 ## Outstanding / follow-ups
+- **Confirm the consent column name** — `SURVEY_DISPLAY_COL_CANDIDATES` in
+  `R/data/survey_pipeline.R` guesses the Qualtrics variable name and falls back to
+  any header normalizing to "display…website". Verify against the real export
+  header and put the true name first. The transform script's `Consent column
+  matched: '...'` line is the check.
+- **Rebuild the artifact before deploying** — the committed
+  `data/survey_data.csv.enc` predates this column, so until it is regenerated from
+  an export that carries the question, the dashboard lists zero organizations.
 - **CPA Projects subsection** — deferred; needs content from the stakeholder, then add to the About page (+ translate).
 - **Native-speaker translation review** — all non-English copy (UI and the interview content in `data/interview_translations.json`) is machine-generated; recommend review before release, especially **kea, ht, so**.
 - **Optional label tweaks raised but not changed:** Cantonese could be `廣東話` (vs `粵語`); Cabo Verdean could be `Kriolu` (vs `Kabuverdianu`).
