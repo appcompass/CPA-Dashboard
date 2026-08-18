@@ -45,7 +45,9 @@ test_that("load_survey_data fails for encrypted file when key is missing", {
 
 test_that("get_org_names returns a sorted unique character vector", {
   withr::local_dir(project_root)
-  orgs <- get_org_names()
+  # Explicitly the RAW artifact: this asserts the accessor's sort/dedup contract,
+  # not publication consent (which get_org_names() now applies by default).
+  orgs <- get_org_names(load_survey_data())
   expect_type(orgs, "character")
   expect_gt(length(orgs), 0L)
   expect_equal(orgs, sort(unique(orgs)))
@@ -269,6 +271,120 @@ test_that("build_encrypted_survey accumulates across two weekly runs", {
   expect_equal(sort(wk2$orgname), c("Org A", "Org B", "Org C"))
   expect_equal(wk2$lengthserve[wk2$orgname == "Org B"], "8+")
   expect_equal(wk2$pct_age_12_17[wk2$orgname == "Org B"], "26%-60%")
+})
+
+# ---- publication consent (display_on_website) ----
+
+test_that("clean_display_flag normalizes to Yes / No / blank", {
+  expect_equal(clean_display_flag("Yes"), "Yes")
+  expect_equal(clean_display_flag("  yes  "), "Yes")
+  expect_equal(clean_display_flag("Yes, display our organization"), "Yes")
+  expect_equal(clean_display_flag("No"), "No")
+  expect_equal(clean_display_flag("no, please do not"), "No")
+  expect_equal(clean_display_flag(""), "")
+  expect_equal(clean_display_flag(NA), "")
+  expect_equal(clean_display_flag("Maybe"), "")
+})
+
+test_that("resolve_display_column finds the consent column by name or by shape", {
+  expect_equal(
+    resolve_display_column(c("Organization", "DisplayOnWebsite")),
+    "DisplayOnWebsite"
+  )
+  # A variable renamed in Qualtrics still lands via the normalized fallback.
+  expect_equal(
+    resolve_display_column(c("Organization", "Q12_Display_Website")),
+    "Q12_Display_Website"
+  )
+  expect_true(is.na(resolve_display_column(c("Organization", "YearsServed"))))
+  expect_true(is.na(resolve_display_column(character(0))))
+})
+
+test_that("build_clean_survey carries the consent answer into display_on_website", {
+  vals <- c("Org Yes", "Yes")
+  cols <- c("Organization", "DisplayOnWebsite")
+  raw <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+  clean <- build_clean_survey(raw)
+  expect_true("display_on_website" %in% names(clean))
+  expect_equal(clean$display_on_website, "Yes")
+})
+
+test_that("build_clean_survey blanks the consent answer when the column is absent", {
+  raw <- as.data.frame(
+    as.list(setNames("Org None", "Organization")),
+    stringsAsFactors = FALSE, check.names = FALSE
+  )
+  clean <- build_clean_survey(raw)
+  expect_equal(clean$display_on_website, "")
+})
+
+test_that("org_is_displayable requires an explicit Yes", {
+  fake <- data.frame(
+    orgname = c("Yes Org", "No Org", "Blank Org", "Prefixed Org", "Junk Org"),
+    display_on_website = c("Yes", "No", "", "Yes, please", "maybe"),
+    stringsAsFactors = FALSE
+  )
+  expect_equal(org_is_displayable(fake), c(TRUE, FALSE, FALSE, TRUE, FALSE))
+  expect_equal(get_org_names(filter_displayable_orgs(fake)), c("Prefixed Org", "Yes Org"))
+})
+
+test_that("org_is_displayable withholds everything when the consent column is absent", {
+  fake <- data.frame(orgname = c("A", "B"), stringsAsFactors = FALSE)
+  expect_equal(org_is_displayable(fake), c(FALSE, FALSE))
+  expect_equal(nrow(filter_displayable_orgs(fake)), 0L)
+})
+
+test_that("filter_displayable_orgs tolerates empty and NULL input", {
+  expect_null(filter_displayable_orgs(NULL))
+  empty <- data.frame(
+    orgname = character(0), display_on_website = character(0),
+    stringsAsFactors = FALSE
+  )
+  expect_equal(nrow(filter_displayable_orgs(empty)), 0L)
+  expect_equal(org_is_displayable(empty), logical(0))
+})
+
+test_that("a withheld organization has no dashboard_id to log in against", {
+  fake <- data.frame(
+    orgname = c("Shown Org", "Hidden Org"),
+    dashboard_id = c("D1", "D2"),
+    display_on_website = c("Yes", "No"),
+    stringsAsFactors = FALSE
+  )
+  ids <- get_org_dashboard_ids(filter_displayable_orgs(fake))
+  expect_equal(unname(ids[["Shown Org"]]), "D1")
+  expect_false("Hidden Org" %in% names(ids))
+})
+
+test_that("revoking consent in a later export hides an already-published org", {
+  write_consent_export <- function(path, dashboard_id, organization, display) {
+    writeLines(c(
+      "Dashboard ID,Organization,DisplayOnWebsite",
+      "DID,Org,Display",
+      '{"ImportId":"a"},{"ImportId":"b"},{"ImportId":"c"}',
+      paste(dashboard_id, organization, display, sep = ",")
+    ), path)
+  }
+  key <- "consent-test-key"
+  enc <- tempfile(fileext = ".enc")
+
+  r1 <- tempfile(fileext = ".csv")
+  write_consent_export(r1, "D1", "Org A", "Yes")
+  build_encrypted_survey(input_csv = r1, output_enc = enc, passphrase = key, append = TRUE)
+  wk1 <- load_survey_data(encrypted_path = enc, passphrase = key)
+  expect_equal(get_org_names(filter_displayable_orgs(wk1)), "Org A")
+
+  r2 <- tempfile(fileext = ".csv")
+  write_consent_export(r2, "D1", "Org A", "No")
+  build_encrypted_survey(input_csv = r2, output_enc = enc, passphrase = key, append = TRUE)
+  wk2 <- load_survey_data(encrypted_path = enc, passphrase = key)
+
+  # The row survives the merge (so a later "Yes" can restore it) but stops
+  # publishing. This is why the filter lives on the read side: dropping the row
+  # at ingest would have left the week-1 consenting row on display forever.
+  expect_equal(nrow(wk2), 1L)
+  expect_equal(wk2$display_on_website, "No")
+  expect_length(get_org_names(filter_displayable_orgs(wk2)), 0L)
 })
 
 # ---- name-based row + value access ----

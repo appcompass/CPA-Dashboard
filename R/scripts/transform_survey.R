@@ -65,7 +65,8 @@ if (!nzchar(Sys.getenv("CPA_DATA_KEY"))) {
 }
 
 # Report the append math as a sanity check.
-new_rows <- transform_survey_export(input_csv)
+raw_export <- read_qualtrics_export(input_csv)
+new_rows <- build_clean_survey(raw_export)
 n_existing <- 0L
 if (file.exists(output_enc)) {
   existing <- tryCatch(load_survey_data(encrypted_path = output_enc), error = function(e) NULL)
@@ -74,10 +75,36 @@ if (file.exists(output_enc)) {
 message(sprintf("Existing dataset: %d organizations.", n_existing))
 message(sprintf("New file: %d organizations, %d columns.", nrow(new_rows), ncol(new_rows)))
 
+# Publication consent is strictly opt-in, so a consent column the code fails to
+# recognize silently empties the dashboard rather than erroring. Name the column
+# that matched and count the answers. If this reports 0 Yes on an export that
+# asked the question, the column name is wrong: add the real one to
+# SURVEY_DISPLAY_COL_CANDIDATES in R/data/survey_pipeline.R before deploying.
+display_col <- resolve_display_column(names(raw_export))
+if (is.na(display_col)) {
+  warning(
+    "No publication-consent column found in this export, so every organization ",
+    "in it will be WITHHELD from the dashboard. Add the real column name to ",
+    "SURVEY_DISPLAY_COL_CANDIDATES in R/data/survey_pipeline.R.",
+    call. = FALSE
+  )
+} else {
+  message(sprintf("Consent column matched: '%s'.", display_col))
+}
+consent <- as.character(new_rows$display_on_website)
+message(sprintf(
+  "Publication consent in new file: %d Yes, %d No, %d blank/unrecognized.",
+  sum(consent == "Yes"), sum(consent == "No"), sum(!consent %in% c("Yes", "No"))
+))
+
 dir.create(dirname(output_enc), showWarnings = FALSE, recursive = TRUE)
 build_encrypted_survey(input_csv = input_csv, output_enc = output_enc, append = TRUE)
 
 combined <- load_survey_data(encrypted_path = output_enc)
 message(sprintf("After append (dedup by dashboard_id): %d organizations.", nrow(combined)))
+message(sprintf(
+  "Of those, %d are shown on the dashboard; %d are withheld (no \"Yes\" on record).",
+  sum(org_is_displayable(combined)), sum(!org_is_displayable(combined))
+))
 message(sprintf("Wrote encrypted dataset -> %s", output_enc))
 message("Commit and push this .enc file. Do NOT commit the raw export or the key.")

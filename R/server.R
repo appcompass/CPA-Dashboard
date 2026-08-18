@@ -161,7 +161,10 @@ app_server <- function(input, output, session) {
   })
 
   # Loaded once and shared by the login org picker and login validation below.
-  survey_data <- load_survey_data()
+  # Consent-gated: an organization that did not answer "Yes" to the publication
+  # question is absent from both, so it cannot be selected and there is no stored
+  # Dashboard ID for it to authenticate against.
+  survey_data <- load_displayable_survey_data()
   org_names <- get_org_names(survey_data)
   org_dashboard_ids <- get_org_dashboard_ids(survey_data)
 
