@@ -2,10 +2,10 @@ library(shiny)
 
 # addResourcePath("img", normalizePath(file.path("www", "img"), mustWork = TRUE))
 
-source(file.path("R", "data.R"), local = TRUE, encoding = "UTF-8")
-source(file.path("R", "lang.R"), local = TRUE, encoding = "UTF-8")
-source(file.path("R", "ui.R"), local = TRUE, encoding = "UTF-8")
-source(file.path("R", "server.R"), local = TRUE, encoding = "UTF-8")
+source(file.path("R", "data.R"), local = TRUE)
+source(file.path("R", "lang.R"), local = TRUE)
+source(file.path("R", "ui.R"), local = TRUE)
+source(file.path("R", "server.R"), local = TRUE)
 
 dotenv_path <- ".env"
 if (!nzchar(Sys.getenv("CPA_DATA_KEY")) && file.exists(dotenv_path)) {
