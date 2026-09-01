@@ -294,7 +294,11 @@ build_encrypted_survey <- function(
 
   tmp <- tempfile(fileext = ".csv")
   on.exit(unlink(tmp), add = TRUE)
-  write.csv(combined, tmp, row.names = FALSE, na = "")
+  # Write UTF-8 explicitly rather than inheriting the session's native encoding,
+  # so the artifact's encoding is a property of the format and not of whichever
+  # machine happened to run the transform. read_clean_survey() reads it back as
+  # UTF-8 on the strength of this.
+  write.csv(combined, tmp, row.names = FALSE, na = "", fileEncoding = "UTF-8")
   encrypt_data_file(input_path = tmp, output_path = output_enc, passphrase = passphrase)
   invisible(output_enc)
 }
