@@ -196,11 +196,28 @@ theme_settings_ui <- function() {
 # (<html>/<head>/<body>) and injects its own + the router's head dependencies.
 # The tags$head() block is hoisted into <head> by htmltools.
 # `router` is the shiny.router UI.
-main_ui <- function(router, page_title = "CHANGE Lab") {
-  app_js_version <- tryCatch(
-    as.integer(as.numeric(file.info(file.path("www", "js", "app.js"))$mtime)),
-    error = function(e) 0L
+# Cache-busting stamp for a static asset, taken from its mtime.
+#
+# Browsers cache /css/styles.css and /js/app.js hard, so without a changing
+# query string an edit is invisible to anyone who has loaded the page before --
+# including every returning visitor to the live site after a deploy. app.js has
+# carried a stamp for a while; styles.css did NOT, so a stylesheet change looked
+# like it had simply not been applied. Both go through here now, so the next
+# asset that gets added cannot quietly miss out.
+#
+# A missing file makes file.info() return NA rather than erroring, which would
+# print "?v=NA" and defeat the point; fall back to 0 for that too.
+asset_version <- function(...) {
+  stamp <- tryCatch(
+    as.integer(as.numeric(file.info(file.path(...))$mtime)),
+    error = function(e) NA_integer_
   )
+  if (length(stamp) != 1L || is.na(stamp)) 0L else stamp
+}
+
+main_ui <- function(router, page_title = "CHANGE Lab") {
+  app_css_version <- asset_version("www", "css", "styles.css")
+  app_js_version <- asset_version("www", "js", "app.js")
 
   tagList(
     tags$head(
@@ -210,7 +227,10 @@ main_ui <- function(router, page_title = "CHANGE Lab") {
       ),
       tags$meta(`http-equiv` = "X-UA-Compatible", content = "ie=edge"),
       tags$title(page_title),
-      tags$link(rel = "stylesheet", href = "/css/styles.css")
+      tags$link(
+        rel = "stylesheet",
+        href = sprintf("/css/styles.css?v=%d", app_css_version)
+      )
     ),
     div(
       class = "page",

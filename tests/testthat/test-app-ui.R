@@ -393,8 +393,19 @@ test_that("organization_details_ui links the org name to its website, or renders
   }, envir = globalenv())
   linked <- render_html(organization_details_ui(logged_in = TRUE))
   expect_match(linked, 'href="https://example.org/"', fixed = TRUE)
-  expect_match(linked, ">Linked Org</a>", fixed = TRUE)
   expect_match(linked, 'rel="noopener noreferrer"', fixed = TRUE)
+  # Underlined at rest (via .org-website-link, not :hover) and carrying the
+  # link symbol the advisory council asked for, hidden from screen readers
+  # because the anchor is already named by the organization.
+  expect_match(linked, 'class="org-website-link"', fixed = TRUE)
+  expect_match(linked, ORG_WEBSITE_LINK_SYMBOL, fixed = TRUE)
+  # The name is the anchor's own text, immediately followed by the symbol.
+  # Matched with \\s* rather than as a literal: the anchor gained a tag child,
+  # so htmltools now pretty-prints its contents across indented lines.
+  expect_match(
+    linked,
+    '>\\s*Linked Org\\s*<span class="org-website-link-icon" aria-hidden="true">'
+  )
 
   # Without a website: the name renders as plain text, not a link.
   assign("get_organization_details_context", function(...) {
@@ -406,6 +417,49 @@ test_that("organization_details_ui links the org name to its website, or renders
   plain <- render_html(organization_details_ui(logged_in = TRUE))
   expect_match(plain, "Plain Org", fixed = TRUE)
   expect_false(grepl(">Plain Org</a>", plain, fixed = TRUE))
+  # No anchor means no link affordance either.
+  expect_false(grepl("org-website-link", plain, fixed = TRUE))
+  expect_false(grepl(ORG_WEBSITE_LINK_SYMBOL, plain, fixed = TRUE))
+})
+
+test_that("static assets are cache-busted so edits actually reach the browser", {
+  withr::local_dir(project_root)
+
+  # main_ui() puts the stylesheet inside tags$head(), and renderTags() lifts
+  # head content into $head rather than $html -- so render_html() alone shows
+  # no <link>, <title> or <meta> at all, even though Shiny serves them fine.
+  # Both halves have to be checked or this measures the wrong thing.
+  rendered <- htmltools::renderTags(main_ui(div()))
+  markup <- paste(
+    c(as.character(rendered$head), as.character(rendered$html)),
+    collapse = "\n"
+  )
+
+  # Without a changing query string a CSS edit is invisible to any returning
+  # visitor, which is indistinguishable from the change never having shipped.
+  expect_match(markup, "/css/styles.css\\?v=[0-9]+")
+  expect_match(markup, "/js/app.js\\?v=[0-9]+")
+  expect_false(grepl("?v=NA", markup, fixed = TRUE))
+  expect_gt(asset_version("www", "css", "styles.css"), 0L)
+  expect_equal(asset_version("www", "css", "does-not-exist.css"), 0L)
+})
+
+test_that("the always-underlined rule is in the stylesheet, not left to :hover", {
+  withr::local_dir(project_root)
+
+  # The council's complaint was specifically that the underline appeared only on
+  # hover. Tabler's `a { text-decoration: none }` is still in force, so the
+  # override has to exist in our own stylesheet for the link to read as a link.
+  css <- paste(
+    readLines(file.path("www", "css", "styles.css"), warn = FALSE),
+    collapse = "\n"
+  )
+  expect_match(css, ".org-website-link", fixed = TRUE)
+  rule <- sub(
+    "\\}.*", "",
+    sub(".*\\.org-website-link,", "", css)
+  )
+  expect_match(rule, "text-decoration: underline", fixed = TRUE)
 })
 
 test_that("organization_details_ui shows the About card to logged-out visitors", {
