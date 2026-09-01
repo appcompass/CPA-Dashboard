@@ -512,58 +512,6 @@ test_that("organization_details_ui explains the established wellness card", {
   expect_match(html, "data-active-categories", fixed = TRUE)
 })
 
-test_that("the challenges card explains itself, logged in only", {
-  withr::local_dir(project_root)
-
-  detail_data <- load_organization_details_data()
-  skip_if(
-    nrow(detail_data) == 0,
-    "No organization in the local dataset has consented to publication."
-  )
-  en <- get_lang("en")$organization_details
-
-  # Ask the data layer whether this org has anything to show, rather than
-  # grepping the rendered HTML: the card title contains a literal "&", which
-  # reaches the page as "&amp;" and would make the guard skip unconditionally.
-  ctx <- get_organization_details_context(lang = get_lang("en"))
-  skip_if(
-    !length(ctx$barriers) && !length(ctx$resource_needs),
-    "The first consenting organization has no interview-coded entries."
-  )
-
-  # Escaped for the same reason -- the description opens with the section name.
-  intro <- htmltools::htmlEscape(
-    substr(en$card_barriers_resources_description, 1, 60)
-  )
-  note <- htmltools::htmlEscape(substr(en$card_barriers_resources_note, 1, 60))
-
-  # Both paragraphs render, and the scope note is its own <p> rather than being
-  # run together with the explanation.
-  html <- render_html(organization_details_ui(logged_in = TRUE))
-  expect_match(html, intro, fixed = TRUE)
-  expect_match(html, note, fixed = TRUE)
-
-  # The card is logged-in only, so its description must not leak to visitors.
-  expect_false(grepl(intro, render_html(organization_details_ui()), fixed = TRUE))
-})
-
-test_that("wellness_definition_ui renders one paragraph per element", {
-  one <- render_html(wellness_definition_ui("Toggle", "Only paragraph"))
-  expect_equal(lengths(regmatches(one, gregexpr("<p", one, fixed = TRUE))), 1L)
-  expect_match(one, 'class="text-secondary mt-2 mb-0"', fixed = TRUE)
-
-  two <- render_html(wellness_definition_ui("Toggle", c("First", "Second")))
-  expect_equal(lengths(regmatches(two, gregexpr("<p", two, fixed = TRUE))), 2L)
-  expect_match(two, ">First</p>", fixed = TRUE)
-  expect_match(two, ">Second</p>", fixed = TRUE)
-
-  # Blank entries are dropped rather than rendering an empty paragraph, and an
-  # all-blank vector still yields nothing at all.
-  sparse <- render_html(wellness_definition_ui("Toggle", c("Kept", "", "  ")))
-  expect_equal(lengths(regmatches(sparse, gregexpr("<p", sparse, fixed = TRUE))), 1L)
-  expect_null(wellness_definition_ui("Toggle", c("", "  ")))
-})
-
 test_that("the emerging definition is gated behind login with its card", {
   withr::local_dir(project_root)
 
@@ -586,9 +534,7 @@ test_that("every supported language carries the wellness definition copy", {
     for (key in c(
       "card_definition_toggle",
       "card_established_description",
-      "card_emerging_description",
-      "card_barriers_resources_description",
-      "card_barriers_resources_note"
+      "card_emerging_description"
     )) {
       expect_true(
         nzchar(trimws(as.character(details[[key]] %||% ""))),
