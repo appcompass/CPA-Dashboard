@@ -23,13 +23,13 @@
 # and R resolves cross-module references lazily at call time.
 # ---------------------------------------------------------------------------
 
-source(file.path("R", "data", "utils.R"), local = TRUE)
-source(file.path("R", "data", "crypto.R"), local = TRUE)
-source(file.path("R", "data", "dimensions.R"), local = TRUE)
-source(file.path("R", "data", "demographics.R"), local = TRUE)
-source(file.path("R", "data", "orgservices.R"), local = TRUE)
-source(file.path("R", "data", "survey_pipeline.R"), local = TRUE)
-source(file.path("R", "data", "survey_store.R"), local = TRUE)
-source(file.path("R", "data", "interviews.R"), local = TRUE)
-source(file.path("R", "data", "org_details_context.R"), local = TRUE)
-source(file.path("R", "data", "translations.R"), local = TRUE)
+source(file.path("R", "data", "utils.R"), local = TRUE, encoding = "UTF-8")
+source(file.path("R", "data", "crypto.R"), local = TRUE, encoding = "UTF-8")
+source(file.path("R", "data", "dimensions.R"), local = TRUE, encoding = "UTF-8")
+source(file.path("R", "data", "demographics.R"), local = TRUE, encoding = "UTF-8")
+source(file.path("R", "data", "orgservices.R"), local = TRUE, encoding = "UTF-8")
+source(file.path("R", "data", "survey_pipeline.R"), local = TRUE, encoding = "UTF-8")
+source(file.path("R", "data", "survey_store.R"), local = TRUE, encoding = "UTF-8")
+source(file.path("R", "data", "interviews.R"), local = TRUE, encoding = "UTF-8")
+source(file.path("R", "data", "org_details_context.R"), local = TRUE, encoding = "UTF-8")
+source(file.path("R", "data", "translations.R"), local = TRUE, encoding = "UTF-8")
