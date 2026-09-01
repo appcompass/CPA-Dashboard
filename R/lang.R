@@ -22,18 +22,27 @@ SUPPORTED_LANGUAGES <- data.frame(
   # Each language's name in its own language (endonym), shown in the language
   # selector. Regional qualifiers are kept (and localized) where they were
   # present, to distinguish variants.
+  #
+  # Written as \uXXXX escapes rather than literal glyphs, and this file is kept
+  # pure ASCII throughout. R reads a source file in the process's NATIVE
+  # encoding; under the C/POSIX locale the deployed container runs in, the first
+  # non-ASCII byte truncates the read and silently drops the rest of the file.
+  # These labels used to sit at line 27 and took the whole app down with an
+  # unterminated string. An escape is plain ASCII in the file and the parser
+  # turns it into a UTF-8-marked string in any locale. Escapes are zero-padded
+  # to four hex digits, so a following hex character can never be absorbed.
   label = c(
     "English",
-    "Español (Latinoamérica)",
-    "Kreyòl Ayisyen",
-    "简体中文",
-    "Tiếng Việt",
-    "粵語",
-    "Português (Brasil)",
+    "Espa\u00f1ol (Latinoam\u00e9rica)",      # Espanol (Latinoamerica)
+    "Krey\u00f2l Ayisyen",                    # Kreyol Ayisyen
+    "\u7b80\u4f53\u4e2d\u6587",              # Simplified Chinese
+    "Ti\u1ebfng Vi\u1ec7t",                   # Tieng Viet
+    "\u7cb5\u8a9e",                          # Cantonese
+    "Portugu\u00eas (Brasil)",                # Portugues (Brasil)
     "Kabuverdianu",
-    "Русский",
-    "Français (Europe)",
-    "العربية",
+    "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",  # Russkiy
+    "Fran\u00e7ais (Europe)",                 # Francais (Europe)
+    "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",  # al-Arabiyyah
     "Soomaali"
   ),
   flag_icon = c(

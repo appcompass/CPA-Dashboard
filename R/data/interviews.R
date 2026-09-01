@@ -227,11 +227,11 @@ translate_interview_item <- function(key, lang_code, content = load_interview_tr
 # Challenges & Resource Needs card for every organization and dimension.
 #
 # Matching is on the clause BEFORE any em-dash, lowercased and trimmed, so a
-# trailing "— <explanation>" tail (e.g. "... — embedded informally only") does
+# trailing "\u2014 <explanation>" tail (e.g. "... \u2014 embedded informally only") does
 # not defeat the match. Matching is deliberately an exact set of canonical
 # clauses (not a fuzzy pattern) so a real barrier that merely mentions "focus"
-# or begins with "Not" — e.g. "Not enough staff power ...", "Bandwidth —
-# financial literacy is not core mission ..." — is never dropped. Resolution is
+# or begins with "Not" -- e.g. "Not enough staff power ...", "Bandwidth \u2014
+# financial literacy is not core mission ..." -- is never dropped. Resolution is
 # always via the English text so the decision is independent of display
 # language. Add a new clause here if a future import introduces another wording.
 INTERVIEW_NOT_A_FOCUS_PLACEHOLDERS <- c(

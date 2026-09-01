@@ -4,6 +4,75 @@ render_html <- function(ui) {
 
 # ---- app bootstrap ----
 
+# Files R parses at boot. A non-ASCII byte in ANY of them is fatal, so the list
+# is derived rather than hand-maintained.
+boot_r_files <- function() {
+  c(
+    "app.R",
+    file.path("R", c("data.R", "lang.R", "ui.R", "server.R")),
+    list.files(file.path("R", "data"), pattern = "\\.R$", full.names = TRUE),
+    list.files(file.path("R", "templates"), pattern = "\\.R$",
+               full.names = TRUE, recursive = TRUE)
+  )
+}
+
+test_that("every R file the app parses at boot is pure ASCII", {
+  withr::local_dir(project_root)
+
+  # R reads a source file in the PROCESS's native encoding. Under the C/POSIX
+  # locale the deployed container runs in, the first non-ASCII byte truncates
+  # the read there and silently discards the rest of the file -- in a comment
+  # just as much as in a string. R/lang.R died on an unterminated string at its
+  # endonym list; home_ui.R lost 299 lines to an em dash in a comment on line 2
+  # and then "parsed fine" as two comments, defining nothing.
+  #
+  # source(encoding = "UTF-8") does NOT fix this: it opens the connection with
+  # re-encoding TO native, which is the same truncation. The portable answer is
+  # the one CRAN requires -- keep the source ASCII and write non-ASCII as
+  # \uXXXX escapes, which the parser turns into UTF-8-marked strings in any
+  # locale. Escapes are zero-padded to four hex digits so a following hex
+  # character can never be absorbed into the escape.
+  files <- boot_r_files()
+  expect_gt(length(files), 20L)
+  for (f in files) {
+    bytes <- readBin(f, "raw", file.size(f))
+    expect_equal(
+      sprintf("%s has %d non-ASCII byte(s)", f, sum(bytes > as.raw(127))),
+      sprintf("%s has 0 non-ASCII byte(s)", f)
+    )
+  }
+})
+
+test_that("the boot path parses under a non-UTF-8 locale", {
+  withr::local_dir(project_root)
+
+  # The direct reproduction of the deploy failure. Every other test in this
+  # suite passed while the live app would not start, because they all ran in a
+  # UTF-8 locale where the truncation never happens.
+  old_ctype <- Sys.getlocale("LC_CTYPE")
+  skip_if(
+    !nzchar(suppressWarnings(Sys.setlocale("LC_CTYPE", "C"))),
+    "This platform offers no C locale to switch to."
+  )
+  on.exit(Sys.setlocale("LC_CTYPE", old_ctype), add = TRUE)
+  skip_if(isTRUE(l10n_info()$`UTF-8`), "LC_CTYPE=C is still UTF-8 here.")
+
+  # parse() reads in the native encoding, exactly as source() does at boot.
+  # A truncated read shows up as a warning or a syntax error, never silence.
+  for (f in boot_r_files()) {
+    expect_silent(parse(f, keep.source = FALSE))
+  }
+})
+
+test_that("non-ASCII UI literals survive parsing intact", {
+  # Canary for the language endonyms, the one place the app renders non-ASCII
+  # from R source with no other test over it. The footer's copyright sign is
+  # already covered by "footer_ui renders social links and contact email".
+  expect_true(all(validUTF8(SUPPORTED_LANGUAGES$label)))
+  expect_true("\u7b80\u4f53\u4e2d\u6587" %in% SUPPORTED_LANGUAGES$label)
+  expect_false(any(grepl("<c2>", SUPPORTED_LANGUAGES$label, fixed = TRUE)))
+})
+
 test_that("app.R builds a shiny app object", {
   withr::local_dir(project_root)
 
@@ -37,7 +106,7 @@ test_that("footer_ui renders social links and contact email", {
   expect_match(html, "instagram.com/changelabboston", fixed = TRUE)
   expect_match(html, "changelabboston.com", fixed = TRUE)
   expect_match(html, "changelabboston@gmail.com", fixed = TRUE)
-  expect_match(html, "© CHANGE Lab", fixed = TRUE)
+  expect_match(html, "\u00a9 CHANGE Lab", fixed = TRUE)
 })
 
 # ---- pages ----
@@ -358,8 +427,19 @@ test_that("organization_details_ui links the org name to its website, or renders
   }, envir = globalenv())
   linked <- render_html(organization_details_ui(logged_in = TRUE))
   expect_match(linked, 'href="https://example.org/"', fixed = TRUE)
-  expect_match(linked, ">Linked Org</a>", fixed = TRUE)
   expect_match(linked, 'rel="noopener noreferrer"', fixed = TRUE)
+  # Underlined at rest (via .org-website-link, not :hover) and carrying the
+  # link symbol the advisory council asked for, hidden from screen readers
+  # because the anchor is already named by the organization.
+  expect_match(linked, 'class="org-website-link"', fixed = TRUE)
+  expect_match(linked, ORG_WEBSITE_LINK_SYMBOL, fixed = TRUE)
+  # The name is the anchor's own text, immediately followed by the symbol.
+  # Matched with \\s* rather than as a literal: the anchor gained a tag child,
+  # so htmltools now pretty-prints its contents across indented lines.
+  expect_match(
+    linked,
+    '>\\s*Linked Org\\s*<span class="org-website-link-icon" aria-hidden="true">'
+  )
 
   # Without a website: the name renders as plain text, not a link.
   assign("get_organization_details_context", function(...) {
@@ -371,6 +451,49 @@ test_that("organization_details_ui links the org name to its website, or renders
   plain <- render_html(organization_details_ui(logged_in = TRUE))
   expect_match(plain, "Plain Org", fixed = TRUE)
   expect_false(grepl(">Plain Org</a>", plain, fixed = TRUE))
+  # No anchor means no link affordance either.
+  expect_false(grepl("org-website-link", plain, fixed = TRUE))
+  expect_false(grepl(ORG_WEBSITE_LINK_SYMBOL, plain, fixed = TRUE))
+})
+
+test_that("static assets are cache-busted so edits actually reach the browser", {
+  withr::local_dir(project_root)
+
+  # main_ui() puts the stylesheet inside tags$head(), and renderTags() lifts
+  # head content into $head rather than $html -- so render_html() alone shows
+  # no <link>, <title> or <meta> at all, even though Shiny serves them fine.
+  # Both halves have to be checked or this measures the wrong thing.
+  rendered <- htmltools::renderTags(main_ui(div()))
+  markup <- paste(
+    c(as.character(rendered$head), as.character(rendered$html)),
+    collapse = "\n"
+  )
+
+  # Without a changing query string a CSS edit is invisible to any returning
+  # visitor, which is indistinguishable from the change never having shipped.
+  expect_match(markup, "/css/styles.css\\?v=[0-9]+")
+  expect_match(markup, "/js/app.js\\?v=[0-9]+")
+  expect_false(grepl("?v=NA", markup, fixed = TRUE))
+  expect_gt(asset_version("www", "css", "styles.css"), 0L)
+  expect_equal(asset_version("www", "css", "does-not-exist.css"), 0L)
+})
+
+test_that("the always-underlined rule is in the stylesheet, not left to :hover", {
+  withr::local_dir(project_root)
+
+  # The council's complaint was specifically that the underline appeared only on
+  # hover. Tabler's `a { text-decoration: none }` is still in force, so the
+  # override has to exist in our own stylesheet for the link to read as a link.
+  css <- paste(
+    readLines(file.path("www", "css", "styles.css"), warn = FALSE),
+    collapse = "\n"
+  )
+  expect_match(css, ".org-website-link", fixed = TRUE)
+  rule <- sub(
+    "\\}.*", "",
+    sub(".*\\.org-website-link,", "", css)
+  )
+  expect_match(rule, "text-decoration: underline", fixed = TRUE)
 })
 
 test_that("organization_details_ui shows the About card to logged-out visitors", {
@@ -423,6 +546,58 @@ test_that("organization_details_ui explains the established wellness card", {
   expect_match(html, "data-active-categories", fixed = TRUE)
 })
 
+test_that("the challenges card explains itself, logged in only", {
+  withr::local_dir(project_root)
+
+  detail_data <- load_organization_details_data()
+  skip_if(
+    nrow(detail_data) == 0,
+    "No organization in the local dataset has consented to publication."
+  )
+  en <- get_lang("en")$organization_details
+
+  # Ask the data layer whether this org has anything to show, rather than
+  # grepping the rendered HTML: the card title contains a literal "&", which
+  # reaches the page as "&amp;" and would make the guard skip unconditionally.
+  ctx <- get_organization_details_context(lang = get_lang("en"))
+  skip_if(
+    !length(ctx$barriers) && !length(ctx$resource_needs),
+    "The first consenting organization has no interview-coded entries."
+  )
+
+  # Escaped for the same reason -- the description opens with the section name.
+  intro <- htmltools::htmlEscape(
+    substr(en$card_barriers_resources_description, 1, 60)
+  )
+  note <- htmltools::htmlEscape(substr(en$card_barriers_resources_note, 1, 60))
+
+  # Both paragraphs render, and the scope note is its own <p> rather than being
+  # run together with the explanation.
+  html <- render_html(organization_details_ui(logged_in = TRUE))
+  expect_match(html, intro, fixed = TRUE)
+  expect_match(html, note, fixed = TRUE)
+
+  # The card is logged-in only, so its description must not leak to visitors.
+  expect_false(grepl(intro, render_html(organization_details_ui()), fixed = TRUE))
+})
+
+test_that("wellness_definition_ui renders one paragraph per element", {
+  one <- render_html(wellness_definition_ui("Toggle", "Only paragraph"))
+  expect_equal(lengths(regmatches(one, gregexpr("<p", one, fixed = TRUE))), 1L)
+  expect_match(one, 'class="text-secondary mt-2 mb-0"', fixed = TRUE)
+
+  two <- render_html(wellness_definition_ui("Toggle", c("First", "Second")))
+  expect_equal(lengths(regmatches(two, gregexpr("<p", two, fixed = TRUE))), 2L)
+  expect_match(two, ">First</p>", fixed = TRUE)
+  expect_match(two, ">Second</p>", fixed = TRUE)
+
+  # Blank entries are dropped rather than rendering an empty paragraph, and an
+  # all-blank vector still yields nothing at all.
+  sparse <- render_html(wellness_definition_ui("Toggle", c("Kept", "", "  ")))
+  expect_equal(lengths(regmatches(sparse, gregexpr("<p", sparse, fixed = TRUE))), 1L)
+  expect_null(wellness_definition_ui("Toggle", c("", "  ")))
+})
+
 test_that("the emerging definition is gated behind login with its card", {
   withr::local_dir(project_root)
 
@@ -445,7 +620,9 @@ test_that("every supported language carries the wellness definition copy", {
     for (key in c(
       "card_definition_toggle",
       "card_established_description",
-      "card_emerging_description"
+      "card_emerging_description",
+      "card_barriers_resources_description",
+      "card_barriers_resources_note"
     )) {
       expect_true(
         nzchar(trimws(as.character(details[[key]] %||% ""))),

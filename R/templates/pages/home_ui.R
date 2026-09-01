@@ -1,12 +1,12 @@
 # Render the hero description, turning the two pieces of inline markup the copy
-# uses — a single markdown link [text](https://…) and markdown italics _text_ —
+# uses -- a single markdown link [text](https://...) and markdown italics
 # into HTML. The translated prose is HTML-escaped first; only these known,
 # hand-authored constructs are then converted to <a>/<em>, mirroring about_ui's
 # controlled render_intro() approach. Links are restricted to https:// URLs.
 render_hero_description <- function(text) {
   escaped <- htmltools::htmlEscape(text)
   # Convert italics first, while the text is still plain: the markdown link
-  # syntax carries no underscores, so this can't disturb it — whereas doing it
+  # syntax carries no underscores, so this can't disturb it -- whereas doing it
   # after would let an emitted attribute like target="_blank" capture a stray _.
   with_italics <- gsub("_([^_]+)_", "<em>\\1</em>", escaped, perl = TRUE)
   with_links <- gsub(
@@ -122,7 +122,7 @@ home_ui <- function(lang = get_lang()) {
               "physical, emotional, intellectual, occupational, financial, social,",
               "environmental, and spiritual (Adapted from Swarbrick, M. (2006). A",
               "Wellness Approach. _Psychiatric Rehabilitation Journal, 29_(4),",
-              "311–314.). Explore organizations by filtering for name,",
+              "311\u2013314.). Explore organizations by filtering for name,",
               "wellness dimensions, and more!"
             )
           ))
@@ -201,7 +201,7 @@ home_ui <- function(lang = get_lang()) {
             paste(
               "This dashboard celebrates what each organization offers. It is not",
               "a ranking, report card, or evaluation tool. Wellness areas are",
-              "self-reported and shown to spark connection and referrals — not to",
+              "self-reported and shown to spark connection and referrals \u2014 not to",
               "compare or rank organizations."
             )
           ))
@@ -249,13 +249,13 @@ home_ui <- function(lang = get_lang()) {
               tags$path(d = "M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"),
               tags$path(d = "M8 11v-4a4 4 0 1 1 8 0v4")
             ),
-            hp("howto_login_title", "See the full profile — log in"),
+            hp("howto_login_title", "See the full profile \u2014 log in"),
             hp(
               "howto_login_body",
               paste(
                 "The public view shows a summary of each organization. Verified",
                 "organization members can log in to view and update complete",
-                "profile details — contact information, full service descriptions,",
+                "profile details \u2014 contact information, full service descriptions,",
                 "and more. Logging in keeps your organization's information",
                 "accurate so partners can reach you and refer to you."
               )
@@ -288,7 +288,7 @@ home_ui <- function(lang = get_lang()) {
               "howto_customize_body",
               paste(
                 "Switch the dashboard into any of our supported languages using",
-                "the language selector in the navigation — your choice carries",
+                "the language selector in the navigation \u2014 your choice carries",
                 "across the site."
               )
             )

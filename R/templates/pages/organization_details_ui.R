@@ -1,3 +1,41 @@
+# The link symbol the Dashboard Advisory Council asked to sit beside a linked
+# organization name (U+1F517 LINK SYMBOL). Written as an escape rather than a
+# literal glyph so it parses identically whatever locale the app boots under --
+# a literal would be the same trap that turned footer_ui.R's copyright sign into
+# a <c2><a9> escape on the deployed site.
+ORG_WEBSITE_LINK_SYMBOL <- "\U0001F517"
+
+# The organization name for the page header: an external link to the
+# organization's website when the survey supplied a valid http(s) one, plain
+# text otherwise.
+#
+# The underline is unconditional rather than hover-only. Tabler ships
+# `a { text-decoration: none }` and restores the underline on `a:hover`, so a
+# linked organization name was indistinguishable from ordinary heading text
+# until the pointer happened to land on it; the council asked for it to read as
+# a link at rest. The rule lives in www/css/styles.css under .org-website-link.
+#
+# The symbol is decorative -- the anchor's accessible name is already the
+# organization name -- so it is hidden from assistive technology rather than
+# being announced as "link emoji" ahead of the name.
+org_name_heading_ui <- function(orgname, website) {
+  if (!nzchar(website %||% "")) {
+    return(orgname)
+  }
+  a(
+    href = website,
+    class = "org-website-link",
+    target = "_blank",
+    rel = "noopener noreferrer",
+    orgname,
+    tags$span(
+      class = "org-website-link-icon",
+      `aria-hidden` = "true",
+      ORG_WEBSITE_LINK_SYMBOL
+    )
+  )
+}
+
 # Render one column of the barriers / resource-needs card: a dimension sub-heading
 # followed by a bullet list of its items, repeated per dimension. Falls back to a
 # muted "none reported" line when the org has no entries for this field.
@@ -29,9 +67,14 @@ render_interview_items_column <- function(groups, empty_text) {
 # finds its mount by the data-active-categories attribute (the home page mounts
 # the same wheel with a preceding sibling and no card at all), so an extra
 # element ahead of it does not disturb rendering.
+# `body_text` may be several paragraphs: the Challenges & Resource Needs copy is
+# an explanation followed by a scope disclaimer, and running them together would
+# bury the second. One <p> per element, blank entries dropped, so a single
+# string still renders exactly the markup it did before this took a vector.
 wellness_definition_ui <- function(summary_label, body_text) {
-  body_text <- trimws(as.character(body_text %||% ""))
-  if (!nzchar(body_text)) {
+  body_text <- trimws(as.character(body_text %||% character(0)))
+  body_text <- body_text[nzchar(body_text)]
+  if (!length(body_text)) {
     return(NULL)
   }
   tags$details(
@@ -41,7 +84,15 @@ wellness_definition_ui <- function(summary_label, body_text) {
       style = "cursor: pointer;",
       summary_label %||% "What does this mean?"
     ),
-    tags$p(class = "text-secondary mt-2 mb-0", body_text)
+    lapply(seq_along(body_text), function(i) {
+      tags$p(
+        class = paste0(
+          "text-secondary mt-2 ",
+          if (i == length(body_text)) "mb-0" else "mb-2"
+        ),
+        body_text[[i]]
+      )
+    })
   )
 }
 
@@ -165,19 +216,10 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
             class = "col",
             h2(
               class = "page-title",
-              # Link the org name to its website when the survey provides a valid
-              # one; otherwise render the name as plain text. External link, so
-              # open in a new tab with noopener/noreferrer.
-              if (nzchar(details_context$website %||% "")) {
-                a(
-                  href = details_context$website,
-                  target = "_blank",
-                  rel = "noopener noreferrer",
-                  details_context$orgname
-                )
-              } else {
-                details_context$orgname
-              }
+              org_name_heading_ui(
+                details_context$orgname,
+                details_context$website
+              )
             ),
             div(
               class = "page-pretitle",
@@ -396,6 +438,18 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
               ),
               div(
                 class = "card-body",
+                # Same collapsible treatment as the two wellness cards above, so
+                # "What does this mean?" behaves the same everywhere on the page.
+                # Two paragraphs: what the section collects, then the scope note
+                # that it is a brainstorm of challenges and not an assessment of
+                # any organization's service quality.
+                wellness_definition_ui(
+                  details$card_definition_toggle,
+                  c(
+                    details$card_barriers_resources_description,
+                    details$card_barriers_resources_note
+                  )
+                ),
                 div(
                   class = "row",
                   div(
