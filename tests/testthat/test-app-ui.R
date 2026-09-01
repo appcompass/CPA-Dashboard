@@ -4,6 +4,41 @@ render_html <- function(ui) {
 
 # ---- app bootstrap ----
 
+test_that("every source() call in the boot path declares encoding = \"UTF-8\"", {
+  withr::local_dir(project_root)
+
+  # R parses a source file in the PROCESS's native encoding unless told
+  # otherwise. Under a C/POSIX locale -- which is what the deployed process gets
+  # -- the non-ASCII literals in the boot path become bytes R cannot interpret
+  # and reach the page as <c2><a9> style escapes: the copyright sign in
+  # footer_ui.R, the em dashes in home_ui.R's English fallback copy, and the
+  # language endonyms in R/lang.R (Simplified Chinese, Vietnamese, Arabic,
+  # Russian, ...).
+  #
+  # Declaring the encoding at each site makes parsing independent of whatever
+  # locale the app boots under. Note this is deliberately NOT
+  # options(encoding = "UTF-8"): that would also change the default for file()
+  # connections, and read_clean_survey() would then re-encode the decrypted
+  # artifact to native on the way in -- reintroducing the very bug it fixes.
+  for (f in c("app.R", file.path("R", "data.R"), file.path("R", "ui.R"))) {
+    calls <- grep("^\\s*source\\(", readLines(f, warn = FALSE), value = TRUE)
+    expect_gt(length(calls), 0L)
+    expect_equal(
+      calls[!grepl('encoding = "UTF-8"', calls, fixed = TRUE)],
+      character(0)
+    )
+  }
+})
+
+test_that("non-ASCII UI literals survive parsing intact", {
+  # Canary for the language endonyms, the one place the app renders non-ASCII
+  # from R source with no other test over it. The footer's copyright sign is
+  # already covered by "footer_ui renders social links and contact email".
+  expect_true(all(validUTF8(SUPPORTED_LANGUAGES$label)))
+  expect_true("\u7b80\u4f53\u4e2d\u6587" %in% SUPPORTED_LANGUAGES$label)
+  expect_false(any(grepl("<c2>", SUPPORTED_LANGUAGES$label, fixed = TRUE)))
+})
+
 test_that("app.R builds a shiny app object", {
   withr::local_dir(project_root)
 
@@ -37,7 +72,7 @@ test_that("footer_ui renders social links and contact email", {
   expect_match(html, "instagram.com/changelabboston", fixed = TRUE)
   expect_match(html, "changelabboston.com", fixed = TRUE)
   expect_match(html, "changelabboston@gmail.com", fixed = TRUE)
-  expect_match(html, "© CHANGE Lab", fixed = TRUE)
+  expect_match(html, "\u00a9 CHANGE Lab", fixed = TRUE)
 })
 
 # ---- pages ----
