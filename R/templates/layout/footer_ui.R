@@ -101,7 +101,7 @@ footer_ui <- function() {
             ),
             tags$li(
               class = "list-inline-item",
-              sprintf("%s © CHANGE Lab", format(Sys.Date(), "%Y"))
+              sprintf("%s \u00a9 CHANGE Lab", format(Sys.Date(), "%Y"))
             )
           )
         )

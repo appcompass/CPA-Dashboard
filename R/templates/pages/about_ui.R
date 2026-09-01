@@ -25,7 +25,7 @@ render_change_full_name <- function() {
   paste(parts, collapse = " ")
 }
 
-# Render inline markdown links — `[text](url)` — into anchor tags that open in a
+# Render inline markdown links -- `[text](url)` -- into anchor tags that open in a
 # new tab. Operates on already-HTML-escaped text: the link text is escaped (it
 # came from the translated copy), and only the bracket/paren markdown syntax is
 # rewritten into markup. URLs are restricted to http(s) so a translation string
