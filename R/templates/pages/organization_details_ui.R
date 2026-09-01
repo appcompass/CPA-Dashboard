@@ -84,7 +84,15 @@ wellness_definition_ui <- function(summary_label, body_text) {
       style = "cursor: pointer;",
       summary_label %||% "What does this mean?"
     ),
-    tags$p(class = "text-secondary mt-2 mb-0", body_text)
+    lapply(seq_along(body_text), function(i) {
+      tags$p(
+        class = paste0(
+          "text-secondary mt-2 ",
+          if (i == length(body_text)) "mb-0" else "mb-2"
+        ),
+        body_text[[i]]
+      )
+    })
   )
 }
 
@@ -208,19 +216,10 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
             class = "col",
             h2(
               class = "page-title",
-              # Link the org name to its website when the survey provides a valid
-              # one; otherwise render the name as plain text. External link, so
-              # open in a new tab with noopener/noreferrer.
-              if (nzchar(details_context$website %||% "")) {
-                a(
-                  href = details_context$website,
-                  target = "_blank",
-                  rel = "noopener noreferrer",
-                  details_context$orgname
-                )
-              } else {
-                details_context$orgname
-              }
+              org_name_heading_ui(
+                details_context$orgname,
+                details_context$website
+              )
             ),
             div(
               class = "page-pretitle",
@@ -439,6 +438,18 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
               ),
               div(
                 class = "card-body",
+                # Same collapsible treatment as the two wellness cards above, so
+                # "What does this mean?" behaves the same everywhere on the page.
+                # Two paragraphs: what the section collects, then the scope note
+                # that it is a brainstorm of challenges and not an assessment of
+                # any organization's service quality.
+                wellness_definition_ui(
+                  details$card_definition_toggle,
+                  c(
+                    details$card_barriers_resources_description,
+                    details$card_barriers_resources_note
+                  )
+                ),
                 div(
                   class = "row",
                   div(
