@@ -4,11 +4,26 @@
 # ---------------------------------------------------------------------------
 
 # Read the clean CSV (single header row, named columns).
+#
+# encoding = "UTF-8" is load-bearing. build_encrypted_survey() writes the
+# artifact as UTF-8, but read.csv() with no encoding argument assumes the R
+# process's NATIVE encoding and leaves the strings marked "unknown". That is
+# harmless on a UTF-8 workstation and silently wrong wherever the deployed
+# process runs under a C/POSIX locale: the curly quotes and em dashes in `about`
+# become bytes R cannot interpret, and the first conversion on the way to the
+# page renders each one as a literal <e2><80><99> escape.
+#
+# `encoding` MARKS the strings as UTF-8 without re-encoding them. `fileEncoding`
+# would be wrong here -- it converts to native, which under a C locale is exactly
+# where the characters get lost. Every other text source in the app arrives via
+# jsonlite::fromJSON, which marks UTF-8 already; this CSV was the only read path
+# that did not, which is why the translations rendered fine and `about` did not.
 read_clean_survey <- function(path) {
   read.csv(
     path,
     header = TRUE, stringsAsFactors = FALSE,
-    check.names = FALSE, colClasses = "character", na.strings = character(0)
+    check.names = FALSE, colClasses = "character", na.strings = character(0),
+    encoding = "UTF-8"
   )
 }
 

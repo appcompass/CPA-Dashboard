@@ -349,6 +349,43 @@ test_that("a Windows-1252 export round-trips its punctuation intact", {
   expect_true(validUTF8(clean$about))
 })
 
+test_that("the encrypted artifact round-trips UTF-8 punctuation marked as UTF-8", {
+  # `about` is the only survey field carrying non-ASCII punctuation. This covers
+  # the whole artifact path -- write.csv -> encrypt -> decrypt -> read_clean_survey
+  # -- and asserts the strings come back MARKED UTF-8. Without the mark, a
+  # deployed process running under a non-UTF-8 locale renders each byte as a
+  # literal <e2><80><99> escape even though the stored bytes are perfectly fine.
+  raw_path <- tempfile(fileext = ".csv")
+  con <- file(raw_path, open = "w", encoding = "UTF-8")
+  writeLines(
+    c(
+      "Organization,About Org,DisplayOnWebsite",
+      "Org,About,Display",
+      '{"ImportId":"a"},{"ImportId":"b"},{"ImportId":"c"}',
+      "Org A,\"Children\u2019s \u201Cwellness\u201D \u2014 all of it\",Yes"
+    ),
+    con
+  )
+  close(con)
+
+  enc_path <- tempfile(fileext = ".csv.enc")
+  build_encrypted_survey(
+    input_csv = raw_path, output_enc = enc_path,
+    passphrase = "round-trip-key", append = FALSE
+  )
+
+  round_tripped <- load_survey_data(
+    encrypted_path = enc_path, passphrase = "round-trip-key"
+  )
+  expect_equal(nrow(round_tripped), 1L)
+  expect_equal(
+    round_tripped$about,
+    "Children\u2019s \u201Cwellness\u201D \u2014 all of it"
+  )
+  expect_equal(Encoding(round_tripped$about), "UTF-8")
+  expect_false(grepl("<e2>", round_tripped$about, fixed = TRUE))
+})
+
 # ---- publication consent (display_on_website) ----
 
 test_that("clean_display_flag normalizes to Yes / No / blank", {
