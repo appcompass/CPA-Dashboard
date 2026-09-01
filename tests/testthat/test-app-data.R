@@ -724,7 +724,11 @@ test_that("get_interview_dimension_items drops not-a-focus placeholders, keeps r
   expect_false(any(grepl("central focus", emotional_items)))
 })
 
-test_that("col_barriers_title label resolves to 'What to Keep in Mind - Important things to consider when establishing resources for the following dimensions'", {
+test_that("card section titles and descriptions resolve to their own labels", {
+  # The barriers title used to carry its explanation inline after a hyphen, which
+  # left the other 13 languages holding only the short form. Title and
+  # description are now separate keys, so the assertion is that the title is
+  # SHORT and the sentence lives beside it.
   ctx <- get_organization_details_context(
     lang = get_lang("en"), org_name = "Nonexistent Org",
     survey_data = build_clean_survey(
@@ -733,8 +737,15 @@ test_that("col_barriers_title label resolves to 'What to Keep in Mind - Importan
       )
     )
   )
-  expect_equal(ctx$labels$col_barriers_title, "What to Keep in Mind - Important things to consider when establishing resources for the following dimensions")
+  expect_equal(ctx$labels$col_barriers_title, "What to Keep in Mind")
+  expect_false(grepl(" - ", ctx$labels$col_barriers_title, fixed = TRUE))
+  expect_match(ctx$labels$col_barriers_description, "Important things to consider")
+
   expect_equal(ctx$labels$col_resource_needs_title, "Resource Needs")
+  expect_true(nzchar(ctx$labels$col_resource_needs_description))
+
+  expect_equal(ctx$labels$col_wants_title, "Areas of Interest")
+  expect_match(ctx$labels$col_wants_description, "not established nor emerging")
 })
 
 test_that("get_emerging_dimension_categories returns survey-marked emerging dimensions only", {
@@ -775,6 +786,52 @@ test_that("get_organization_details_context exposes demographics and wellness ca
   expect_true("Emotional wellness" %in% ctx$established_categories)
   expect_true("Physical wellness" %in% ctx$emerging_categories)
   expect_false("Physical wellness" %in% ctx$established_categories)
+})
+
+test_that("get_organization_details_context exposes wants-state dimensions", {
+  # The survey's <Dim>Gap question ("does your organization WANT to provide ...")
+  # only becomes state "wants" when EorE is neither Established nor Emerging, so
+  # this fixture exercises all four outcomes at once:
+  #   emotional     Established         -> established, NOT wants
+  #   physical      Emerging + Gap Yes  -> emerging, NOT wants (EorE wins)
+  #   social        no EorE + Gap Yes   -> wants
+  #   financial     no EorE + Gap No    -> not_interested, NOT wants
+  cols <- c(
+    "Dashboard ID", "Organization",
+    "EmotionalEorE", "EmotionalGap",
+    "PhysicalEorE", "PhysicalGap",
+    "SocialGap", "FinancialGap"
+  )
+  vals <- c(
+    "Org01", "Wants Org",
+    "Established", "Yes",
+    "Emerging", "Yes",
+    "Yes", "No, please share why:"
+  )
+  raw <- as.data.frame(as.list(setNames(vals, cols)), stringsAsFactors = FALSE, check.names = FALSE)
+
+  ctx <- get_organization_details_context(
+    lang = get_lang("en"), org_name = "Wants Org", survey_data = build_clean_survey(raw)
+  )
+
+  expect_equal(ctx$wants_categories, "Social wellness")
+  expect_false("Emotional wellness" %in% ctx$wants_categories)
+  expect_false("Physical wellness" %in% ctx$wants_categories)
+  expect_false("Financial wellness" %in% ctx$wants_categories)
+})
+
+test_that("get_organization_details_context reports no wants dimensions as empty", {
+  raw <- as.data.frame(
+    as.list(setNames(c("Plain Org", "Established"), c("Organization", "EmotionalEorE"))),
+    stringsAsFactors = FALSE, check.names = FALSE
+  )
+  ctx <- get_organization_details_context(
+    lang = get_lang("en"), org_name = "Plain Org", survey_data = build_clean_survey(raw)
+  )
+  # Empty rather than NULL or a placeholder string: the details page keys the
+  # whole Areas of Interest section off length(), so anything non-empty here
+  # would render an empty heading.
+  expect_length(ctx$wants_categories, 0L)
 })
 
 test_that("get_organization_details_context exposes established_subcats matching the org's services", {

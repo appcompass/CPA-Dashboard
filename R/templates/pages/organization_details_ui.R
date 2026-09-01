@@ -39,6 +39,25 @@ org_name_heading_ui <- function(orgname, website) {
 # Render one column of the barriers / resource-needs card: a dimension sub-heading
 # followed by a bullet list of its items, repeated per dimension. Falls back to a
 # muted "none reported" line when the org has no entries for this field.
+# Heading for one section of the Challenges & Resource Needs card, with an
+# optional explanatory line beneath it.
+#
+# All three sections in that card go through here so they get the same treatment.
+# Before this they did not: "What to Keep in Mind" carried its explanation inside
+# the title string after a hyphen, "Resource Needs" had none, and Areas of
+# Interest had a separate paragraph -- three shapes in one card.
+#
+# The description is dropped when blank, so a language that has not been
+# translated yet, or a stakeholder who wants a bare heading, needs no code
+# change -- just an empty string in the translation file.
+section_heading_ui <- function(title, description = NULL) {
+  description <- trimws(as.character(description %||% ""))
+  tagList(
+    h4(class = "section-heading", title),
+    if (nzchar(description)) p(class = "section-desc", description)
+  )
+}
+
 render_interview_items_column <- function(groups, empty_text) {
   if (!length(groups)) {
     return(div(class = "text-secondary", empty_text))
@@ -427,8 +446,17 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
           ),
 
           # Barriers & Resource Needs card (logged-in only; hidden when the org
-          # has no interview-coded entries). Two columns: barriers | resource needs.
-          if (logged_in && (length(details_context$barriers) || length(details_context$resource_needs))) div(
+          # has nothing to show). Two columns: barriers | resource needs, then a
+          # full-width Areas of Interest section beneath them.
+          #
+          # The `wants_categories` term in this condition is load-bearing: the
+          # first two come from interview coding, the third from the survey, and
+          # three consenting organizations have wants dimensions but no interview
+          # record. Without it the whole card stays hidden for them and the new
+          # section would never render on the pages that need it most.
+          if (logged_in && (length(details_context$barriers) ||
+            length(details_context$resource_needs) ||
+            length(details_context$wants_categories))) div(
             class = "col-12",
             div(
               class = "card",
@@ -454,13 +482,41 @@ organization_details_ui <- function(lang = get_lang(), logged_in = FALSE) {
                   class = "row",
                   div(
                     class = "col-6",
-                    h4(labels$col_barriers_title),
+                    section_heading_ui(
+                      labels$col_barriers_title,
+                      labels$col_barriers_description
+                    ),
                     render_interview_items_column(details_context$barriers, labels$interview_empty)
                   ),
                   div(
                     class = "col-6",
-                    h4(labels$col_resource_needs_title),
+                    section_heading_ui(
+                      labels$col_resource_needs_title,
+                      labels$col_resource_needs_description
+                    ),
                     render_interview_items_column(details_context$resource_needs, labels$interview_empty)
+                  )
+                ),
+                # Areas of Interest: dimensions the organization wants to provide
+                # services for but has neither established nor emerging. Full
+                # width beneath the two columns rather than a third column, so a
+                # long dimension list does not squeeze the interview items.
+                #
+                # Omitted entirely when the organization named none -- an empty
+                # heading over an empty list reads as "we have no information",
+                # which is the opposite of what a blank answer means here.
+                if (length(details_context$wants_categories)) div(
+                  class = "mt-4",
+                  section_heading_ui(
+                    labels$col_wants_title,
+                    labels$col_wants_description
+                  ),
+                  tags$ul(
+                    class = "mb-0",
+                    lapply(
+                      details_context$wants_categories,
+                      function(label) tags$li(label)
+                    )
                   )
                 )
               )
