@@ -236,35 +236,3 @@ body.router-ready .page .page-wrapper {
   height: 9px;
   margin-top: 5px;
 }
-
-/* Organization website link (organization details page header).
-
-   Tabler ships `a { text-decoration: none }` and restores the underline only on
-   `a:hover`, so a linked organization name read as plain heading text until the
-   pointer landed on it. The Dashboard Advisory Council asked for it to look like
-   a link at rest, so the underline here is unconditional and hover thickens it
-   rather than introducing it.
-
-   No !important needed: a class beats Tabler's element selector, and
-   .org-website-link:hover (0,2,0) outranks a:hover (0,1,1). */
-.org-website-link,
-.org-website-link:hover,
-.org-website-link:focus {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.15em;
-}
-
-.org-website-link:hover,
-.org-website-link:focus {
-  text-decoration-thickness: 2px;
-}
-
-/* inline-block keeps the heading underline from running beneath the symbol:
-   text decorations do not propagate into an atomic inline-level box. */
-.org-website-link-icon {
-  display: inline-block;
-  margin-left: 0.35em;
-  font-size: 0.75em;
-  vertical-align: middle;
-}
