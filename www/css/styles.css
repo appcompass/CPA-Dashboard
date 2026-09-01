@@ -268,3 +268,36 @@ body.router-ready .page .page-wrapper {
   font-size: 0.75em;
   vertical-align: middle;
 }
+
+/* Section headings inside the Challenges & Resource Needs card.
+ *
+ * Three sections now share one card body (What to Keep in Mind | Resource Needs,
+ * then Areas of Interest beneath). A plain <h4> at Tabler's default weight sits
+ * at nearly the same visual level as the list items under it, so the reader has
+ * to parse the text to find where one section ends and the next begins. The
+ * accent bar and the size bump give each section a visible start.
+ *
+ * Deliberately mirrors .panel-title / .panel-desc above, which is the wheel
+ * panel's existing "heading plus explanatory line" treatment -- one vocabulary
+ * for the page instead of two that almost match.
+ *
+ * Logical properties (inline-start, not left) so the bar renders on the correct
+ * side under tabler.rtl.css for Arabic. `left` would put it on the wrong edge
+ * there, past the text.
+ */
+.section-heading {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 6px;
+  padding-inline-start: 10px;
+  border-inline-start: 3px solid var(--tblr-primary);
+}
+.section-desc {
+  font-size: 13px;
+  --tblr-text-opacity: 1;
+  color: rgba(var(--tblr-secondary-rgb), var(--tblr-text-opacity)) !important;
+  margin: 0 0 12px;
+  padding-inline-start: 13px;
+  line-height: 1.7;
+}

@@ -51,7 +51,30 @@ ORGANIZATION_DETAILS_LABEL_SPEC <- list(
   other_queer = c(key = "other_queer", fallback = "Identifies as LGBTQIA+"),
   card_barriers_resources_title = c(key = "card_barriers_resources_title", fallback = "Challenges & Resource Needs"),
   col_barriers_title = c(key = "col_barriers_title", fallback = "What to Keep in Mind"),
+  col_barriers_description = c(
+    key = "col_barriers_description",
+    fallback = paste(
+      "Important things to consider when establishing resources for the",
+      "following dimensions."
+    )
+  ),
   col_resource_needs_title = c(key = "col_resource_needs_title", fallback = "Resource Needs"),
+  col_resource_needs_description = c(
+    key = "col_resource_needs_description",
+    fallback = paste(
+      "What the organization said it would need in order to establish or",
+      "strengthen services in the following dimensions."
+    )
+  ),
+  col_wants_title = c(key = "col_wants_title", fallback = "Areas of Interest"),
+  col_wants_description = c(
+    key = "col_wants_description",
+    fallback = paste(
+      "The following dimensions are areas that the organization identified as",
+      "not established nor emerging but would like to potentially provide",
+      "services for."
+    )
+  ),
   interview_empty = c(key = "interview_empty", fallback = "None reported."),
   band_none = c(key = "band_none", fallback = "None"),
   band_a_little = c(key = "band_a_little", fallback = "A little"),
@@ -133,6 +156,14 @@ get_organization_details_context <- function(
       ),
       # Emerging wheel = survey-marked emerging dimensions only.
       emerging_categories = get_emerging_dimension_categories(orgservices, lang),
+      # Dimensions the organization is neither established nor emerging in, but
+      # answered "Yes" to the survey's <Dim>Gap question ("does your organization
+      # WANT to provide ... services?"). build_orgservices_json() already stores
+      # this as state "wants", so it needs no new survey column and no artifact
+      # rebuild -- only the read side was missing. Unlike barriers/resource_needs
+      # below, this is survey-derived, so it is present for organizations that
+      # have no interview record at all.
+      wants_categories = get_dimension_categories(orgservices, lang, "wants"),
       barriers = get_interview_dimension_items(interview_dims, "barriers", lang, orgservices = orgservices),
       resource_needs = get_interview_dimension_items(interview_dims, "resource_needs", lang, orgservices = orgservices),
       has_data = nrow(row) > 0

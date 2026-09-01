@@ -364,6 +364,129 @@ test_that("organization_details_ui gates gender and demographics behind login", 
   expect_match(logged_in, "Additional Demographics", fixed = TRUE)
 })
 
+test_that("section_heading_ui renders a heading and drops a blank description", {
+  with_desc <- render_html(section_heading_ui("Heading", "Explains it."))
+  expect_match(with_desc, "section-heading", fixed = TRUE)
+  expect_match(with_desc, "section-desc", fixed = TRUE)
+  expect_match(with_desc, "Explains it.", fixed = TRUE)
+
+  # A blank or missing description must not leave an empty <p> behind: a language
+  # that has not been translated yet, or a stakeholder who wants a bare heading,
+  # should get no paragraph at all rather than an empty grey line.
+  for (blank in list(NULL, "", "   ", NA)) {
+    out <- render_html(section_heading_ui("Heading", blank))
+    expect_match(out, "section-heading", fixed = TRUE)
+    expect_false(grepl("section-desc", out, fixed = TRUE))
+  }
+})
+
+test_that("all three card sections carry a heading and a description", {
+  withr::local_dir(project_root)
+
+  # The three sections used to be styled three different ways: barriers had its
+  # description inside the title after a hyphen, resource needs had none, and
+  # Areas of Interest had a separate paragraph. Assert they now match.
+  en <- get_lang("en")$organization_details
+
+  expect_false(grepl(" - ", en$col_barriers_title, fixed = TRUE))
+  for (key in c("col_barriers", "col_resource_needs", "col_wants")) {
+    expect_true(nzchar(en[[paste0(key, "_title")]]), info = key)
+    expect_true(nzchar(en[[paste0(key, "_description")]]), info = key)
+  }
+})
+
+test_that("organization_details_ui renders Areas of Interest for wants dimensions", {
+  withr::local_dir(project_root)
+
+  detail_data <- load_organization_details_data()
+  skip_if(
+    nrow(detail_data) == 0,
+    "No organization in the local dataset has consented to publication."
+  )
+  lang <- get_lang("en")
+
+  # Drive the page to an org that has at least one "wants" dimension. Skip rather
+  # than fail if a future dataset has none, the same way the emerging test above
+  # handles its own precondition.
+  wants_org <- NULL
+  for (i in seq_len(nrow(detail_data))) {
+    os <- parse_orgservices_json(
+      get_named_value(detail_data[i, ], "orgservices_json", "")
+    )
+    if (length(get_dimension_categories(os, lang, "wants"))) {
+      wants_org <- trimws(detail_data[["orgname"]][i])
+      break
+    }
+  }
+  skip_if(is.null(wants_org), "No consenting organization has a wants dimension.")
+
+  testthat::local_mocked_bindings(
+    get_query_param = function(field = NULL, ...) {
+      if (is.null(field) || identical(field, "id")) wants_org else NULL
+    },
+    .package = "shiny.router"
+  )
+
+  logged_out <- render_html(organization_details_ui(logged_in = FALSE))
+  logged_in <- render_html(organization_details_ui(logged_in = TRUE))
+
+  en <- lang$organization_details
+  # The section sits inside the login-gated card, so it inherits that gate.
+  expect_false(grepl(en$col_wants_title, logged_out, fixed = TRUE))
+  expect_match(logged_in, en$col_wants_title, fixed = TRUE)
+  expect_match(
+    logged_in,
+    htmltools::htmlEscape(substr(en$col_wants_description, 1, 60)),
+    fixed = TRUE
+  )
+})
+
+test_that("organization_details_ui shows the card for a wants org with no interview data", {
+  withr::local_dir(project_root)
+
+  # Regression guard. The Challenges & Resource Needs card used to render only
+  # when interview-coded barriers or resource needs existed. Areas of Interest is
+  # survey-derived, and several consenting orgs have wants dimensions but no
+  # interview record -- for those the card, and so the new section, would never
+  # appear. Find one in the real dataset and assert the card renders anyway.
+  detail_data <- load_organization_details_data()
+  skip_if(nrow(detail_data) == 0, "No organization has consented to publication.")
+  lang <- get_lang("en")
+
+  target <- NULL
+  for (i in seq_len(nrow(detail_data))) {
+    row <- detail_data[i, , drop = FALSE]
+    os <- parse_orgservices_json(get_named_value(row, "orgservices_json", ""))
+    if (!length(get_dimension_categories(os, lang, "wants"))) next
+    ctx <- get_organization_details_context(
+      lang = lang,
+      org_name = trimws(row[["orgname"]][[1]]),
+      survey_data = detail_data
+    )
+    if (!length(ctx$barriers) && !length(ctx$resource_needs)) {
+      target <- trimws(row[["orgname"]][[1]])
+      break
+    }
+  }
+  skip_if(
+    is.null(target),
+    "Every org with a wants dimension also has interview-coded entries."
+  )
+
+  testthat::local_mocked_bindings(
+    get_query_param = function(field = NULL, ...) {
+      if (is.null(field) || identical(field, "id")) target else NULL
+    },
+    .package = "shiny.router"
+  )
+
+  logged_in <- render_html(organization_details_ui(logged_in = TRUE))
+  expect_match(logged_in, "Challenges &amp; Resource Needs", fixed = TRUE)
+  expect_match(
+    logged_in, lang$organization_details$col_wants_title, fixed = TRUE
+  )
+})
+
 test_that("organization_details_ui gates emerging areas and barriers/resource needs behind login", {
   withr::local_dir(project_root)
 
@@ -622,7 +745,17 @@ test_that("every supported language carries the wellness definition copy", {
       "card_established_description",
       "card_emerging_description",
       "card_barriers_resources_description",
-      "card_barriers_resources_note"
+      "card_barriers_resources_note",
+      # The three section headings inside that card and their explanatory
+      # lines. Added here rather than in a new test because the failure mode is
+      # identical: a language missing one renders a bare or blank section with
+      # no error.
+      "col_barriers_title",
+      "col_barriers_description",
+      "col_resource_needs_title",
+      "col_resource_needs_description",
+      "col_wants_title",
+      "col_wants_description"
     )) {
       expect_true(
         nzchar(trimws(as.character(details[[key]] %||% ""))),
