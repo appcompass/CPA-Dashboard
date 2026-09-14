@@ -63,7 +63,8 @@ ORGANIZATION_DETAILS_LABEL_SPEC <- list(
     key = "col_resource_needs_description",
     fallback = paste(
       "What the organization said it would need in order to establish or",
-      "strengthen services in the following dimensions."
+      "strengthen services in the following dimensions related to their",
+      "organization, city-wide efforts and needs, and/or other organizations."
     )
   ),
   col_wants_title = c(key = "col_wants_title", fallback = "Areas of Interest"),
