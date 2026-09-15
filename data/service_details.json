@@ -321,6 +321,20 @@
       "social": {
         "sub_social_3": "Gatherings open to all ages, bringing together families of shared cultural background, including a final showcase where African Storytelling Program participants present their group projects."
       }
+    },
+
+    "YSP21": {
+      "emotional": {
+        "sub_emotional_1": "Groups run out of the Roxbury girls' site, and wellness coaches placed in partner schools run one-on-one and small-group sessions on attendance, executive functioning and belonging.",
+        "sub_emotional_2": "An acute treatment unit takes emergency placements under a dedicated protocol, with four residences, a group home and intensive treatment residences staffed by clinicians and direct care workers.",
+        "sub_emotional_3": "Community counseling provides therapeutic mentors and in-home therapy; the Roxbury girls' site also takes walk-in behavioral health intakes and refers girls on to partner programs."
+      },
+    "social": {
+      "sub_social_1": "Therapeutic mentors work through community counseling, and wellness coaches aged 18 to 30 embed in partner schools; matches are made deliberately, with staff who reflect the community.",
+      "sub_social_2": "Wellness events at the Roxbury site bring girls in alongside their families, and the Needham campus and school hold several family events across the year.",
+      "sub_social_3": "Coaches join partner school events such as start-of-year barbecues and holiday drives; girls are also connected outward to partners including the MFA and the Soccer Unity Project."
+      }
     }
+
   }
 }
